@@ -251,60 +251,97 @@ background-color: white;
         }
         
         .div1_prop {
+            text-decoration: none;
             grid-area: 1 / 1 / 2 / 2;
             border: 1px solid gray;
+            background-color: white;
             border-radius: 25px;
             padding-right: 1rem;
+        }:focus{
+            outline:none !important;
         }
         .div2_prop { 
              grid-area: 1 / 2 / 2 / 3;
             border: 1px solid gray;
+            background-color: white;
             border-radius: 25px;
             padding-right: 1rem; }
         .div3_prop { grid-area: 2 / 1 / 3 / 2;
             border: 1px solid gray;
+            background-color: white;
             border-radius: 25px;
             padding-right: 1rem; }
         .div4_prop { grid-area: 2 / 2 / 3 / 3;
             border: 1px solid gray;
+            background-color: white;
             border-radius: 25px;
             padding-right: 1rem; }
         .div5_prop { grid-area: 3 / 1 / 4 / 2;
             border: 1px solid gray;
+            background-color: white;
             border-radius: 25px;
             padding-right: 1rem; }
         .div6_prop { grid-area: 3 / 2 / 4 / 3;
             border: 1px solid gray;
+            background-color: white;
             border-radius: 25px;
             padding-right: 1rem; }
         .div7_prop { grid-area: 4 / 1 / 5 / 2;
             border: 1px solid gray;
+            background-color: white;
             border-radius: 25px;
             padding-right: 1rem; }
         .div8_prop { grid-area: 4 / 2 / 5 / 3;
             border: 1px solid gray;
+            background-color: white;
             border-radius: 25px;
             padding-right: 1rem; }
         .div9_prop { grid-area: 5 / 1 / 6 / 2;
             border: 1px solid gray;
+            background-color: white;
             border-radius: 25px;
             padding-right: 1rem; }
         .div10_prop { grid-area: 5 / 2 / 6 / 3;
             border: 1px solid gray;
+            background-color: white;
             border-radius: 25px;
             padding-right: 1rem; }
         .div11_prop { grid-area: 6 / 1 / 7 / 2;
             border: 1px solid gray;
+            background-color: white;
             border-radius: 25px;
             padding-right: 1rem; }
         .div12_prop { grid-area: 6 / 2 / 7 / 3;
             border: 1px solid gray;
+            background-color: white;
             border-radius: 25px;
             padding-right: 1rem; }
         .div13_prop { grid-area: 7 / 1 / 8 / 2;
             border: 1px solid gray;
+            background-color: white;
             border-radius: 25px;
             padding-right: 1rem; }
 .prop_text{
     margin-right: 0.2rem;
 }
+.active{
+    background-color: gray;
+    color: black;
+}
+.remove_background{
+background-color: white;
+color: black;
+}
+.remove_background:focus{
+    background-color: white;
+    color: #ff7100;
+}
+.text_area{
+    width: 90vw;
+    height: 10rem;
+    padding: 1.5rem 1rem 0rem;
+    text-align: right;
+}::placeholder {
+    text-align: right;
+    line-height: 1rem;
+  }

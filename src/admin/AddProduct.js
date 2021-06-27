@@ -12,17 +12,12 @@ import { BsHouseDoor } from 'react-icons/bs';
 import { RiPaintBrushLine } from 'react-icons/ri';
 import { AiOutlineTable } from 'react-icons/ai';
 
-
-
-
-
-
-
-
-
 import '../addProduct.css'
 
 import { Accordion,Card,Button,Form,ButtonGroup ,ToggleButton,Pagination } from 'react-bootstrap';
+
+
+
 
 const AddProduct = () => {
     const [values, setValues] = useState({
@@ -64,11 +59,13 @@ const AddProduct = () => {
       tadiran:false,
       unit:false,
       renovated:false,
-      kosher:false
+      kosher:false,
+      boiler:false,
+      bars:false
 
   });
 
-  const {air_condition,shelter,garage,pandor,furniture,handicapped,elevator,tadiran,unit,renovated,kosher}= radios
+  const {air_condition,shelter,garage,pandor,furniture,handicapped,elevator,tadiran,unit,renovated,kosher,boiler,bars}= radios
 
     const { user, token } = isAuthenticated();
     const {
@@ -136,42 +133,167 @@ const AddProduct = () => {
         console.log(values)
     };
 
+
     // 
     const handleRadio = name => event => {
+      event.preventDefault()
       let value;
       switch (name) {
         case 'air_condition':
           value=!radios.air_condition
+          if(value)
+          {
+            document.getElementById('air_condition').classList.remove('remove_background')
+            document.getElementById('air_condition').classList.add('active')
+          }
+          else{
+            document.getElementById('air_condition').classList.remove('active')
+            document.getElementById('air_condition').classList.add('remove_background')
+          }
           break;
         case 'shelter':
           value=!radios.shelter
+          if(value)
+          {
+            document.getElementById('shelter').classList.remove('remove_background')
+            document.getElementById('shelter').classList.add('active')
+          }
+          else{
+            document.getElementById('shelter').classList.remove('active')
+            document.getElementById('shelter').classList.add('remove_background')
+          }
           break;
         case 'garage':
           value=!radios.garage
+          if(value)
+          {
+            document.getElementById('garage').classList.remove('remove_background')
+            document.getElementById('garage').classList.add('active')
+          }
+          else{
+            document.getElementById('garage').classList.remove('active')
+            document.getElementById('garage').classList.add('remove_background')
+          }
           break;
         case 'pandor':
           value=!radios.pandor
+          if(value)
+          {
+            document.getElementById('pandor').classList.remove('remove_background')
+            document.getElementById('pandor').classList.add('active')
+          }
+          else{
+            document.getElementById('pandor').classList.remove('active')
+            document.getElementById('pandor').classList.add('remove_background')
+          }
           break;
         case 'furniture':
           value=!radios.furniture
+          if(value)
+          {
+            document.getElementById('furniture').classList.remove('remove_background')
+            document.getElementById('furniture').classList.add('active')
+          }
+          else{
+            document.getElementById('furniture').classList.remove('active')
+            document.getElementById('furniture').classList.add('remove_background')
+          }
           break;
         case 'handicapped':
           value=!radios.handicapped
+          if(value)
+          {
+            document.getElementById('handicapped').classList.remove('remove_background')
+            document.getElementById('handicapped').classList.add('active')
+          }
+          else{
+            document.getElementById('handicapped').classList.remove('active')
+            document.getElementById('handicapped').classList.add('remove_background')
+          }
           break;
         case 'elevator':
           value=!radios.elevator
+          if(value)
+          {
+            document.getElementById('elevator').classList.remove('remove_background')
+            document.getElementById('elevator').classList.add('active')
+          }
+          else{
+            document.getElementById('elevator').classList.remove('active')
+            document.getElementById('elevator').classList.add('remove_background')
+          }
           break;
         case 'tadiran':
           value=!radios.tadiran
+          if(value)
+          {
+            document.getElementById('tadiran').classList.remove('remove_background')
+            document.getElementById('tadiran').classList.add('active')
+          }
+          else{
+            document.getElementById('tadiran').classList.remove('active')
+            document.getElementById('tadiran').classList.add('remove_background')
+          }
           break;
         case 'unit':
             value=!radios.unit
+            if(value)
+            {
+              document.getElementById('unit').classList.remove('remove_background')
+              document.getElementById('unit').classList.add('active')
+            }
+            else{
+              document.getElementById('unit').classList.remove('active')
+              document.getElementById('unit').classList.add('remove_background')
+            }
             break; 
         case 'renovated':
               value=!radios.renovated
+              if(value)
+              {
+                document.getElementById('renovated').classList.remove('remove_background')
+                document.getElementById('renovated').classList.add('active')
+              }
+              else{
+                document.getElementById('renovated').classList.remove('active')
+                document.getElementById('renovated').classList.add('remove_background')
+              }
               break; 
         case 'kosher':
             value=!radios.kosher
+            if(value)
+            {
+              document.getElementById('kosher').classList.remove('remove_background')
+              document.getElementById('kosher').classList.add('active')
+            }
+            else{
+              document.getElementById('kosher').classList.remove('active')
+              document.getElementById('kosher').classList.add('remove_background')
+            }
+            break;
+        case 'boiler':
+            value=!radios.boiler
+            if(value)
+            {
+              document.getElementById('boiler').classList.remove('remove_background')
+              document.getElementById('boiler').classList.add('active')
+            }
+            else{
+              document.getElementById('boiler').classList.remove('active')
+              document.getElementById('boiler').classList.add('remove_background')
+            }
+            break;
+        case 'bars':
+            value=!radios.bars
+            if(value)
+            {
+              document.getElementById('bars').classList.remove('remove_background')
+              document.getElementById('bars').classList.add('active')
+            }
+            else{
+              document.getElementById('bars').classList.remove('active')
+              document.getElementById('bars').classList.add('remove_background')
+            }
             break; 
             
       }
@@ -366,47 +488,82 @@ const AddProduct = () => {
 <div className={'property_type'}>
 <p className={"property_type_title"} >מאפייני הנכס</p>
 <div className="parent_prop">
-<div id={'air_condition'} onClick={handleRadio("air_condition")} className="div1_prop">
+  <button id={'air_condition'} className="div1_prop">
+<div   onClick={handleRadio("air_condition")} >
 <FaRegSnowflake/>
   <span className={'prop_text'}>מיזוג</span>
    </div>
-<div onClick={handleRadio("shelter")} className="div2_prop">
+   </button>
+   <button id={'shelter'} className="div2_prop">
+<div onClick={handleRadio("shelter")} >
 <FiBox/>
   <span className={'prop_text'}>ממ"ד</span>
  </div>
-<div onClick={handleRadio("garage")} className="div3_prop"><BiBox/>
+ </button>
+
+ <button id={'garage'} className="div3_prop">
+ <div onClick={handleRadio("garage")} ><BiBox/>
   <span  className={'prop_text'}>מחסן</span> </div>
 
-<div onClick={handleRadio("pandor")} className="div4_prop"><RiDoorClosedLine/>
+ </button>
+<button id={'pandor'} className="div4_prop">
+<div onClick={handleRadio("pandor")} ><RiDoorClosedLine/>
   <span  className={'prop_text'}>דלתות פנדור</span></div>
-  
-<div onClick={handleRadio("furniture")} className="div5_prop"><BiCabinet/>
+  </button>
+  <button id={"furniture"} className="div5_prop" >
+<div onClick={handleRadio("furniture")} ><BiCabinet/>
   <span className={'prop_text'}>ריהוט</span></div>
-  
-<div onClick={handleRadio("handicapped")} className="div6_prop"><FaWheelchair/>
+  </button>
+  <button id={"handicapped"} className="div6_prop">
+<div onClick={handleRadio("handicapped")} ><FaWheelchair/>
   <span className={'prop_text'}>גישה לנכים</span></div>
-
-<div onClick={handleRadio("elevator")} className="div7_prop"><GiElevator/>
+  </button>
+  <button id={"elevator"} className="div7_prop">
+<div onClick={handleRadio("elevator")} ><GiElevator/>
   <span className={'prop_text'}>מעלית</span></div>
+  </button>
 
-<div onClick={handleRadio("tadiran")} className="div8_prop"><FaRegSnowflake/>
+<button id={"tadiran"} className="div8_prop">
+<div onClick={handleRadio("tadiran")} ><FaRegSnowflake/>
   <span className={'prop_text'}>מזגן תדיראן</span></div>
-  
-<div onClick={handleRadio("unit")} className="div9_prop"><BsHouseDoor/>
+  </button>
+  <button id={"unit"} className="div9_prop">
+<div onClick={handleRadio("unit")} ><BsHouseDoor/>
   <span  className={'prop_text'}>יחידת דיור</span></div>
-  
-<div onClick={handleRadio("renovated")} className="div10_prop"><RiPaintBrushLine/>
+  </button>
+  <button id={"renovated"} className="div10_prop">
+<div onClick={handleRadio("renovated")} ><RiPaintBrushLine/>
   <span  className={'prop_text'}>משופצת</span></div>
-  
-<div onClick={handleRadio("kosher")} className="div11_prop"><GiTap/>
+  </button>
+  <button id={"kosher"} className="div11_prop">
+<div onClick={handleRadio("kosher")} ><GiTap/>
   <span className={'prop_text'}>מטבח כשר</span></div>
-  
-<div className="div12_prop"><GiSolarPower/>
+  </button>
+  <button id={"boiler"} className="div12_prop">
+<div onClick={handleRadio("boiler")} ><GiSolarPower/>
   <span className={'prop_text'}>דוד שמש</span></div>
-  
-<div  className="div13_prop"><AiOutlineTable/>
+  </button>
+<button id={"bars"} className="div13_prop">
+<div onClick={handleRadio("bars")} ><AiOutlineTable/>
   <span className={'prop_text'}>סורגים</span></div>
+  </button>
 </div>
+
+</div>
+<br/>
+<p className={'info_text'}>?מה חשוב לך שידעו על הנכס</p>
+<br/>
+
+<div className={'property_type'}>
+<p className={"property_type_title"} >פרוט הנכס</p>
+
+    <textarea className={'text_area'}
+    placeholder={`זה המקום לתאר את הפרטים הבולטים, למשל, האם נערך שיפוץ במבנה, מה שופץ, כיווני אוויר, האווירה ברחוב וכו`}
+                    onChange={handleChange("description")}
+                    // className="form-control"
+                    maxlength={10}
+                    value={description}
+                />
 </div>
 
 
