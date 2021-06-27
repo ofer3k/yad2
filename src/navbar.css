@@ -1,0 +1,65 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+ul {
+    list-style-type: none;
+    display: flex;
+	flex-direction: column;
+	/* flex-wrap: nowrap;
+	justify-content: center;
+	align-items: stretch;
+	align-content: center; */
+  }
+
+.headline{
+width: 100vw;
+height: 2.8rem;
+background-color: #ff7100;
+display: flex;
+justify-content: space-between;
+align-items: center;
+
+}
+.burgerMenu{
+    display: block;
+    margin-right: 1rem;
+    color: white;
+    font-size: 1.25rem;
+}
+.arrowLeft{
+    display: block;
+    margin-left: 1rem;
+    color: white;
+    font-size: 1.5rem;
+}
+.navHeader{
+    display: flex;
+/* justify-content: space-between; */
+justify-content: center;
+align-items: center;
+margin-bottom: 1rem;
+}
+
+.li_style_center{
+    text-align: center;
+}
+.li_style_right{
+
+    margin-top: 1rem;
+    text-align: right;
+}
+.li_style_left{
+    margin-top: 1rem;
+    text-align: left;
+}
+.avatar{
+    text-align: center;
+}
+.addProduct{
+    background-color: #0fca80;
+    padding: 0.5rem 2rem 0.5rem;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+}
