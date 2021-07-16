@@ -102,7 +102,7 @@ const Shop = () => {
             className="container-fluid"
         >
             <div className="row">
-                <div className="col-4">
+                {/* <div className="">
                     <h4>Filter by categories</h4>
                     <ul>
                         <Checkbox
@@ -112,6 +112,7 @@ const Shop = () => {
                             }
                         />
                     </ul>
+                    
 
                     <h4>Filter by price range</h4>
                     <div>
@@ -122,14 +123,33 @@ const Shop = () => {
                             }
                         />
                     </div>
-                </div>
+                    <h4>Filter by price range</h4>
+                    <div>
+                        <RadioBox
+                            prices={prices}
+                            handleFilters={filters =>
+                                handleFilters(filters, "price")
+                            }
+                        />
+                    </div>
+                    <h4>Filter by price range</h4>
+                    <div>
+                        <RadioBox
+                            prices={prices}
+                            handleFilters={filters =>
+                                handleFilters(filters, "price")
+                            }
+                        />
+                    </div>
+                </div> */}
 
-                <div className="col-8">
+                <div className="">
                     <h2 className="mb-4">Products</h2>
                     <div className="row">
                         {filteredResults.map((product, i) => (
-                            <div key={i} className="col-4 mb-3">
-                                <Card product={product} />
+                            <div key={i} className="col-12 mb-3">
+                                {/* <Card product={product} /> */}
+                                <img src={product.pic1}></img>
                             </div>
                         ))}
                     </div>

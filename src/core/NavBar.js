@@ -95,6 +95,15 @@ const NavBar = ({history}) => {
                     Home
                 </Link>
             </li>
+            <li className="nav-item">
+                <Link
+                    className="nav-link"
+                    // style={isActive(history, "/")}
+                    to="/searchForm"
+                >
+                    searchForm
+                </Link>
+            </li>
 
             <li className="li_style_right">
                 <Link

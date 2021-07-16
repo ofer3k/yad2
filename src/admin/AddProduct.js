@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
-import { createProduct, getCategories } from "./apiAdmin";
+import { createProduct, getCategories,uploadImage } from "./apiAdmin";
 import { FaRegSnowflake,FaWheelchair } from 'react-icons/fa';
 import { FiBox } from 'react-icons/fi';
 import { BiBox,BiCabinet } from 'react-icons/bi';
@@ -11,19 +11,214 @@ import { GiElevator,GiTap,GiSolarPower } from 'react-icons/gi';
 import { BsHouseDoor } from 'react-icons/bs';
 import { RiPaintBrushLine } from 'react-icons/ri';
 import { AiOutlineTable } from 'react-icons/ai';
+import { API } from "../config";
+
 
 import '../addProduct.css'
 
 import { Accordion,Card,Button,Form,ButtonGroup ,ToggleButton,Pagination } from 'react-bootstrap';
-
-
+let picsList={
+  pic1:'',
+  pic2:'',
+  pic3:'',
+  pic4:'',
+  pic5:'',
+  pic6:'',
+}
 
 
 const AddProduct = () => {
+
+  const [fileInput,setFileInput]=useState('')
+  const [videoInput,setVideoInput]=useState('')
+  const [pic1,setPic1]=useState('')
+  const [pic2,setPic2]=useState('')
+  const [pic3,setPic3]=useState('')
+  const [pic4,setPic4]=useState('')
+  const [photosList,setPhotosList]=useState('')
+let myArray=[]
+const [selectedFile,setSelectedFile]=useState('')
+const [previewSource,setPreviewSource]=useState('')
+const [previewVideo,setPreviewVideo]=useState('')
+const [previewPic1,setPreviewPic1]=useState('')
+const [previewPic2,setPreviewPic2]=useState('')
+const [previewPic3,setPreviewPic3]=useState('')
+const [previewPic4,setPreviewPic4]=useState('')
+const [imagesUrlList,setImagesUrlList]=useState([])
+
+
+
+const uploadImageToCloud=async (base64,video,pic1,pic2,pic3,pic4)=>{
+ 
+  try {
+    await fetch(`${API}/upload`,{
+      // method:'POST',
+      body:JSON.stringify({date:video,name:isAuthenticated().user.name}),
+      method: 'POST',
+  headers: { 'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',}
+    }).then(response =>{
+      var p = Promise.resolve(response.json());
+p.then(async function(v) {
+  console.log(v.url)
+  setImagesUrlList([...imagesUrlList, v.url]);
+  // setImagesUrlList(v.url)
+  picsList.pic1=v.url
+  console.log('myPics',picsList)
+});
+    } )
+    await fetch(`${API}/upload`,{
+      // method:'POST',
+      body:JSON.stringify({date:base64,name:isAuthenticated().user.name}),
+      method: 'POST',
+  headers: { 'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',}
+    }).then(response =>{
+      var p = Promise.resolve(response.json());
+p.then(async function(v) {
+  // setImagesUrlList(v.url)
+  setImagesUrlList([...imagesUrlList, v.url]);
+  picsList.pic2=v.url
+  console.log('myPics',picsList)});
+    } )
+
+    if(pic1){
+      await fetch(`${API}/upload`,{
+        // method:'POST',
+        body:JSON.stringify({date:pic1,name:isAuthenticated().user.name}),
+        method: 'POST',
+    headers: { 'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',}
+      }).then(response =>{
+        var p = Promise.resolve(response.json());
+  p.then(async function(v) {
+    setImagesUrlList(imagesUrlList => [...imagesUrlList, v.url])
+    console.log(imagesUrlList)
+    myArray.push(v.url)
+    console.log(myArray)
+  });
+      } )
+    }
+    if(pic2){await fetch(`${API}/upload`,{
+      // method:'POST',
+      body:JSON.stringify({date:pic2,name:isAuthenticated().user.name}),
+      method: 'POST',
+  headers: { 'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',}
+    }).then(response =>{
+      var p = Promise.resolve(response.json());
+p.then(async function(v) {
+  setImagesUrlList(imagesUrlList => [...imagesUrlList, v.url])
+  console.log(imagesUrlList)
+});
+    } )
+  }
+    if(pic3){await fetch(`${API}/upload`,{
+      // method:'POST',
+      body:JSON.stringify({date:pic3,name:isAuthenticated().user.name}),
+      method: 'POST',
+  headers: { 'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',}
+    }).then(response =>{
+      var p = Promise.resolve(response.json());
+p.then(async function(v) {
+  setImagesUrlList(imagesUrlList => [...imagesUrlList, v.url])
+  console.log(imagesUrlList)
+});
+    } )
+  }
+    if(pic4){
+      await fetch(`${API}/upload`,{
+        // method:'POST',
+        body:JSON.stringify({date:pic4,name:isAuthenticated().user.name}),
+        method: 'POST',
+    headers: { 'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',}
+      }).then(response =>{
+        var p = Promise.resolve(response.json());
+  p.then(async function(v) {
+    setImagesUrlList(imagesUrlList => [...imagesUrlList, v.url])
+    console.log(imagesUrlList)
+  });
+      } )}
+    
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const handleFileInputChange=(e)=>{
+const file=e.target.files[0]
+previewFile(file,e.target.name)
+
+console.log(file)
+}
+const handleSubmitFile=(e)=>{
+e.preventDefault()
+// console.log(e.target)
+if(!previewSource)return
+if(!previewVideo){
+  setPreviewVideo(null)
+}
+if(!previewPic1
+  ){
+  setPreviewPic1(null)
+}
+if(!previewPic2
+  ){
+  setPreviewPic2(null)
+}
+if(!previewPic3
+  ){
+  setPreviewPic3(null)
+}
+if(!previewPic4
+  ){
+  setPreviewPic4(null)
+}
+uploadImageToCloud(previewSource,previewVideo,previewPic1,previewPic2,previewPic3,previewPic4)
+}
+const previewFile=(file,name)=>{
+  console.log(name)
+const reader=new FileReader()
+reader.readAsDataURL(file)
+reader.onloadend=()=>{
+  switch (name) {
+    case 'main_image':
+      setPreviewSource(reader.result)
+      console.log('asss')
+      break;
+      case 'main_video':
+        setPreviewVideo(reader.result)
+      console.log('sadasd gfawsfd')
+      break;
+      case 'pic1':
+        setPreviewPic1(reader.result)
+      console.log('sadasd gfawsfd')
+      break;
+      case 'pic2':
+        setPreviewPic2(reader.result)
+      console.log('sadasd gfawsfd')
+      break;
+      case 'pic3':
+        setPreviewPic3(reader.result)
+      console.log('sadasd gfawsfd')
+      break;
+      case 'pic4':
+        setPreviewPic4(reader.result)
+      console.log('sadasd gfawsfd')
+      break;
+      
+    
+  }
+  
+}
+}
+
     const [values, setValues] = useState({
         name: "",
         description: "",
-        price: "",
+        price: null,
         categories: [],
         category: "",
         shipping: "",
@@ -45,8 +240,13 @@ const AddProduct = () => {
         is_on_pillars:null,
         num_of_parking:null,
         num_of_balcony:null,
-        
-
+        build_mr:null,
+        build_mr_total:null,
+        contact_name:'',
+        contact_number_start:'',
+        contact_number:'',
+        mail:'',
+        Route:null
     });
     const [radios, setRadios] = useState({
       air_condition:false,
@@ -62,8 +262,8 @@ const AddProduct = () => {
       kosher:false,
       boiler:false,
       bars:false
-
   });
+
 
   const {air_condition,shelter,garage,pandor,furniture,handicapped,elevator,tadiran,unit,renovated,kosher,boiler,bars}= radios
 
@@ -92,21 +292,29 @@ const AddProduct = () => {
         is_on_pillars,
         num_of_parking,
         num_of_balcony,
+        build_mr,
+        build_mr_total,
+        contact_name,
+        contact_number_start,
+        contact_number,
+        mail,
+        Route
     } = values;
     // load categories and set form data
     const init = () => {
         getCategories().then(data => {
-            if (data.error) {
-                setValues({ ...values, error: data.error });
-            } else {
-                setValues({
-                    ...values,
-                    categories: data,
-                    formData: new FormData()
-                });
-            }
+            // if (data.error) {
+            //     setValues({ ...values, error: data.error });
+            // } else {
+            //     setValues({
+            //         ...values,
+            //         categories: data,
+            //         formData: new FormData()
+            //     });
+            // }
         });
     };
+  
 
     useEffect(() => {
         init();
@@ -114,9 +322,9 @@ const AddProduct = () => {
     
 
     const handleChange = name => event => {
+  console.log(imagesUrlList)
         let value =
             name === "photo" ? event.target.files[0] : event.target.value;
-        formData.set(name, value);
         if(name==='property_address_city'||name==='property_address_street')
         {
             let index=event.target.value.indexOf(',')
@@ -127,14 +335,46 @@ const AddProduct = () => {
           value=event.target.checked
         }
         if (name ==='num_of_parking'||name==='num_of_balcony'){
-          value=event.target.innerHTML
+          if(event.target.innerHTML==='ללא')
+          value=0
+          else
+          value=parseFloat(event.target.innerHTML) 
         }
         setValues({ ...values, [name]: value });
         console.log(values)
+        // formData.set(name, value);
+
     };
-
-
+    const [maxLetters,setMaxLetters]=useState(0)
     // 
+    const handleChange2 = () => event => {
+      let x=event.target.value.length
+      setMaxLetters(x)
+  };
+
+  const date = () => event => {
+    if(event.target.checked===true)
+    {
+      var now = new Date();
+      var month = (now.getMonth() + 1);               
+      var day = now.getDate();
+      if (month < 10) 
+          month = "0" + month;
+      if (day < 10) 
+          day = "0" + day;
+      var today = now.getFullYear() + '-' + month + '-' + day;
+      
+      document.getElementById('entry_date').value=today 
+      setValues({ ...values, entry_date: today }); 
+      console.log(values)
+      document.getElementById('entry_date').disabled = true;
+    }
+    else{
+      document.getElementById('entry_date').disabled = false;
+
+    }
+};
+
     const handleRadio = name => event => {
       event.preventDefault()
       let value;
@@ -300,36 +540,57 @@ const AddProduct = () => {
       setRadios({ ...radios, [name]: value });
       console.log(radios)
   };
+  let maxLength = 100;
 
-    // 
+  async function postImage({image}) {
+    const formData=new FormData();
+    formData.append('image',image)
+    const result= uploadImage(formData)
+  }
+  const [image1,setImage1]=useState()
+  const [file1,setFile1]=useState()
+  const submit1=async event=>{
+    event.preventDefault()
+    let description123='123123'
+    const result=await uploadImage({image:file1,description123})
+    setImage1=([result.image,...image1])
+  }
+  const fileSelected=event=>{
+    const file=event.target.files[0]
+    setFile1(file)
+  }
+
 
     const clickSubmit = event => {
         event.preventDefault();
         setValues({ ...values, error: "", loading: true });
-
-        createProduct(user._id, token, formData).then(data => {
-            if (data.error) {
-                setValues({ ...values, error: data.error });
-            } else {
-                setValues({
-                    ...values,
-                    name: "",
-                    description: "",
-                    photo: "",
-                    price: "",
-                    quantity: "",
-                    loading: false,
-                    createdProduct: data.name
-                });
-            }
-        });
+        console.log(picsList)
+        let obj={fullForm:values,redioButtons:radios,pics:picsList}
+        createProduct(user._id, token, obj).then()
+          
+        //   data => {
+        //     if (data.error) {
+        //         setValues({ ...values, error: data.error });
+        //     } else {
+        //         // setValues({
+        //         //     ...values,
+        //         //     name: "",
+        //         //     description: "",
+        //         //     photo: "",
+        //         //     price: "",
+        //         //     quantity: "",
+        //         //     loading: false,
+        //         //     createdProduct: data.name
+        //         // });
+        //     }
+        // });
     };
 
     const newPostForm = () => (
         <Form style={{marginTop:'4rem'}} className="mb-3" onSubmit={clickSubmit}>
      <div>
 
-     <Accordion defaultActiveKey="1">
+     <Accordion defaultActiveKey="5">
   <Card>
       
     <Card.Header>
@@ -435,7 +696,7 @@ const AddProduct = () => {
       <Card.Body>
       <div className={'property_type'}>
 <p className={"property_type_title"} >*מספר חדרים</p>
-<select defaultValue={'null'}   onChange={handleChange("num_of_rooms")} className={'property_type_select'} id="num_of_rooms" name="num_of_rooms">
+<select defaultValue={'null'}  onChange={handleChange("num_of_rooms")} className={'property_type_select'} id="num_of_rooms" name="num_of_rooms">
 <option  hidden value="null">בחירת מספר חדרים</option>
     <option value="0">0</option>
     <option value="1">1</option>
@@ -555,15 +816,26 @@ const AddProduct = () => {
 <br/>
 
 <div className={'property_type'}>
-<p className={"property_type_title"} >פרוט הנכס</p>
-
-    <textarea className={'text_area'}
+  <div className={'flex-container'}>
+  <p className={"flex-items limit_left"} id={'leftA'} >{maxLetters}/400</p>
+  <p className={"property_type_title flex-items"} >פרוט הנכס</p>
+  </div>
+    <textarea  id={'textA'} className={'text_area'}
     placeholder={`זה המקום לתאר את הפרטים הבולטים, למשל, האם נערך שיפוץ במבנה, מה שופץ, כיווני אוויר, האווירה ברחוב וכו`}
-                    onChange={handleChange("description")}
+                    onChange={
+                      handleChange2()
+                        }
+                        onKeyUp={
+                          handleChange('description')
+                        }
                     // className="form-control"
-                    maxlength={10}
-                    value={description}
+                    maxlength={400}
+                    // value={description}
                 />
+</div>
+<div class="flex-container">
+   <button  class="flex-items continue_button">המשך</button>
+   <button class="flex-items prev_button">חזרה</button>
 </div>
 
 
@@ -580,7 +852,35 @@ const AddProduct = () => {
       </Accordion.Toggle>
     </Card.Header>
     <Accordion.Collapse eventKey="2">
-      <Card.Body>Hello! I'm another body</Card.Body>
+      <Card.Body>
+      <div className={'property_type'}>
+<p className={"property_type_title"} >מ"ר בנוי</p>
+    <input type="number" onChange={handleChange("build_mr")} className={"build_mr"} id={""} placeholder={`כמה מ"ר יש בנכס`} />
+</div>
+<div className={'property_type'}>
+<p className={"property_type_title"} >*גודל במ"ר סך הכל</p>
+    <input type="number" onChange={handleChange("build_mr_total")} className={"build_mr"} id={""} placeholder={``} />
+</div>
+
+<div className={'property_type'}>
+<p className={"property_type_title"} >*מחיר</p>
+    <input type="number" onChange={handleChange("price")} className={"build_mr"} id={""} placeholder={`סכום מינימלי 100,000`} />
+</div>
+
+<div className={'property_type'}>
+<p className={"property_type_title"} >*תאריך כניסה</p>
+<div dir='rtl' className={'inline_box1'}>
+    <input type="date" onChange={handleChange("entry_date")} className={"date"} id={'entry_date'} />
+<input  onChange={date()} className={'inline_box'} type='checkbox'/>
+<p className={'inline_box'}>מיידי</p>
+</div>
+</div>
+<div class="flex-container">
+   <button  class="flex-items continue_button">המשך</button>
+   <button class="flex-items prev_button">חזרה</button>
+</div>
+
+</Card.Body>
     </Accordion.Collapse>
   </Card>
   <Card>
@@ -592,7 +892,138 @@ const AddProduct = () => {
       </Accordion.Toggle>
     </Card.Header>
     <Accordion.Collapse eventKey="3">
-      <Card.Body>Hello! I'm another body</Card.Body>
+      <Card.Body>
+        {/* msg */}
+      <Card className={' adress_badge'} style={{ width: '70vw',dir:'rtl' }}>
+  <Card.Img className={' '} variant="right" src="" />
+  <Card.Body style={{dir:'rtl'}} className={''} >
+    <Card.Title className={'adress_badge_title'}></Card.Title>
+    <Card.Text  className='adress_badge_text'>
+לא לדאוג
+    </Card.Text>
+  </Card.Body>
+</Card>
+{/*  */}
+<div className={'info_text_photos'}>
+<p style={{marginBottom:'0rem'}}>?ידעת שמודעות עם תמונות ברורות מקבלות פי 10 יותר פניות </p>
+<p >לא להסס להעלות לפה תמונות (אפשר עד 10 + וידאו) ולהבליט את הצדדים הטובים ביותר של הנכס</p>
+</div>
+<br/> 
+<div dir={'rtl'} className={'parent3'}>
+<div  className={''}>
+  {
+  !previewSource &&
+   (<form >
+     <div className={'div33'}>
+     <span className={'input_file_title'}>העלאת סרטון</span>
+     <input type='file' accept="video/*" name='main_image' onChange={handleFileInputChange} value={fileInput}  />
+     </div>
+  </form>)}
+  {previewSource && <div className={'div33'}>
+     <span className={'input_file_title'}>הסרטון עלה,אפשר להמשיך בפרסום</span>
+     </div>}
+</div>
+
+<div className={' '}>
+  {
+  !previewVideo &&
+   (<form >
+     <div className={'div44'}>
+     <span className={'input_file_title'}>העלאת תמונות</span>
+     <input type='file' name='main_video' onChange={handleFileInputChange} value={videoInput}  />
+     </div>
+  </form>)}
+    {previewVideo && (
+    <div  className={'div44'}>
+     <span className={'input_file_title'}>העלאת תמונות</span>
+       <img style={{height:'80%',maxWidth:'100%', }} src={previewVideo}/>
+    </div>
+   )}
+</div>
+</div>
+<p style={{width:'80vw',float:'right'}}>
+  <hr style={{width:'80vw'}} />
+</p>
+<p style={{width:'80vw',float:'right',textAlign:'right'}}>תמונות שיופיעו בגוף המודעה</p>
+{/* body photos */}
+<div dir={'rtl'} className={'parent3'}>
+<div  className={''}>
+  {
+  !previewPic2 &&
+   (<form >
+     <div className={'div33'}>
+     <span className={'input_file_title'}>העלאת תמונות</span>
+     <input type='file' name='pic2' onChange={handleFileInputChange} value={fileInput}  />
+     </div>
+
+  </form>)}
+  {previewPic2 && (
+    <div  className={'div33'}>
+     <span className={'input_file_title'}>העלאת תמונות</span>
+       <img style={{height:'80%',maxWidth:'100%', }} src={previewPic2}/>
+    </div>
+   )}
+</div>
+
+<div className={' '}>
+  {
+  !previewPic1 &&
+   (<form >
+     <div className={'div33'}>
+     <span className={'input_file_title'}>העלאת תמונות</span>
+     <input type='file' name='pic1' onChange={handleFileInputChange} value={pic1}  />
+     </div>
+  </form>)}
+    {previewPic1 && (
+    <div  className={'div33'}>
+     <span className={'input_file_title'}>העלאת תמונות</span>
+       <img style={{height:'80%',maxWidth:'100%', }} src={previewPic1}/>
+    </div>
+   )}
+</div>
+</div>
+{/* another line */}
+<div dir={'rtl'} className={'parent3'}>
+<div  className={''}>
+  {
+  !previewPic4 &&
+   (<form >
+     <div className={'div33'}>
+     <span className={'input_file_title'}>העלאת תמונות</span>
+     <input type='file' name='pic4' onChange={handleFileInputChange} value={pic4}  />
+     </div>
+  </form>)}
+  {previewPic4 && (
+    <div  className={'div33'}>
+     <span className={'input_file_title'}>העלאת תמונות</span>
+       <img style={{height:'80%',maxWidth:'100%', }} src={previewPic4}/>
+    </div>
+   )}
+</div>
+
+<div className={' '}>
+  {
+  !previewPic3 &&
+   (<form >
+     <div className={'div33'}>
+     <span className={'input_file_title'}>העלאת תמונות</span>
+     <input type='file' name='pic3' onChange={handleFileInputChange} value={pic3}  />
+     </div>
+  </form>)}
+    {previewPic3 && (
+    <div  className={'div33'}>
+     <span className={'input_file_title'}>העלאת תמונות</span>
+       <img style={{height:'80%',maxWidth:'100%', }} src={previewPic3}/>
+    </div>
+   )}
+</div>
+</div>
+    <div class="flex-container">
+   <button  class="flex-items continue_button">המשך</button>
+   <button class="flex-items prev_button">חזרה</button>
+</div>
+{/* submit button for cloudinary */}
+      </Card.Body>
     </Accordion.Collapse>
   </Card>
   <Card>
@@ -604,24 +1035,97 @@ const AddProduct = () => {
       </Accordion.Toggle>
     </Card.Header>
     <Accordion.Collapse eventKey="4">
-      <Card.Body>Hello! I'm another body</Card.Body>
+      <Card.Body>
+        
+        {/* שם איש הקשר */}
+        <div className={'property_type'}>
+<p className={"property_type_title"} >*שם איש הקשר</p>
+    <input type="text" onChange={handleChange("contact_name")} className={"address_city"} id={""} placeholder={`${isAuthenticated().user.name}`} defaultValue={`${isAuthenticated().user.name}`} />
+</div>
+<br/>
+<br/>
+
+<div className={'property_type'}>
+<p className={"property_type_title"} >*טלפון ראשי</p>
+<div class="parent_phone">
+<div class="div1_phone"> 
+<select  defaultValue={'null'}  onChange={handleChange("contact_number_start")} className={''} id="" name="">
+<option  value="050">050</option>
+<option  value="051">051</option>
+<option  value="052">052</option>
+<option  value="053">053</option>
+<option  value="054">054</option>
+<option  value="055">055</option>
+<option  value="058">058</option>
+  </select>
+</div>
+<div > 
+    <input className={"div2_phone"}  type="number"  placeholder="630-50-81" pattern={"[0-9]{3}-[0-9]{2}-[0-9]{2}"} required onBlur={handleChange("contact_number")}  />
+</div>
+</div>
+</div>
+<br/>
+<div className={'property_type'}>
+<p className={"property_type_title"} >*דוא"ל</p>
+    <input type={"email"} onChange={handleChange("mail")} className={"address_city"}   />
+</div>
+<div class="flex-container">
+   <button  class="flex-items continue_button">המשך</button>
+   <button class="flex-items prev_button">חזרה</button>
+</div>
+      </Card.Body>
     </Accordion.Collapse>
   </Card>
   <Card>
     <Card.Header>
     <span className="numIcon">7</span>
-
       <Accordion.Toggle className={'accordion_title'} as={Button} variant="link" eventKey="5">
         סיום פרסום
       </Accordion.Toggle>
     </Card.Header>
     <Accordion.Collapse eventKey="5">
-      <Card.Body>Hello! I'm another body</Card.Body>
+      <Card.Body>
+        <div dir={'rtl'} >
+    <p style={{textAlign:'right'}}>
+    זהו, אנחנו בסוף. לנו נשאר לשמור את המודעה שלך, לך נשאר לבחור את מסלול הפרסום.  
+    </p>
+    {/*  */}
+    <p style={{textAlign:'right'}}>
+    אגב רצינו לספר לך שיש באתר עוד x מודעות דומוות לשלך באיזור y והסביבה שמתחרות על תשומת לב הקוני</p>
+    {/*  */}
+    <p style={{textAlign:'right'}}>
+ ההמלצה שלנו? לשדרג את המודעה. להופיע לפני כולם ולהתקדם להסכם תיק תק   </p>
+ <hr/>
+ <h6 style={{textAlign:'right'}}>
+ באיזה מסלול לפרסם את המודעה? זה הרגע לבלוט מעל כולם  
+  </h6>
+        </div>
+        <div class="parent_Route">
+<div class="div1_Route">
+<button onClick={()=>{setValues({ ...values, 'Route': 'vip' })}}>VIP</button>
+ </div>
+<div class="div2_Route"> 
+<button onClick={()=>{setValues({ ...values, 'Route': 'marked' })}}>מודגשת</button>
+</div>
+<div class="div3_Route">
+  <button onClick={()=>{setValues({ ...values, 'Route': 'basic' })}}>בסיסי</button>
+</div>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+    <button onClick={handleSubmitFile} type='button' >upload files to cloudinary</button>
+    <button onClick={clickSubmit}  type='button' >העלה טופס ליד 2</button>
+            
+      </Card.Body>
     </Accordion.Collapse>
   </Card>
 </Accordion>
+     
      </div>
-            <h4>Post Photo</h4>
+            {/* <h4>Post Photo</h4>
             <div className="form-group">
                 <label className="btn btn-secondary">
                     <input
@@ -631,10 +1135,8 @@ const AddProduct = () => {
                         accept="image/*"
                     />
                 </label>
-            </div>
-                <div>
-                    
-                </div>
+            </div> */}
+{/*                
             <div className="form-group">
                 <label className="text-muted">Name</label>
                 <input
@@ -652,8 +1154,8 @@ const AddProduct = () => {
                     className="form-control"
                     value={description}
                 />
-            </div>
-
+            </div> */}
+{/* 
             <div className="form-group">
                 <label className="text-muted">Price</label>
                 <input
@@ -662,8 +1164,8 @@ const AddProduct = () => {
                     className="form-control"
                     value={price}
                 />
-            </div>
-
+            </div> */}
+{/* 
             <div className="form-group">
                 <label className="text-muted">Category</label>
                 <select
@@ -702,7 +1204,7 @@ const AddProduct = () => {
                 />
             </div>
 
-            <button className="btn btn-outline-primary">Create Product</button>
+            <button className="btn btn-outline-primary">Create Product</button> */}
         </Form>
     );
 
@@ -730,7 +1232,7 @@ const AddProduct = () => {
                 <h2>Loading...</h2>
             </div>
         );
-
+       
     return (
         <Layout
             title="Add a new product"

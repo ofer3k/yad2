@@ -16,6 +16,7 @@ const Menu = ({ history }) => (
     <div>
     
         <ul className="nav nav-tabs bg-primary">
+        
             <li className="nav-item">
                 <Link
                     className="nav-link"

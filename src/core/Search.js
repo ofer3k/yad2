@@ -29,7 +29,8 @@ const Search = () => {
 
     const searchData = () => {
         // console.log(search, category);
-        if (search) {
+        // if (search)
+         {
             list({ search: search || undefined, category: category }).then(
                 response => {
                     if (response.error) {
@@ -93,10 +94,16 @@ const Search = () => {
                         </select>
                     </div>
 
-                    <input
+                    {/* <input
                         type="search"
                         className="form-control"
                         onChange={handleChange("search")}
+                        placeholder="Search by name"
+                    /> */}
+                    <input
+                        type="search"
+                        className="form-control"
+                        onChange={handleChange("description")}
                         placeholder="Search by name"
                     />
                 </div>
