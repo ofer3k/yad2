@@ -13,6 +13,7 @@ import Shop from "./core/Shop";
 import SearchForm from "./core/SearchForm";
 import Product from "./core/Product";
 import Cart from "./core/Cart";
+import ProductPopup from "./core/ProductPopUp";
 
 const Routes = () => {
     return (
@@ -44,6 +45,7 @@ const Routes = () => {
                     component={AddProduct}
                 />
                 <Route path="/product/:productId" exact component={Product} />
+                <Route path="/product/popup/:productId" exact component={ProductPopup} />
                 <Route path="/cart" exact component={Cart} />
             </Switch>
         </BrowserRouter>

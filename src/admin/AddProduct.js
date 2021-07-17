@@ -93,10 +93,9 @@ p.then(async function(v) {
         var p = Promise.resolve(response.json());
   p.then(async function(v) {
     setImagesUrlList(imagesUrlList => [...imagesUrlList, v.url])
-    console.log(imagesUrlList)
-    myArray.push(v.url)
-    console.log(myArray)
-  });
+    picsList.pic3=v.url
+    console.log('myPics',picsList)
+    });
       } )
     }
     if(pic2){await fetch(`${API}/upload`,{
@@ -109,8 +108,9 @@ p.then(async function(v) {
       var p = Promise.resolve(response.json());
 p.then(async function(v) {
   setImagesUrlList(imagesUrlList => [...imagesUrlList, v.url])
-  console.log(imagesUrlList)
-});
+  picsList.pic4=v.url
+  console.log('myPics',picsList)
+  });
     } )
   }
     if(pic3){await fetch(`${API}/upload`,{
@@ -123,8 +123,9 @@ p.then(async function(v) {
       var p = Promise.resolve(response.json());
 p.then(async function(v) {
   setImagesUrlList(imagesUrlList => [...imagesUrlList, v.url])
-  console.log(imagesUrlList)
-});
+  picsList.pic5=v.url
+  console.log('myPics',picsList)
+  });
     } )
   }
     if(pic4){
@@ -138,8 +139,9 @@ p.then(async function(v) {
         var p = Promise.resolve(response.json());
   p.then(async function(v) {
     setImagesUrlList(imagesUrlList => [...imagesUrlList, v.url])
-    console.log(imagesUrlList)
-  });
+    picsList.pic6=v.url
+    console.log('myPics',picsList)
+    });
       } )}
     
   } catch (error) {
@@ -327,9 +329,9 @@ reader.onloadend=()=>{
             name === "photo" ? event.target.files[0] : event.target.value;
         if(name==='property_address_city'||name==='property_address_street')
         {
-            let index=event.target.value.indexOf(',')
-            console.log(index)
-            value=event.target.value.slice(0,index)
+            // let index=event.target.value.indexOf(',')
+            // console.log(index)
+            value=event.target.value.split(',')[0]
         }
         if (name ==='is_on_pillars'){
           value=event.target.checked
@@ -653,11 +655,11 @@ reader.onloadend=()=>{
 {/* settlement */}
 <div className={'property_type'}>
 <p className={"property_type_title"} >*ישוב</p>
-    <input type="text" onBlur={handleChange("property_address_city")} className={"address_city"} id={"search_input"} placeholder="?איפה נמצא הנכס" />
+    <input type="text" onBlur={handleChange("property_address_city")} onClick={handleChange("property_address_city")} onChange={handleChange("property_address_city")} className={"address_city"} id={"search_input"} placeholder="?איפה נמצא הנכס" />
 </div>
 <div className={'property_type'}>
 <p className={"property_type_title"} >*רחוב</p>
-    <input type="text" onBlur={handleChange("property_address_street")} className={"address_street"} id={"search_input_street"} placeholder="הכנסת שם הרחוב" />
+    <input type="text" onClick={handleChange("property_address_street")} onChange={handleChange("property_address_street")} className={"address_street"} id={"search_input_street"} placeholder="הכנסת שם הרחוב" />
 </div>
 <div className={'property_type'}>
 <p className={"property_type_title"} >*מס' בית</p>

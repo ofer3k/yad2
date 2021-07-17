@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import Card from "./Card";
+import CardYad2 from "./CardYad2";
 import { getCategories, getFilteredProducts } from "./apiCore";
 import Checkbox from "./Checkbox";
 import RadioBox from "./RadioBox";
 import { prices } from "./fixedPrices";
+import './../cardYad2.css'
 
 const Shop = () => {
     const [myFilters, setMyFilters] = useState({
@@ -101,7 +103,7 @@ const Shop = () => {
             description="Search and find books of your choice"
             className="container-fluid"
         >
-            <div className="row">
+            <div style={{float:'right',textAlign:'right'}} dir={'rtl'} className="row cardYad2">
                 {/* <div className="">
                     <h4>Filter by categories</h4>
                     <ul>
@@ -147,9 +149,8 @@ const Shop = () => {
                     <h2 className="mb-4">Products</h2>
                     <div className="row">
                         {filteredResults.map((product, i) => (
-                            <div key={i} className="col-12 mb-3">
-                                {/* <Card product={product} /> */}
-                                <img src={product.pic1}></img>
+                            <div key={i} className="col-12 mb-1">
+                                <CardYad2 product={product} />
                             </div>
                         ))}
                     </div>

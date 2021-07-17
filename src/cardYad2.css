@@ -1,0 +1,93 @@
+.card{
+    width: 95vw;
+    margin: 0 auto;
+    background-color: #fdf9c5;
+}
+/*  */
+.parent_card {
+    display: grid;
+    background-color: #fdf9c5;
+    grid-template-columns: 0.1fr repeat(9, 1fr) 0.1fr;
+    grid-template-rows: 0.1fr repeat(10, 1fr) 0.1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    }
+    .parent_card:hover {
+        display: grid;
+        background-color: #fdf9c5;
+        grid-template-columns: 0.1fr repeat(9, 1fr) 0.1fr;
+        grid-template-rows: 0.1fr repeat(10, 1fr) 0.1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        cursor: pointer;
+        }
+    
+    .div1_card { grid-area: 2 / 8 / 12 / 11; }
+    .div2_card {
+         grid-area: 2 / 4 / 4 / 8; }
+    .div3_card { 
+        text-align: left; 
+        grid-area: 2 / 2 / 4 / 4; }
+    .div4_card { grid-area: 4 / 2 / 6 / 8; }
+    .div5_card { 
+        grid-area: 6 / 2 / 8 / 8; }
+    .div6_card { 
+        
+        text-align: center;
+        grid-area: 8 / 6 / 10 / 8; }
+    .div7_card { 
+        
+        text-align: center;
+        grid-area: 8 / 4 / 10 / 6; }
+    .div8_card { 
+        
+        text-align: center;
+        grid-area: 8 / 2 / 10 / 4; }
+    .div9_card {
+        text-align: center;
+        grid-area: 10 / 6 / 12 / 8; }
+    .div10_card { 
+        text-align: center;
+         grid-area: 10 / 4 / 12 / 6; }
+    .div11_card {
+        text-align: center;
+        grid-area: 10 / 2 / 12 / 4; }
+
+        .price_style{
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    text-align: right;
+    min-width: calc(60% - 10px);
+}
+.address_tile_style{
+    font-size: .875rem;
+    color: #363636;
+    line-height: 1.0625rem;
+}
+.data_style{
+    border-top: 1px solid rgba(0,0,0,.1);
+    margin-top: 6px;
+    font-size: .75rem;
+}
+.data_title_style{
+    font-size: .75rem;
+    color: rgba(0,0,0,.5);
+}
+.updated_today{
+    color: rgba(0,0,0,.5);
+    font-size: .75rem;
+    line-height: 12px;
+}
+
+
+     .img1 { 
+
+         max-width: 98%;
+         max-height: 98%;
+         min-height: 97%;
+        border-radius: 5px;
+    } 
+    
