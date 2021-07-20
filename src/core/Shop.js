@@ -12,6 +12,7 @@ import { BiFilterAlt } from 'react-icons/bi';
 import { RiMapPinLine } from 'react-icons/ri';
 import { Accordion,Form,ButtonGroup ,ToggleButton,Pagination } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
+import LineSearch from './LineSearch'
 
 
 import './../cardYad2.css'
@@ -26,10 +27,7 @@ const getValue = ({ price }) => +price.slice(1) || 0;
 // 
 const Shop = (state) => {
     let history = useHistory();
-    const mq = window.matchMedia( "(max-width: 920px)" );
-
-
-    
+    const mq = window.matchMedia( "(max-width: 620px)" );    
     // console.log(state.location.state.body,'state')
 
     const [myFilters, setMyFilters] = useState({
@@ -198,9 +196,12 @@ const [isModalVisible, setIsModalVisible] = useState(false);
             description="Search and find books of your choice"
             className="container-fluid"
         >
-            <div onClick={redirectToSearchForm} className={'fixed_searchBar'}>
+            
+            {!(mq.matches)&& <div className={'lineSearch_container'}> <span  ><LineSearch/></span></div>}
+            {(mq.matches)&&            <div onClick={redirectToSearchForm} className={'fixed_searchBar'}>
                 <span className={'fixed_searchBar_text'}>נדלן למכירה</span>
-            </div>
+            </div>}
+
             <div style={{marginTop:'12px'}}  class="parent_shop_filters">
 <div  class="div1_shop_filters"> 
 <span onClick={showModal}  className={'sort_button_main'}>מיין תוצאות &#8645;</span>

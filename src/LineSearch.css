@@ -1,0 +1,93 @@
+.parent_lineSearch {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 0.2fr  repeat(10, 1fr) 0.2fr;
+    grid-template-rows: 0.2fr repeat(8, 1fr) 0.2fr 0.2fr 0.2fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 10%);
+    z-index: 350 !important;
+}
+    
+    .div1_lineSearch { grid-area: 8 / 10 / 12 / 12; }
+    .div2_lineSearch { grid-area: 8 / 8 / 12 / 10; }
+    .div3_lineSearch { grid-area: 8 / 7 / 12 / 8; }
+    .div4_lineSearch { grid-area: 8 / 5 / 12 / 7; }
+    .div5_lineSearch { grid-area: 8 / 3 / 12 / 5; }
+    .div6_lineSearch { grid-area: 8 / 2 / 12 / 3; }
+    .div7_lineSearch { grid-area: 6 / 10 / 8 / 12; }
+    .div8_lineSearch { grid-area: 6 / 8 / 8 / 10; }
+    .div9_lineSearch { grid-area: 6 / 7 / 8 / 8; }
+    .div10_lineSearch { grid-area: 6 / 5 / 8 / 7; }
+    .div11_lineSearch { grid-area: 6 / 3 / 8 / 5; }
+    .div12_lineSearch { grid-area: 6 / 2 / 8 / 3; }
+    .div13_lineSearch { grid-area: 2 / 8 / 5 / 12; }
+    .div14_lineSearch { grid-area: 2 / 2 / 5 / 7; }
+  .which_property_title{
+    font-size: 1.125rem;
+    line-height: 1.375rem;
+    font-weight: 500;
+  }
+  .which_property_title_orange{
+    color: #ff7100;
+    border-bottom:  2px dotted #ff7100;
+  }
+  .note_email_title{
+      text-align: left;
+      color: #ff7100;
+      border: 1px solid #ff7100;
+      padding:4px ;
+      font-size: .75rem;
+      line-height: 1.25rem;font-weight: 500;
+      width: fit-content;
+  }
+  .searchBar_input_title{
+    color: #363636;
+    text-align: right;
+    font-size: .875rem;
+  }
+  .adress_input_search_bar{
+      width: 95%;
+      text-align: right;
+      padding:5px ;
+      border: 1px solid #ccc;  
+    }::placeholder {
+        font-size: .875rem;
+      }
+.down_arrow{
+    float:'left';
+    color: black;
+}
+.new_dropDown{
+    z-index: 101 !important ;
+    position: absolute;
+ width:280px;
+ /* border: 1px solid black; */
+ background-color: white;
+ box-shadow: 0 2px 6px 0 rgb(0 0 0 / 10%);
+ box-sizing: border-box;
+ min-width: 180px;
+ min-height: 80px;
+ right: 28vw;
+ margin-top: -14px;
+ }
+ .dropDown_field{
+     background-color: #f9f9f9;
+     color: #363636;
+     cursor: pointer;
+     font-size: 1rem;
+     line-height: 1.1875rem;
+     padding: 4px;
+     margin-bottom: 6px;
+ }
+    .dropDown_checkbox_title{
+        margin-right: 4px;
+    }
+    .dropDown_submit{
+        color: #ff7100;
+        float: left;
+        margin-left: 8px;
+        font-weight: 500;
+    }

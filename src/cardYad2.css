@@ -266,3 +266,10 @@ text-align: right;
     float: right;
     text-align: right;
   }
+  .lineSearch_container{
+      width: 95vw;
+      /* margin: 0 auto; */
+      margin-left: -15px;
+      /* border: 2px solid blue; */
+  }
+ 
