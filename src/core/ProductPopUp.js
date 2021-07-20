@@ -122,7 +122,7 @@ const handleCancel = () => {
    <div class="flex-items_popUp">דירה למכירה ב{product.property_address_city}</div>
        </div>
        <div className={'image_container'}>
-           <img src={product.pic1} ></img>
+           <img style={{height:'344px'}} src={product.pic1} ></img>
        </div>
        <hr/>
        <p className={'price_style_popUp'}><span>&#8362;</span> {product.price}</p>
@@ -296,15 +296,15 @@ const handleCancel = () => {
 </div>
 
 {/*  */}
-<div style={{height:'100px'}}>
+<div className={'modal_container'}>
 
     {/* <button type="primary"  >open Modal</button> */}
-    <Modal visible={isModalVisible} className={'modalPopUp'} bodyStyle={{textAlign:'center'}}  cancelButtonProps={{ghost:'true'}} okButtonProps={{style:{opacity:'0'}}} closeIcon={' '} onOk={handleOk} onCancel={handleCancel}>
+    <Modal width={'65vw'} visible={isModalVisible} className={'modalPopUp'} bodyStyle={{textAlign:'center'}} footer={null}  cancelButtonProps={{ghost:'true'}} okButtonProps={{style:{opacity:'0'}}} closeIcon={' '} onOk={handleOk} onCancel={handleCancel}>
 <p className={'modal_popup_name'}>{product.contact_name}</p>
 <div className={'modal_popup_number'}>
 <span className={'modal_popup_number_inner'}>{product.contact_number_start}-{product.contact_number}</span>
 </div>
-<p>שליחת דוא"ל למפרסם</p>
+<p className={'modal_popup_email_inner'}>שליחת דוא"ל למפרסם</p>
 
     </Modal>
 </div>

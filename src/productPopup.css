@@ -29,11 +29,12 @@
     order: 0;
   }
   .popup_container{
-      width: 95vw;
+      width: 90vw;
       margin: 0 auto;
   }
   .image_container{
       height: 344px;
+     object-fit: fill;
       overflow: hidden;
     background-position: 50%;
     background-size: cover;
@@ -227,7 +228,7 @@
         text-align: center;
         border-top:1px solid e1e1e1 ;
         position:fixed ;
-        width: 95vw;
+        width: 90vw;
         margin: 0 auto;
         background-color: #0fca80;
         height: 40px;
@@ -265,3 +266,12 @@
         font-size: 1rem;
     line-height: 20px;
     }
+    .modal_popup_email_inner{
+        font-size: 1.125rem;
+        line-height: 20px;
+        border-bottom: 2px solid #363636;
+        width: fit-content;
+        color: #363636;
+        margin: 0 auto;
+    }
+    

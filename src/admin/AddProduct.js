@@ -1104,13 +1104,13 @@ reader.onloadend=()=>{
         </div>
         <div class="parent_Route">
 <div class="div1_Route">
-<button onClick={()=>{setValues({ ...values, 'Route': 'vip' })}}>VIP</button>
+<p onClick={()=>{setValues({ ...values, 'Route': 'vip' })}}>VIP</p>
  </div>
 <div class="div2_Route"> 
-<button onClick={()=>{setValues({ ...values, 'Route': 'marked' })}}>מודגשת</button>
+<p onClick={()=>{setValues({ ...values, 'Route': 'marked' })}}>מודגשת</p>
 </div>
 <div class="div3_Route">
-  <button onClick={()=>{setValues({ ...values, 'Route': 'basic' })}}>בסיסי</button>
+  <p onClick={()=>{setValues({ ...values, 'Route': 'basic' })}}>בסיסי</p>
 </div>
 </div>
 <br/>

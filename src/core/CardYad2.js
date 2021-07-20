@@ -33,7 +33,7 @@ const CardYad2 = ({
 <Link style={{color:'black'}} to={`/product/popup/${product._id}`} >
 
         <div  dir='ltr' className="card">
-<div style={{height:'110px'}} class="parent_card">
+<div style={{height:'110px'}} style={product.Route==='vip'?{backgroundColor:'#fdf9c5',height:'110px'}:{backgroundColor:'white',height:'110px'}} class="parent_card">
 <div class="div1_card"> <img className={'img1'} src={product.pic1}></img> </div>
 <div class="div2_card price_style"> <p className={'price_style'}><span>&#8362;</span> {product.price}  </p> </div>
 <div class="div3_card updated_today "> עודכן היום </div>

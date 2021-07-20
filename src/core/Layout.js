@@ -11,7 +11,7 @@ const Layout = ({
 }) => (
     <div>
         {/* <Menu /> */}
-        <NavBar/>
+        <NavBar />
         {/* <div className="jumbotron">
             <h2>{title}</h2>
             <p className="lead">{description}</p>

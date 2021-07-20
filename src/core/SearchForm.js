@@ -15,9 +15,11 @@ import orangeExtra from '../imgs/orangeExtra.png';
 import orangeApartments from '../imgs/orangeApartments.png';
 import orangeHouses from '../imgs/orangeHouses.png';
 
+import { useHistory } from "react-router-dom";
+
 
 const Shop = () => {
-  
+  let history = useHistory();
     const [myFilters, setMyFilters] = useState({
         filters: { category: [], price: [] }
     });
@@ -160,7 +162,10 @@ const submitSearch=()=>{
     method: "POST",
     body: JSON.stringify({...values})
 })
-.then(function(res){ res.json().then(body => console.log(body)); })
+.then(function(res){ res.json().then(body =>  {
+
+  history.push("/shop", { body}); 
+  console.log()}); })
 .catch(function(res){ console.log(res) })
 
 }
