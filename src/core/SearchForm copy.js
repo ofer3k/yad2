@@ -167,7 +167,6 @@ const submitSearch=()=>{
   history.push("/shop", { body}); 
   console.log()}); })
 .catch(function(res){ console.log(res) })
-
 }
 const date = () => event => {
     if(event.target.checked===true)

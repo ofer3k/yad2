@@ -35,7 +35,7 @@ const NavBar = ({history}) => {
 
   return (
     <>
-    <div className={'headline'} >
+    <div style={{zIndex:'1000'}} className={'headline'} >
     {/* <Button  > */}
     <FontAwesomeIcon className={'arrowLeft'} icon={faAngleLeft}  onClick={showDrawer} />
         <img style={{    height: '25px'}} src='//assets.yad2.co.il/yad2site/y2assets/images/header/Yad2_logo_white2.svg'></img>

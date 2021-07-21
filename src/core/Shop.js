@@ -13,12 +13,11 @@ import { RiMapPinLine } from 'react-icons/ri';
 import { Accordion,Form,ButtonGroup ,ToggleButton,Pagination } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
 import LineSearch from './LineSearch'
+import { BsImage,BsSearch } from 'react-icons/bs';
 
 
 import './../cardYad2.css'
 import { orange } from "@material-ui/core/colors";
-
-
 
 // 
 const getValue = ({ price }) => +price.slice(1) || 0;
@@ -27,7 +26,7 @@ const getValue = ({ price }) => +price.slice(1) || 0;
 // 
 const Shop = (state) => {
     let history = useHistory();
-    const mq = window.matchMedia( "(max-width: 620px)" );    
+    const mq = window.matchMedia( "(max-width: 690px)" );    
     // console.log(state.location.state.body,'state')
 
     const [myFilters, setMyFilters] = useState({
@@ -40,6 +39,8 @@ const Shop = (state) => {
     const [size, setSize] = useState(0);
     const [filteredResults, setFilteredResults] = useState([]);
     const [originalFullList, setOriginalFullList] = useState([]);
+    const [isShowOnlyPic, setisShowOnlyPic] = useState(false);
+    const [isShowOnlyPrice, setisShowOnlyPrice] = useState(false);
 
 const [isModalVisible, setIsModalVisible] = useState(false);
     const showModal = () => {
@@ -166,6 +167,23 @@ const [isModalVisible, setIsModalVisible] = useState(false);
         setFilteredResults([...ordered])
         console.log(filteredResults)
       }
+      const sortPicker=(e)=>{
+        console.log(e.target.value)
+        switch (e.target.value) {
+            case 'byDate':
+                dateSort()
+                break;
+            case 'byPriceLow':
+                priceSort('lowToHigh')
+                break;
+            case 'byPriceHigh':
+                    priceSort('highToLow')
+                    break;
+        
+            default:
+                break;
+        }
+      }
       const dateSort = () => {
         let ordered=filteredResults
         ordered.sort(function(a,b){
@@ -177,6 +195,7 @@ const [isModalVisible, setIsModalVisible] = useState(false);
         // setFilteredResults([...ordered])
         console.log(filteredResults)
       }
+
       const redirectToSearchForm=()=>{
         history.push("/SearchForm"); 
       }
@@ -199,23 +218,55 @@ const [isModalVisible, setIsModalVisible] = useState(false);
             
             {!(mq.matches)&& <div className={'lineSearch_container'}> <span  ><LineSearch/></span></div>}
             {(mq.matches)&&            <div onClick={redirectToSearchForm} className={'fixed_searchBar'}>
+            <span className={'another_search'} style={{position:'absolute',left:'15px'}}>חיפוש</span>
                 <span className={'fixed_searchBar_text'}>נדלן למכירה</span>
+                <span className={'search_icon'} style={{position:'absolute',right:'15px'}}><BsSearch/></span>
             </div>}
-
-            <div style={{marginTop:'12px'}}  class="parent_shop_filters">
-<div  class="div1_shop_filters"> 
-<span onClick={showModal}  className={'sort_button_main'}>מיין תוצאות &#8645;</span>
+            {!(mq.matches)&&
+            <div>
+                <div class="parent_line_sort">
+<div class="div1_line_sort"><p className={'sort_by'}>מיין לפי</p></div>
+<div class="div2_line_sort">
+    <select onChange={sortPicker} className={'sort_drop_down'}>
+        <option value={'byDate'} onClick={dateSort} className={'sort_drop_down_field_text'}>לפי תאריך</option>
+        <option value={'byPriceLow'} onClick={()=>{priceSort('lowToHigh')}} className={'sort_drop_down_field_text'}>מחיר מהזול ליקר</option>
+        <option value={'byPriceHigh'} onClick={()=>{priceSort('highToLow')}} className={'sort_drop_down_field_text'}>מחיר מהיקר לזול</option>
+    </select>
 </div>
-<div onClick={showModal2} class="div2_shop_filters"> <span className={'filter_button_main'}>סנן תוצאות <BiFilterAlt/></span>
+<div class="div3_line_sort"><p className={'sort_by'}>הצג מודעות</p></div>
+<div onClick={()=>{setFilteredResults(originalFullList)}}  class="div4_line_sort sort_only_pic">
+<span  >&#8362; 
+עם מחיר 
+  </span>
 </div>
-<div class="div3_shop_filters"> </div>
-<div class="div4_shop_filters"> <span className={'map_button_main'}><span style={{fontSize:'.875rem',color:'#363636'}}>מפה</span>  <RiMapPinLine color={'#0fca80'} /></span></div>
-<div class="div5_shop_filters"> <span className={'note_for_user'}> </span> </div>
-{/* <div class="div6_shop_filters"> מציג</div>
+<div onClick={imageFilter} class="div5_line_sort sort_only_pic">
+    <span ><BsImage/> 
+עם תמונה 
+  </span></div>
+  <div class="div6_line_sort sort_only_pic"><span ><RiMapPinLine/> 
+מפה
+  </span></div>
+</div>
+            </div>
+            }
+            {mq.matches&&
+                   <div style={{marginTop:'12px'}}  class="parent_shop_filters">
+                   <div  class="div1_shop_filters"> 
+                   <span onClick={showModal}  className={'sort_button_main'}>מיין תוצאות &#8645;</span>
+                   </div>
+                   <div onClick={showModal2} class="div2_shop_filters"> <span className={'filter_button_main'}>סנן תוצאות <BiFilterAlt/></span>
+                   </div>
+                   <div class="div3_shop_filters"> </div>
+                   <div class="div4_shop_filters"> <span className={'map_button_main'}><span style={{fontSize:'.875rem',color:'#363636'}}>מפה</span>  <RiMapPinLine color={'#0fca80'} /></span></div>
+                   {/* <div class="div5_shop_filters"> <span className={'note_for_user'}> </span> </div> */}
+                   {/* <div class="div6_shop_filters"> מציג</div>
 <div class="div7_shop_filters"> {filteredResults.length}</div> */}
-</div>
 
-<p className={'amount_of_products'}> מציג {filteredResults.length} מודעות</p>
+</div>
+}
+<p className={'amount_of_products'} > מציג {filteredResults.length} מודעות</p>
+     
+
 
             <div style={{float:'right',textAlign:'right'}} dir={'rtl'} className="row">
              
