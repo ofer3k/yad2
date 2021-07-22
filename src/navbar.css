@@ -65,3 +65,107 @@ margin-bottom: 1rem;
     color: white;
     font-weight: 600;
 }
+
+.modal_title{
+    font-size: 1.428rem;
+    font-weight: 400;
+}
+.modal_input_title{
+    font-size: 1rem;
+    color: #363636;
+}
+.modal_input{
+    height: 40px;
+    width: 100%;
+    text-align: right;
+    border: 1px solid green;
+    padding: 0 15px;
+    font-size: 1rem;
+    font-weight: 300;
+    font-family: Rubik,sans-serif;
+    border-radius: 4px;}
+.modal_title__seconde{
+    font-size: 14px;
+    color: #999;
+}
+
+
+    
+.parent_signIn_modal {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 0.2fr  repeat(10, 1fr) 0.2fr;
+    grid-template-rows: 0.2fr 0.1fr 0.2fr 1fr 0.2fr 2fr  0.2fr repeat(3, 1fr) 0.2fr 0.2fr 0.2fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    }
+    
+    .div1_signIn_modal { grid-area: 1 / 9 / 13 / 13; }
+    .div2_signIn_modal { grid-area: 2 / 2 / 3 / 3; }
+    .div3_signIn_modal { grid-area: 11 / 4 / 12 / 7; }
+    .div4_signIn_modal { grid-area: 10 / 3 / 11 / 8; }
+    .div5_signIn_modal { grid-area: 8 / 3 / 9 / 8; }
+    .div6_signIn_modal {
+    text-align: right;
+    grid-area: 7 / 4 / 8 / 8; }
+    .div7_signIn_modal { grid-area: 6 / 3 / 7 / 8; }
+    .div8_signIn_modal {
+        text-align: right; grid-area: 5 / 4 / 6 / 8; }
+    .div9_signIn_modal {text-align: right; grid-area: 3 / 3 / 4 / 8; }
+    .div10_signIn_modal {text-align: right; grid-area: 2 / 4 / 3 / 8; }
+    .image_fit{
+        object-fit: fill;
+        /* max-width: 100%; */
+        width: 100%;
+        height: 100%;
+    }
+    .signIn_submit{
+width: 100%;
+    }
+    .submit_signIn_button{
+        border: 1px solid #eee;
+        border-radius: 4px;
+        padding: 0 20px;
+        background-color: #eee;
+        font-size: .875rem;
+        /* color: #363636; */
+        cursor: pointer;
+        transition: all .4s cubic-bezier(.25,.8,.25,1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        outline: none;
+        height: 40px;
+        color: #ccc;
+    }
+    .toSignup{
+        color: #ff7100!important;
+    }
+
+
+    .parent_signUp_modal {
+        display: grid;
+    text-align: right;
+        grid-template-columns: 0.2fr repeat(10, 1fr) 0.2fr;
+        grid-template-rows: 0.2fr repeat(10, 1fr) 0.2fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        }
+        
+        .div1_signUp_modal { text-align: right; grid-area: 1 / 9 / 13 / 13; }
+        .div2_signUp_modal { grid-area: 2 / 2 / 3 / 3; }
+        .div3_signUp_modal { grid-area: 11 / 4 / 12 / 7; }
+        .div4_signUp_modal { grid-area: 10 / 3 / 11 / 8; }
+        .div5_signUp_modal { grid-area: 8 / 3 / 9 / 8; }
+        .div6_signUp_modal { grid-area: 7 / 4 / 8 / 8; }
+        .div7_signUp_modal { grid-area: 6 / 3 / 7 / 8; }
+        .div8_signUp_modal { grid-area: 5 / 4 / 6 / 8; }
+        .div9_signUp_modal { grid-area: 3 / 3 / 4 / 8; }
+        .div10_signUp_modal { grid-area: 2 / 4 / 3 / 8; }
+        .div11_signUp_modal { grid-area: 4 / 3 / 5 / 8; }
+        .div12_signUp_modal { grid-area: 9 / 3 / 10 / 8; }
+
+        .modal_title__third{
+            font-size: 1rem;
+            font-weight: 400;
+        }
