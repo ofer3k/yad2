@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
+import useStateWithCallback from 'use-state-with-callback';
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import { createProduct, getCategories,uploadImage } from "./apiAdmin";
@@ -12,9 +13,11 @@ import { BsHouseDoor } from 'react-icons/bs';
 import { RiPaintBrushLine } from 'react-icons/ri';
 import { AiOutlineTable } from 'react-icons/ai';
 import { API } from "../config";
+import icon2 from './../icons/digit_2.ico'
 
 
 import '../addProduct.css'
+import '../addProductResponsiv.css'
 
 import { Accordion,Card,Button,Form,ButtonGroup ,ToggleButton,Pagination } from 'react-bootstrap';
 let picsList={
@@ -25,7 +28,6 @@ let picsList={
   pic5:'',
   pic6:'',
 }
-
 
 const AddProduct = () => {
 
@@ -45,6 +47,8 @@ const [previewPic2,setPreviewPic2]=useState('')
 const [previewPic3,setPreviewPic3]=useState('')
 const [previewPic4,setPreviewPic4]=useState('')
 const [imagesUrlList,setImagesUrlList]=useState([])
+
+
 
 
 
@@ -316,6 +320,7 @@ reader.onloadend=()=>{
             // }
         });
     };
+    
   
 
     useEffect(() => {
@@ -587,627 +592,517 @@ reader.onloadend=()=>{
         //     }
         // });
     };
+    const [isSelected,setIselected]=useState('2')
+    const [iscCicked_next,setIsCicked_next]=useState(false)
 
+    const [firstFields,setFirstFields]=useState({
+      type:false,
+      condition:false,
+      city:false,
+      number:false,
+      floor:false,
+      total_floors:false
+    })
+    
+    const firstNext=()=>{     
+      setIsCicked_next(true)
+      if(document.getElementById('property_type').value=='null')
+      {
+        document.getElementById('property_type').style.borderColor='#c00'
+        setFirstFields(firstFields => {
+          return {
+            ...firstFields,
+            type: false
+          };
+        });
+         }else{
+        document.getElementById('property_type').style.borderColor='#ccc'
+        setFirstFields(firstFields => {
+          return {
+            ...firstFields,
+            type: true
+          };
+        });
+      }
+
+      if(document.getElementById('property_condition').value=='null')
+      {
+        document.getElementById('property_condition').style.borderColor='#c00'
+        setFirstFields(firstFields => {
+          return {
+            ...firstFields,
+           condition: false
+          };
+        });
+      }else{
+        document.getElementById('property_condition').style.borderColor='#ccc'
+        setFirstFields(firstFields => {
+          return {
+            ...firstFields,
+            condition: true
+          };
+        }); 
+      }
+      //city 
+      if(document.getElementById('search_input').value.length<4)
+      {
+        document.getElementById('search_input').style.borderColor='#c00'
+        setFirstFields(firstFields => {
+          return {
+            ...firstFields,
+            city: false
+          };
+        });
+      }else{
+        document.getElementById('search_input').style.borderColor='#ccc'
+        setFirstFields(firstFields => {
+          return {
+            ...firstFields,
+            city: true
+          };
+        }); 
+      }
+      //number 
+      if(document.getElementById('house_num').value==''||document.getElementById('house_num').value<=0||document.getElementById('house_num').value>999)
+      {
+        document.getElementById('house_num').style.borderColor='#c00'
+        setFirstFields(firstFields => {
+          return {
+            ...firstFields,
+            number: false
+          };
+        });
+      }else{
+        document.getElementById('house_num').style.borderColor='#ccc'
+        setFirstFields(firstFields => {
+          return {
+            ...firstFields,
+            number: true
+          };
+        }); 
+      }
+      //floor 
+      if(document.getElementById('house_floor').value==''||document.getElementById('house_floor').value<0||document.getElementById('house_floor').value>70)
+      {
+        document.getElementById('house_floor').style.borderColor='#c00'
+        setFirstFields(firstFields => {
+          return {
+            ...firstFields,
+            floor: false
+          };
+        });
+      }else{
+        document.getElementById('house_floor').style.borderColor='#ccc'
+        setFirstFields(firstFields => {
+          return {
+            ...firstFields,
+            floor: true
+          };
+        }); 
+      }
+      //total_floor 
+      if(document.getElementById('house_total_floors').value==''||document.getElementById('house_total_floors').value<0||document.getElementById('house_total_floors').value>70)
+      {
+        document.getElementById('house_total_floors').style.borderColor='#c00'
+        setFirstFields(firstFields => {
+          return {
+            ...firstFields,
+            total_floors: false
+          };
+        });
+      }else{
+        document.getElementById('house_total_floors').style.borderColor='#ccc'
+        setFirstFields(firstFields => {
+          return {
+            ...firstFields,
+            total_floors: true
+          };
+        }); 
+      }
+      console.log(firstFields)
+      if(Object.keys(firstFields).every((k) => firstFields[k]))
+      moveNextSection()
+      }
+const moveNextSection=()=>{
+  setIselected('2')
+}
+
+// 
+    const handleFieldSelection=(e)=>{
+      console.log(e.target)
+      console.log(e.target.getAttribute('name'))
+
+      switch (e.target.getAttribute('name')) {
+        case 'adress_field':
+          setIselected('1')
+          break;
+        case 'details_field':
+          setIselected('2')
+          break;
+          case 'payments_field':
+            setIselected('3')
+            break;
+            
+            case 'media_field':
+          setIselected('4')
+          break;
+
+          case 'contact_field':
+          setIselected('5')
+          break;
+
+          case 'publish_field':
+          setIselected('6')
+          break;
+        default:
+          setIselected('0')
+          break;
+      }
+    }
     const newPostForm = () => (
-        <Form style={{marginTop:'4rem'}} className="mb-3" onSubmit={clickSubmit}>
-     <div>
+      <div className={'full_page'}>
+        <div class="parent_add_product_acordion">
+          
+<div   className={isSelected=='1'?"field_style div1_add_product_acordion":"field_style_not_selected div1_add_product_acordion"}>
+<div  style={{direction:'rtl'}}>
+  <span   className={isSelected=='1'?"circle_selected":'circle_after_check'}>{isSelected=='1'?<span name={'adress_field'} onClick={handleFieldSelection}>1</span>:<span name={'adress_field'} onClick={handleFieldSelection}>&#10003;</span>}</span>
+  <span className={isSelected=='1'?"text_select":'text_not_select'} >כתובת הנכס</span>
+  </div>
+  {isSelected=='1'&&
+  <div style={{paddingRight:'5.5%'}}>
+    <span className={'adress_field__note'}>סימנו עבורך את שדות החובה. שלא נפספס פרט חשוב </span>
 
-     <Accordion defaultActiveKey="5">
-  <Card>
-      
-    <Card.Header>
-    <span className="numIcon">2</span>
-      <Accordion.Toggle className={'accordion_title'} as={Button} variant="link" eventKey="0">
-        כתובת הנכס        
-      </Accordion.Toggle>
-    </Card.Header>
-    <Accordion.Collapse  eventKey="0">
-      <Card.Body className={'accordion_body'}>
-
-{/* Our recommendation */}
-<Card className={'parent1 adress_badge'} style={{ width: '70vw',dir:'rtl' }}>
-  <Card.Img className={' div2'} variant="right" src="https://assets.yad2.co.il/personal/images/general/video.png" />
-  <Card.Body style={{dir:'rtl'}} className={' div1'} >
-    <Card.Title className={'adress_badge_title'}>המלצה שלנו</Card.Title>
-    <Card.Text  className='adress_badge_text'>
-    העלאת וידאו של הנכס תמשוך יותר מתעניינים למודעה שלך
-    </Card.Text>
-  </Card.Body>
-</Card>
-<br/>
-<p className={'info_text'}>סימנו עבורך את שדות החובה. שלא נפספס פרט חשוב</p>
-<br/>
-
-<div className={'property_type'}>
-<p className={"property_type_title"} >*סוג הנכס</p>
-<select defaultValue={'null'}  onChange={handleChange("property_type")} className={'property_type_select'} id="property_type" name="property_type">
+    {/* first section */}
+    <div class="parent_address_field_info">
+<div class="div1_address_field_info">
+  <span className={'field_info_title'}>*סוג הנכס</span>
+  </div>
+<div class="div2_address_field_info">
+<select className={'field_select'} defaultValue={'null'}  onChange={handleChange("property_type")} id="property_type" name="property_type">
 <option hidden value="null">דירה או אולי פנטהאוז?</option>
-    <option value="Apartment">דירה</option>
-    <option value="Garden Apartment">דירת גן</option>
-    <option value="Private house">בית פרטי/קוטג'</option>
-    <option value="roof">גג/פנטהאוז</option>
-    <option value="Plots">מגרשים</option>
-    <option value="Duplex">דופלקס</option>
-    <option value="Vacation Apartment">דירת נופש</option>
-    <option value="Townhouse">דו משפחתי</option>
-    <option value="basement">מרתף/פרטר</option>
-    <option value="Triplex">טריפלקס</option>
-    <option value="Unit">יחידת דיור</option>
-    <option value="Farm">משק חקלאי/נחלה</option>
-    <option value="Auxiliary farm">משק עזר</option>
-    <option value="Assisted living">דיור מוגן</option>
-    <option value="bulding">בניין מגורים</option>
-    <option value="loft">סטודיו/לופט</option>
-  </select>
+<option value="Apartment">דירה</option>
+<option value="Garden Apartment">דירת גן</option>
+<option value="Private house">בית פרטי/קוטג'</option>
+<option value="roof">גג/פנטהאוז</option>
+<option value="Plots">מגרשים</option>
+<option value="Duplex">דופלקס</option>
+<option value="Vacation Apartment">דירת נופש</option>
+<option value="Townhouse">דו משפחתי</option>
+<option value="basement">מרתף/פרטר</option>
+<option value="Triplex">טריפלקס</option>
+<option value="Unit">יחידת דיור</option>
+<option value="Farm">משק חקלאי/נחלה</option>
+<option value="Auxiliary farm">משק עזר</option>
+<option value="Assisted living">דיור מוגן</option>
+<option value="bulding">בניין מגורים</option>
+<option value="loft">סטודיו/לופט</option>
+</select>
+{!firstFields.type&&iscCicked_next&&values.property_type.length<1&&<p className={'invalid_field_note'}>שדה חובה סוג הנכס</p>}
 </div>
-{/* property_condition */}
-<div className={'property_type'}>
-<p className={"property_type_title"} >*מצב הנכס</p>
-<select defaultValue={'null'}   onChange={handleChange("property_condition")} className={'property_type_select'} id="property_condition" name="property_condition">
+
+<div class="div3_address_field_info"><span className={'field_info_title'}>*מצב הנכס</span></div>
+<div class="div4_address_field_info">
+<select className={'field_select'} defaultValue={'null'} onChange={handleChange("property_condition")} id="property_condition" name="property_condition">
 <option  hidden value="null">משופץ? חדש מקבלן?</option>
-    <option value="New from a contractor">חדש מקבלן (לא גרו בו בכלל)</option>
-    <option value="New (property up to 5 years old)">חדש (נכס בן עד 5 שנים)</option>
-    <option value="Renovated">משופץ (שופץ ב 5 השנים האחרונות)</option>
-    <option value="In saved mode">במצב שמור (במצב טוב,לא שופץ)</option>
-    <option value="Renovation required">דרוש שיפוץ (זקוק לעבודת שיפוץ)</option>
-  </select>
+<option value="New from a contractor">חדש מקבלן (לא גרו בו בכלל)</option>
+<option value="New (property up to 5 years old)">חדש (נכס בן עד 5 שנים)</option>
+<option value="Renovated">משופץ (שופץ ב 5 השנים האחרונות)</option>
+<option value="In saved mode">במצב שמור (במצב טוב,לא שופץ)</option>
+<option value="Renovation required">דרוש שיפוץ (זקוק לעבודת שיפוץ)</option>
+</select>
+{!firstFields.condition&&iscCicked_next&&values.property_condition.length<1&&<p className={'invalid_field_note'}>שדה חובה מצב הנכס</p>}
 </div>
-{/* settlement */}
-<div className={'property_type'}>
-<p className={"property_type_title"} >*ישוב</p>
-    <input type="text" onBlur={handleChange("property_address_city")} onClick={handleChange("property_address_city")} onChange={handleChange("property_address_city")} className={"address_city"} id={"search_input"} placeholder="?איפה נמצא הנכס" />
+<div class="div5_address_field_info"> <span className={'field_info_title'}>*ישוב</span> </div>
+<div class="div6_address_field_info">
+    <input className={'field_select'} type="text" onBlur={handleChange("property_address_city")} onClick={handleChange("property_address_city")} onChange={handleChange("property_address_city")} id={"search_input"} placeholder="איפה נמצא הנכס?" />
+{!firstFields.city&&iscCicked_next&&values.property_address_city.length<1&&<p className={'invalid_field_note'}>יש לבחור ישוב מתוך הרשימה</p>}
 </div>
-<div className={'property_type'}>
-<p className={"property_type_title"} >*רחוב</p>
-    <input type="text" onClick={handleChange("property_address_street")} onChange={handleChange("property_address_street")} className={"address_street"} id={"search_input_street"} placeholder="הכנסת שם הרחוב" />
+<div class="div7_address_field_info"><span className={'field_info_title'}>רחוב</span></div>
+<div class="div8_address_field_info">
+    <input className={'field_select'} type="text" onClick={handleChange("property_address_street")} onChange={handleChange("property_address_street")}  id={"search_input_street"} placeholder="הכנסת שם הרחוב" />
 </div>
-<div className={'property_type'}>
-<p className={"property_type_title"} >*מס' בית</p>
-    <input type="number" onChange={handleChange("property_address_num")} className={"address_house_num"} id={""} placeholder="" />
 </div>
-
-
-<div className={'parent_of_floor'}>
-<div className={'floor1'}><p className={"property_type_title_floor"} >*קומה</p>
-    <input type="number" onChange={handleChange("property_floor")} className={"address_house_num"} id={""} placeholder="הכנסת מספר קומה" /></div>
-<div className={'floor2'}><p className={"property_type_title_floor"} >*סה"כ קומות בבניין</p>
-    <input type="number" onChange={handleChange("property_total_floors")} className={"address_house_num"} id={""} placeholder={`הכנסת סה"כ קומות`} /></div>
+{/* */}
+<div class="parent_address_field_info__next">
+<div class="div1_address_field_info__next"><span className={'field_info_title'}>*מס' בית</span></div>
+<div class="div2_address_field_info__next">
+    <input className={'field_select'} type="number" id={'house_num'} onChange={handleChange("property_address_num")}  />
+{!firstFields.number&&iscCicked_next&&values.property_address_num==null&&<p className={'invalid_field_note'}>יש לבחור מס' בית מתוך הרשימה</p>}
 </div>
-
-<div dir='rtl' className={'inline_box1'}>
-<input onChange={handleChange("is_on_pillars")} className={'inline_box'} type='checkbox'/>
-<p className={'inline_box'}>על עמודים</p>
+<div class="div3_address_field_info__next"><span className={'field_info_title'}>*קומה</span></div>
+<div class="div4_address_field_info__next">
+    <input className={'field_select__next'} id={'house_floor'} type="number" onChange={handleChange("property_floor")}  placeholder="הכנסת מספר קומה" />
+{!firstFields.floor&&iscCicked_next&&values.property_floor==null&&<p className={'invalid_field_note'}>שדה חובה קומה</p>}
 </div>
-<br/>
-<div class="flex-container">
-   <button  class="flex-items continue_button">המשך</button>
-   <button class="flex-items prev_button">חזרה</button>
+<div style={{marginRight:'-20%'}} class="div5_address_field_info__next"><span  className={'field_info_title'}>*סה"כ קומות בבניין</span></div>
+<div class="div6_address_field_info__next">
+<input style={{marginRight:'-20%'}} className={'field_select__next'} type="number" onChange={handleChange("property_total_floors")} id={'house_total_floors'} placeholder={`הכנסת סה"כ קומות`} />
+{!firstFields.total_floors&&iscCicked_next&&values.property_total_floors==null&&<p className={'invalid_field_note'} style={{marginRight:'-20%'}}>שדה חובה סה"כ קומות בבניין</p>}
 </div>
-
-      </Card.Body>
-    </Accordion.Collapse>
-  </Card>
-  <Card>
-    <Card.Header>
-    <span className="numIcon">3</span>
-      <Accordion.Toggle className={'accordion_title'} as={Button} variant="link" eventKey="1">
-        על הנכס
-      </Accordion.Toggle>
-    </Card.Header>
-    <Accordion.Collapse eventKey="1">
-      <Card.Body>
-      <div className={'property_type'}>
-<p className={"property_type_title"} >*מספר חדרים</p>
-<select defaultValue={'null'}  onChange={handleChange("num_of_rooms")} className={'property_type_select'} id="num_of_rooms" name="num_of_rooms">
-<option  hidden value="null">בחירת מספר חדרים</option>
-    <option value="0">0</option>
-    <option value="1">1</option>
-    <option value="1.5">1.5</option>
-    <option value="2">2</option>
-    <option value="2.5">2.5</option>
-    <option value="3">3</option>
-    <option value="3.5">3.5</option>
-    <option value="4">4</option>
-    <option value="4.5">4.5</option>
-    <option value="5">5</option>
-    <option value="5.5">5.5</option>
-    <option value="6">6</option>
-    <option value="6.5">6.5</option>
-    <option value="7">7</option>
-    <option value="7.5">7.5</option>
-    <option value="8">8</option>
-    <option value="8.5">8.5</option>
-    <option value="9">9</option>
-    <option value="9.5">9.5</option>
-    <option value="10">10</option>
-    <option value="10.5">10.5</option>
-    <option value="11">11</option>
-    <option value="11.5">11.5</option>
-    <option value="12">12</option>
-    </select>
+<div class="div7_address_field_info__next"><span style={{color: '#ccc'}} className={'field_info_title__disabled'}>שכונה</span></div>
+<div class="div8_address_field_info__next">
+<input className={'field_select__next'} type="text" id={'field_select__disabled'} disabled  placeholder={`${values.property_address_street}`} />
+</div>
+<div class="div9_address_field_info__next">
+  <span className={'goverment_note'}>המידע הזה מגיע  מגוף ממשלתי ולא ניתן לשינוי</span>
+</div>
+<div class="div10_address_field_info__next">
+<span style={{color: '#ccc'}} className={'field_info_title__disabled'}>אזור מכירה</span>
+</div>
+<div class="div11_address_field_info__next">
+<input className={'field_select__next'} type="text" id={'field_select__disabled'} disabled  placeholder={`בחירת אזור מכירה`} />
+</div>
+<div class="div12_address_field_info__next">
+<span className={'goverment_note'}>המידע הזה מגיע  מגוף ממשלתי ולא ניתן לשינוי</span>
+</div>
+<div  class="div13_address_field_info__next">
+  <input type='checkbox' className={'updated_checkbox'}  />
+  <span className={'updated_title'}>אני רוצה לקבל עדכון חודשי במייל עם הערכת שווי מעודכנת עבור הנכס, עסקאות באזור והצעות מקצועיות מיועצי נדל"ן</span>
+</div>
+</div>
+{/* buttons */}
+<div class="parent_buttons">
+<div class="div1_buttons">
+<button className={'back_button_ok'}>חזרה</button>
+</div>
+<div class="div2_buttons">
+  <button onClick={firstNext} className={'continue_button_ok'}></button>
+</div>
+</div>
+{/* end */}
+  </div>
+  }  
 </div>
 
+<div style={{direction:'rtl'}}  className={isSelected=='2'?"field_style div2_add_product_acordion":"field_style_not_selected div2_add_product_acordion"}>
+<div  >
+<span onClick={handleFieldSelection} name={'details_field'} className={isSelected=='2'?"circle_selected":'circle_before_select'}>2</span>
+  <span className={isSelected=='2'?"text_select":'text_not_select'} >על הנכס</span>
+  {isSelected=='2'&&
+  <div style={{paddingRight:'5.5%',marginTop:'10px'}}>
+    <div class="parent_section2">
+<div class="div1_section2"><span className={'field_info_title'}>מספר חדרים*</span></div>
+<div class="div2_section2">
+<select className={'field_select'} defaultValue={'null'}  onChange={handleChange("num_of_rooms")}  id="num_of_rooms" name="num_of_rooms">
+<option hidden value="null">בחירת מספר חדרים</option>
+<option value="0">0</option>
+<option value="1">1</option>
+<option value="1.5">1.5</option>
+<option value="2">2</option>
+<option value="2.5">2.5</option>
+<option value="3">3</option>
+<option value="3.5">3.5</option>
+<option value="4">4</option>
+<option value="4.5">4.5</option>
+<option value="5">5</option>
+<option value="5.5">5.5</option>
+<option value="6">6</option>
+<option value="6.5">6.5</option>
+<option value="7">7</option>
+<option value="7.5">7.5</option>
+<option value="8">8</option>
+<option value="8.5">8.5</option>
+<option value="9">9</option>
+<option value="9.5">9.5</option>
+<option value="10">10</option>
+<option value="10.5">10.5</option>
+<option value="11">11</option>
+<option value="11.5">11.5</option>
+<option value="12">12</option>
+</select>
+</div>
+{/* parking */}
+<div class="div3_section2"><span className={'field_info_title'}>חניה</span></div>
+<div class="div4_section2">
 
-<div className={'property_type'}>
-<p className={"property_type_title"} >חניה</p>
-<div className={'radio_group'}>
-  <p className={'radio_div4'}  onClick={handleChange("num_of_parking")} value='3' variant="secondary">ללא</p>
-  <p className={'radio_div3'} onClick={handleChange("num_of_parking")} value='2' variant="secondary">1</p>
-  <p className={'radio_div2'} onClick={handleChange("num_of_parking")} value='1' variant="secondary">2</p>
-  <p className={'radio_div1'} onClick={handleChange("num_of_parking")} value='0' variant="secondary">3</p>
+<div class="parent_parking field_select">
+<div  className={values.num_of_parking==null||values.num_of_parking=='0'?'div1_parking selected':'div1_parking not_selected'}  value='0'>
+  <span value='0' className={'radio_select_center_text'} onClick={handleChange("num_of_parking")} >ללא</span>
+</div>
+<div className={values.num_of_parking=='1'?'div2_parking selected':'div2_parking not_selected'}  value='1'>
+<span value='1' className={'radio_select_center_text'} onClick={handleChange("num_of_parking")} >1</span>
+</div>
+<div className={values.num_of_parking=='2'?'div3_parking selected':'div3_parking not_selected'}  value='2'>
+<span value='2' className={'radio_select_center_text'} onClick={handleChange("num_of_parking")} >2</span>
+</div>
+<div className={values.num_of_parking=='3'?'div4_parking selected':'div4_parking not_selected'}  value='3'>
+<span value='3' className={'radio_select_center_text'} onClick={handleChange("num_of_parking")} >3</span>
 </div>
 </div>
 
-<div className={'property_type'}>
-<p className={"property_type_title"} >מרפסת</p>
-<div className={'radio_group'}>
-  <p className={'radio_div4'}  onClick={handleChange("num_of_balcony")} value='3' variant="secondary">ללא</p>
-  <p className={'radio_div3'} onClick={handleChange("num_of_balcony")} value='2' variant="secondary">1</p>
-  <p className={'radio_div2'} onClick={handleChange("num_of_balcony")} value='1' variant="secondary">2</p>
-  <p className={'radio_div1'} onClick={handleChange("num_of_balcony")} value='0' variant="secondary">3</p>
+</div>
+<div class="div5_section2"><span className={'field_info_title'}>מרפסת</span></div>
+<div class="div6_section2">
+<div class="parent_parking field_select">
+<div  className={values.num_of_balcony==null||values.num_of_balcony=='0'?'div1_parking selected':'div1_parking not_selected'}  value='0'>
+  <span value='0' className={'radio_select_center_text'} onClick={handleChange("num_of_balcony")} >ללא</span>
+</div>
+<div className={values.num_of_balcony=='1'?'div2_parking selected':'div2_parking not_selected'}  value='1'>
+<span value='1' className={'radio_select_center_text'} onClick={handleChange("num_of_balcony")} >1</span>
+</div>
+<div className={values.num_of_balcony=='2'?'div3_parking selected':'div3_parking not_selected'}  value='2'>
+<span value='2' className={'radio_select_center_text'} onClick={handleChange("num_of_balcony")} >2</span>
+</div>
+<div className={values.num_of_balcony=='3'?'div4_parking selected':'div4_parking not_selected'}  value='3'>
+<span value='3' className={'radio_select_center_text'} onClick={handleChange("num_of_balcony")} >3</span>
 </div>
 </div>
-
-<div className={'property_type'}>
-<p className={"property_type_title"} >מאפייני הנכס</p>
-<div className="parent_prop">
-  <button id={'air_condition'} className="div1_prop">
-<div   onClick={handleRadio("air_condition")} >
+</div>
+</div>
+<p style={{marginTop:'20px'}} className={'bold_title'}>מאפיני הנכס</p>
+{/*  */}
+<div class="parent_radios_responsive">
+<div class="div1_radios_responsive">
+<button className={radios.air_condition?'radio_button_field_selected':'radio_button_field'} id={'air_condition'} >
+<div onClick={handleRadio("air_condition")} >
 <FaRegSnowflake/>
-  <span className={'prop_text'}>מיזוג</span>
-   </div>
-   </button>
-   <button id={'shelter'} className="div2_prop">
+<span >מיזוג</span>
+</div>
+</button> 
+</div>
+
+<div class="div2_radios_responsive">
+<button id={'shelter'} className={radios.shelter?'radio_button_field_selected':'radio_button_field'}>
 <div onClick={handleRadio("shelter")} >
 <FiBox/>
-  <span className={'prop_text'}>ממ"ד</span>
- </div>
- </button>
+<span >ממ"ד</span>
+</div>
+</button>
+</div>
 
- <button id={'garage'} className="div3_prop">
- <div onClick={handleRadio("garage")} ><BiBox/>
-  <span  className={'prop_text'}>מחסן</span> </div>
+<div class="div3_radios_responsive">
+<button id={'garage'} className={radios.garage?'radio_button_field_selected':'radio_button_field'}>
+<div onClick={handleRadio("garage")} ><BiBox/>
+<span>מחסן</span> </div>
+</button>
+</div>
 
- </button>
-<button id={'pandor'} className="div4_prop">
+<div class="div4_radios_responsive">
+<button id={'pandor'} className={radios.pandor?'radio_button_field_selected':'radio_button_field'}>
 <div onClick={handleRadio("pandor")} ><RiDoorClosedLine/>
-  <span  className={'prop_text'}>דלתות פנדור</span></div>
-  </button>
-  <button id={"furniture"} className="div5_prop" >
+<span>דלתות פנדור</span></div>
+</button>
+</div>
+
+<div class="div5_radios_responsive">
+<button id={"furniture"} className={radios.furniture?'radio_button_field_selected':'radio_button_field'} >
 <div onClick={handleRadio("furniture")} ><BiCabinet/>
-  <span className={'prop_text'}>ריהוט</span></div>
-  </button>
-  <button id={"handicapped"} className="div6_prop">
+<span >ריהוט</span></div>
+</button>
+</div>
+
+<div class="div6_radios_responsive">
+<button id={"handicapped"} className={radios.handicapped?'radio_button_field_selected':'radio_button_field'}>
 <div onClick={handleRadio("handicapped")} ><FaWheelchair/>
-  <span className={'prop_text'}>גישה לנכים</span></div>
-  </button>
-  <button id={"elevator"} className="div7_prop">
+<span>גישה לנכים</span></div>
+</button>
+</div>
+
+<div class="div7_radios_responsive">
+<button id={"elevator"} className={radios.elevator?'radio_button_field_selected':'radio_button_field'}>
 <div onClick={handleRadio("elevator")} ><GiElevator/>
-  <span className={'prop_text'}>מעלית</span></div>
-  </button>
+<span>מעלית</span></div>
+</button>
+</div>
 
-<button id={"tadiran"} className="div8_prop">
+<div class="div8_radios_responsive">
+<button id={"tadiran"} className={radios.tadiran?'radio_button_field_selected':'radio_button_field'}>
 <div onClick={handleRadio("tadiran")} ><FaRegSnowflake/>
-  <span className={'prop_text'}>מזגן תדיראן</span></div>
-  </button>
-  <button id={"unit"} className="div9_prop">
-<div onClick={handleRadio("unit")} ><BsHouseDoor/>
-  <span  className={'prop_text'}>יחידת דיור</span></div>
-  </button>
-  <button id={"renovated"} className="div10_prop">
+<span>מזגן תדיראן</span></div>
+</button>
+</div>
+
+<div class="div9_radios_responsive">
+<button id={"renovated"} className={radios.renovated?'radio_button_field_selected':'radio_button_field'}>
 <div onClick={handleRadio("renovated")} ><RiPaintBrushLine/>
-  <span  className={'prop_text'}>משופצת</span></div>
-  </button>
-  <button id={"kosher"} className="div11_prop">
+<span>משופצת</span></div>
+</button>
+</div>
+
+<div class="div10_radios_responsive">
+<button id={"kosher"} className={radios.kosher?'radio_button_field_selected':'radio_button_field'}>
 <div onClick={handleRadio("kosher")} ><GiTap/>
-  <span className={'prop_text'}>מטבח כשר</span></div>
-  </button>
-  <button id={"boiler"} className="div12_prop">
+<span>מטבח כשר</span></div>
+</button>
+</div>
+
+<div class="div11_radios_responsive">
+<button id={"boiler"} className={radios.boiler?'radio_button_field_selected':'radio_button_field'}>
 <div onClick={handleRadio("boiler")} ><GiSolarPower/>
-  <span className={'prop_text'}>דוד שמש</span></div>
-  </button>
-<button id={"bars"} className="div13_prop">
+<span>דוד שמש</span></div>
+</button>
+</div>
+
+<div class="div12_radios_responsive">
+<button id={"bars"} className={radios.bars?'radio_button_field_selected':'radio_button_field'}>
 <div onClick={handleRadio("bars")} ><AiOutlineTable/>
-  <span className={'prop_text'}>סורגים</span></div>
-  </button>
-</div>
-
-</div>
-<br/>
-<p className={'info_text'}>?מה חשוב לך שידעו על הנכס</p>
-<br/>
-
-<div className={'property_type'}>
-  <div className={'flex-container'}>
-  <p className={"flex-items limit_left"} id={'leftA'} >{maxLetters}/400</p>
-  <p className={"property_type_title flex-items"} >פרוט הנכס</p>
-  </div>
-    <textarea  id={'textA'} className={'text_area'}
-    placeholder={`זה המקום לתאר את הפרטים הבולטים, למשל, האם נערך שיפוץ במבנה, מה שופץ, כיווני אוויר, האווירה ברחוב וכו`}
-                    onChange={
-                      handleChange2()
-                        }
-                        onKeyUp={
-                          handleChange('description')
-                        }
-                    // className="form-control"
-                    maxlength={400}
-                    // value={description}
-                />
-</div>
-<div class="flex-container">
-   <button  class="flex-items continue_button">המשך</button>
-   <button class="flex-items prev_button">חזרה</button>
-</div>
-
-
-
-     </Card.Body>
-    </Accordion.Collapse>
-  </Card>
-  <Card>
-    <Card.Header>
-    <span className="numIcon">4</span>
-
-      <Accordion.Toggle className={'accordion_title'} as={Button} variant="link" eventKey="2">
-        תשלומים,תאריכים ועוד
-      </Accordion.Toggle>
-    </Card.Header>
-    <Accordion.Collapse eventKey="2">
-      <Card.Body>
-      <div className={'property_type'}>
-<p className={"property_type_title"} >מ"ר בנוי</p>
-    <input type="number" onChange={handleChange("build_mr")} className={"build_mr"} id={""} placeholder={`כמה מ"ר יש בנכס`} />
-</div>
-<div className={'property_type'}>
-<p className={"property_type_title"} >*גודל במ"ר סך הכל</p>
-    <input type="number" onChange={handleChange("build_mr_total")} className={"build_mr"} id={""} placeholder={``} />
-</div>
-
-<div className={'property_type'}>
-<p className={"property_type_title"} >*מחיר</p>
-    <input type="number" onChange={handleChange("price")} className={"build_mr"} id={""} placeholder={`סכום מינימלי 100,000`} />
-</div>
-
-<div className={'property_type'}>
-<p className={"property_type_title"} >*תאריך כניסה</p>
-<div dir='rtl' className={'inline_box1'}>
-    <input type="date" onChange={handleChange("entry_date")} className={"date"} id={'entry_date'} />
-<input  onChange={date()} className={'inline_box'} type='checkbox'/>
-<p className={'inline_box'}>מיידי</p>
+<span >סורגים</span></div>
+</button>
 </div>
 </div>
-<div class="flex-container">
-   <button  class="flex-items continue_button">המשך</button>
-   <button class="flex-items prev_button">חזרה</button>
+<p style={{marginTop:'20px'}} className={'bold_title'}>מה חשוב לך שידעו על הנכס?</p>
+
+<div>
+</div>
+<div class="flex_container_textArea">
+   <div class="flex_items_textArea">
+<span>פרוט הנכס</span>
+   </div>
+   <div class="flex_items_textArea">
+   <span  id={'leftA'} >{maxLetters}/400</span>
+   </div>
 </div>
 
-</Card.Body>
-    </Accordion.Collapse>
-  </Card>
-  <Card>
-    <Card.Header>
-    <span className="numIcon">5</span>
+<textarea className={'field_select_reverse'} id={'textA'} 
+placeholder={`זה המקום לתאר את הפרטים הבולטים, למשל, האם נערך שיפוץ במבנה, מה שופץ, כיווני אוויר, האווירה ברחוב וכו`}
+               onChange={
+                 handleChange2()
+                   }
+                   onKeyUp={
+                     handleChange('description')
+                   }
+               maxlength={400}
+           />
 
-      <Accordion.Toggle className={'accordion_title'} as={Button} variant="link" eventKey="3">
-        תמונות וסרטונים
-      </Accordion.Toggle>
-    </Card.Header>
-    <Accordion.Collapse eventKey="3">
-      <Card.Body>
-        {/* msg */}
-      <Card className={' adress_badge'} style={{ width: '70vw',dir:'rtl' }}>
-  <Card.Img className={' '} variant="right" src="" />
-  <Card.Body style={{dir:'rtl'}} className={''} >
-    <Card.Title className={'adress_badge_title'}></Card.Title>
-    <Card.Text  className='adress_badge_text'>
-לא לדאוג
-    </Card.Text>
-  </Card.Body>
-</Card>
 {/*  */}
-<div className={'info_text_photos'}>
-<p style={{marginBottom:'0rem'}}>?ידעת שמודעות עם תמונות ברורות מקבלות פי 10 יותר פניות </p>
-<p >לא להסס להעלות לפה תמונות (אפשר עד 10 + וידאו) ולהבליט את הצדדים הטובים ביותר של הנכס</p>
-</div>
-<br/> 
-<div dir={'rtl'} className={'parent3'}>
-<div  className={''}>
-  {
-  !previewSource &&
-   (<form >
-     <div className={'div33'}>
-     <span className={'input_file_title'}>העלאת סרטון</span>
-     <input type='file' accept="video/*" name='main_image' onChange={handleFileInputChange} value={fileInput}  />
-     </div>
-  </form>)}
-  {previewSource && <div className={'div33'}>
-     <span className={'input_file_title'}>הסרטון עלה,אפשר להמשיך בפרסום</span>
-     </div>}
+    </div>}
+  </div>
 </div>
 
-<div className={' '}>
-  {
-  !previewVideo &&
-   (<form >
-     <div className={'div44'}>
-     <span className={'input_file_title'}>העלאת תמונות</span>
-     <input type='file' name='main_video' onChange={handleFileInputChange} value={videoInput}  />
-     </div>
-  </form>)}
-    {previewVideo && (
-    <div  className={'div44'}>
-     <span className={'input_file_title'}>העלאת תמונות</span>
-       <img style={{height:'80%',maxWidth:'100%', }} src={previewVideo}/>
-    </div>
-   )}
-</div>
-</div>
-<p style={{width:'80vw',float:'right'}}>
-  <hr style={{width:'80vw'}} />
-</p>
-<p style={{width:'80vw',float:'right',textAlign:'right'}}>תמונות שיופיעו בגוף המודעה</p>
-{/* body photos */}
-<div dir={'rtl'} className={'parent3'}>
-<div  className={''}>
-  {
-  !previewPic2 &&
-   (<form >
-     <div className={'div33'}>
-     <span className={'input_file_title'}>העלאת תמונות</span>
-     <input type='file' name='pic2' onChange={handleFileInputChange} value={fileInput}  />
-     </div>
-
-  </form>)}
-  {previewPic2 && (
-    <div  className={'div33'}>
-     <span className={'input_file_title'}>העלאת תמונות</span>
-       <img style={{height:'80%',maxWidth:'100%', }} src={previewPic2}/>
-    </div>
-   )}
+<div  className={isSelected=='3'?"field_style div3_add_product_acordion":"field_style_not_selected div3_add_product_acordion"}>
+<div  style={{direction:'rtl'}}>
+<span onClick={handleFieldSelection} name={'payments_field'} className={isSelected=='3'?"circle_selected":'circle_before_select'}>3</span>
+  <span className={isSelected=='3'?"text_select":'text_not_select'} >תשלומים, תאריכים ועוד</span>
+  </div>
 </div>
 
-<div className={' '}>
-  {
-  !previewPic1 &&
-   (<form >
-     <div className={'div33'}>
-     <span className={'input_file_title'}>העלאת תמונות</span>
-     <input type='file' name='pic1' onChange={handleFileInputChange} value={pic1}  />
-     </div>
-  </form>)}
-    {previewPic1 && (
-    <div  className={'div33'}>
-     <span className={'input_file_title'}>העלאת תמונות</span>
-       <img style={{height:'80%',maxWidth:'100%', }} src={previewPic1}/>
-    </div>
-   )}
-</div>
-</div>
-{/* another line */}
-<div dir={'rtl'} className={'parent3'}>
-<div  className={''}>
-  {
-  !previewPic4 &&
-   (<form >
-     <div className={'div33'}>
-     <span className={'input_file_title'}>העלאת תמונות</span>
-     <input type='file' name='pic4' onChange={handleFileInputChange} value={pic4}  />
-     </div>
-  </form>)}
-  {previewPic4 && (
-    <div  className={'div33'}>
-     <span className={'input_file_title'}>העלאת תמונות</span>
-       <img style={{height:'80%',maxWidth:'100%', }} src={previewPic4}/>
-    </div>
-   )}
+<div  className={isSelected=='4'?"field_style div4_add_product_acordion":"field_style_not_selected div4_add_product_acordion"}>
+<div  style={{direction:'rtl'}}>
+<span onClick={handleFieldSelection} name={'media_field'} className={isSelected=='4'?"circle_selected":'circle_before_select'}>4</span>
+  <span className={isSelected=='4'?"text_select":'text_not_select'} >תמונות וסרטונים</span>
+  </div>
 </div>
 
-<div className={' '}>
-  {
-  !previewPic3 &&
-   (<form >
-     <div className={'div33'}>
-     <span className={'input_file_title'}>העלאת תמונות</span>
-     <input type='file' name='pic3' onChange={handleFileInputChange} value={pic3}  />
-     </div>
-  </form>)}
-    {previewPic3 && (
-    <div  className={'div33'}>
-     <span className={'input_file_title'}>העלאת תמונות</span>
-       <img style={{height:'80%',maxWidth:'100%', }} src={previewPic3}/>
-    </div>
-   )}
+<div  className={isSelected=='5'?"field_style div5_add_product_acordion":"field_style_not_selected div5_add_product_acordion"}>
+<div  style={{direction:'rtl'}}>
+<span onClick={handleFieldSelection} name={'contact_field'} className={isSelected=='5'?"circle_selected":'circle_before_select'}>5</span>
+  <span className={isSelected=='5'?"text_select":'text_not_select'} >פרטים ליצירת קשר</span>
+  </div>
 </div>
-</div>
-    <div class="flex-container">
-   <button  class="flex-items continue_button">המשך</button>
-   <button class="flex-items prev_button">חזרה</button>
-</div>
-{/* submit button for cloudinary */}
-      </Card.Body>
-    </Accordion.Collapse>
-  </Card>
-  <Card>
-    <Card.Header>
-    <span className="numIcon">6</span>
 
-      <Accordion.Toggle className={'accordion_title'} as={Button} variant="link" eventKey="4">
-        פרטים ליצירת קשר
-      </Accordion.Toggle>
-    </Card.Header>
-    <Accordion.Collapse eventKey="4">
-      <Card.Body>
-        
-        {/* שם איש הקשר */}
-        <div className={'property_type'}>
-<p className={"property_type_title"} >*שם איש הקשר</p>
-    <input type="text" onChange={handleChange("contact_name")} className={"address_city"} id={""} placeholder={`${isAuthenticated().user.name}`} defaultValue={`${isAuthenticated().user.name}`} />
+<div  className={isSelected=='6'?"field_style div6_add_product_acordion":"field_style_not_selected div6_add_product_acordion"}>
+<div  style={{direction:'rtl'}}>
+<span onClick={handleFieldSelection} name={'publish_field'} className={isSelected=='6'?"circle_selected":'circle_before_select'}>6</span>
+  <span className={isSelected=='6'?"text_select":'text_not_select'} >סיום פרסום</span>
+  </div>
 </div>
-<br/>
-<br/>
 
-<div className={'property_type'}>
-<p className={"property_type_title"} >*טלפון ראשי</p>
-<div class="parent_phone">
-<div class="div1_phone"> 
-<select  defaultValue={'null'}  onChange={handleChange("contact_number_start")} className={''} id="" name="">
-<option  value="050">050</option>
-<option  value="051">051</option>
-<option  value="052">052</option>
-<option  value="053">053</option>
-<option  value="054">054</option>
-<option  value="055">055</option>
-<option  value="058">058</option>
-  </select>
 </div>
-<div > 
-    <input className={"div2_phone"}  type="number"  placeholder="630-50-81" pattern={"[0-9]{3}-[0-9]{2}-[0-9]{2}"} required onBlur={handleChange("contact_number")}  />
-</div>
-</div>
-</div>
-<br/>
-<div className={'property_type'}>
-<p className={"property_type_title"} >*דוא"ל</p>
-    <input type={"email"} onChange={handleChange("mail")} className={"address_city"}   />
-</div>
-<div class="flex-container">
-   <button  class="flex-items continue_button">המשך</button>
-   <button class="flex-items prev_button">חזרה</button>
-</div>
-      </Card.Body>
-    </Accordion.Collapse>
-  </Card>
-  <Card>
-    <Card.Header>
-    <span className="numIcon">7</span>
-      <Accordion.Toggle className={'accordion_title'} as={Button} variant="link" eventKey="5">
-        סיום פרסום
-      </Accordion.Toggle>
-    </Card.Header>
-    <Accordion.Collapse eventKey="5">
-      <Card.Body>
-        <div dir={'rtl'} >
-    <p style={{textAlign:'right'}}>
-    זהו, אנחנו בסוף. לנו נשאר לשמור את המודעה שלך, לך נשאר לבחור את מסלול הפרסום.  
-    </p>
-    {/*  */}
-    <p style={{textAlign:'right'}}>
-    אגב רצינו לספר לך שיש באתר עוד x מודעות דומוות לשלך באיזור y והסביבה שמתחרות על תשומת לב הקוני</p>
-    {/*  */}
-    <p style={{textAlign:'right'}}>
- ההמלצה שלנו? לשדרג את המודעה. להופיע לפני כולם ולהתקדם להסכם תיק תק   </p>
- <hr/>
- <h6 style={{textAlign:'right'}}>
- באיזה מסלול לפרסם את המודעה? זה הרגע לבלוט מעל כולם  
-  </h6>
+
+
+
+       
         </div>
-        <div class="parent_Route">
-<div class="div1_Route">
-<p onClick={()=>{setValues({ ...values, 'Route': 'vip' })}}>VIP</p>
- </div>
-<div class="div2_Route"> 
-<p onClick={()=>{setValues({ ...values, 'Route': 'marked' })}}>מודגשת</p>
-</div>
-<div class="div3_Route">
-  <p onClick={()=>{setValues({ ...values, 'Route': 'basic' })}}>בסיסי</p>
-</div>
-</div>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-    <button onClick={handleSubmitFile} type='button' >upload files to cloudinary</button>
-    <button onClick={clickSubmit}  type='button' >העלה טופס ליד 2</button>
-            
-      </Card.Body>
-    </Accordion.Collapse>
-  </Card>
-</Accordion>
-     
-     </div>
-            {/* <h4>Post Photo</h4>
-            <div className="form-group">
-                <label className="btn btn-secondary">
-                    <input
-                        onChange={handleChange("photo")}
-                        type="file"
-                        name="photo"
-                        accept="image/*"
-                    />
-                </label>
-            </div> */}
-{/*                
-            <div className="form-group">
-                <label className="text-muted">Name</label>
-                <input
-                    onChange={handleChange("name")}
-                    type="text"
-                    className="form-control"
-                    value={name}
-                />
-            </div>
-
-            <div className="form-group">
-                <label className="text-muted">Description</label>
-                <textarea
-                    onChange={handleChange("description")}
-                    className="form-control"
-                    value={description}
-                />
-            </div> */}
-{/* 
-            <div className="form-group">
-                <label className="text-muted">Price</label>
-                <input
-                    onChange={handleChange("price")}
-                    type="number"
-                    className="form-control"
-                    value={price}
-                />
-            </div> */}
-{/* 
-            <div className="form-group">
-                <label className="text-muted">Category</label>
-                <select
-                    onChange={handleChange("category")}
-                    className="form-control"
-                >
-                    <option>Please select</option>
-                    {categories &&
-                        categories.map((c, i) => (
-                            <option key={i} value={c._id}>
-                                {c.name}
-                            </option>
-                        ))}
-                </select>
-            </div>
-
-            <div className="form-group">
-                <label className="text-muted">Shipping</label>
-                <select
-                    onChange={handleChange("shipping")}
-                    className="form-control"
-                >
-                    <option>Please select</option>
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
-                </select>
-            </div>
-
-            <div className="form-group">
-                <label className="text-muted">Quantity</label>
-                <input
-                    onChange={handleChange("quantity")}
-                    type="number"
-                    className="form-control"
-                    value={quantity}
-                />
-            </div>
-
-            <button className="btn btn-outline-primary">Create Product</button> */}
-        </Form>
     );
 
     const showError = () => (

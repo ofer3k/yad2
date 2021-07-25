@@ -42,6 +42,7 @@ const Shop = (state) => {
     const [isShowOnlyPic, setisShowOnlyPic] = useState(false);
     const [isShowOnlyPrice, setisShowOnlyPrice] = useState(false);
 
+
 const [isModalVisible, setIsModalVisible] = useState(false);
     const showModal = () => {
         setIsModalVisible(true);

@@ -1,0 +1,485 @@
+.full_page{
+    width: 100%;
+text-align: center;
+margin-top: 40px;
+}
+.parent_add_product_acordion {
+    display: grid;
+    text-align: right;
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    }
+    
+    .div1_add_product_acordion { grid-area: 1 / 1 / 2 / 2; }
+    .div2_add_product_acordion {height: fit-content; grid-area: 2 / 1 / 3 / 2; }
+    .div3_add_product_acordion {height: fit-content; grid-area: 3 / 1 / 4 / 2; }
+    .div4_add_product_acordion {height: fit-content; grid-area: 4 / 1 / 5 / 2; }
+    .div5_add_product_acordion {height: fit-content; grid-area: 5 / 1 / 6 / 2; }
+    .div6_add_product_acordion {height: fit-content; grid-area: 6 / 1 / 7 / 2; }
+    .div7_add_product_acordion {height: fit-content; grid-area: 7 / 1 / 8 / 2; }
+
+    .field_style{
+        padding-top: 10px;
+    padding-bottom: 10px;
+    position: relative;
+    width: 100%;
+    max-width: 880px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px 0 rgb(12 0 51 / 10%);
+    text-align: right;
+    margin-bottom: 30px;
+    }
+    .field_style_not_selected{
+        padding-top: 10px;
+    padding-bottom: 10px;
+    position: relative;
+    width: 100%;
+    max-width: 880px;
+    border-radius: 5px;
+    background-color: rgb(249,249,249);
+    box-shadow: 0 2px 4px 0 rgb(12 0 51 / 10%);
+    text-align: right;
+    margin-bottom: 30px;
+    }
+    .text_select{
+        color: #000;
+        font-size: 20px;
+        padding-right: 5.5%;
+        margin-bottom: 0;
+        font-weight: 300;
+    }
+    .text_not_select{
+        font-family: Rubik;
+    font-size: 20px;
+    padding: 20px 5%;
+    color: #acacac;
+    margin-right: .5%;
+    font-weight: 300;
+    }
+    .circle_before_select{
+        cursor: pointer;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        padding: 0px 5px;
+        background-color: inherit;
+        border: 2px solid #ccc;
+        color: #999;
+        text-align: center;
+        font: 20px Arial, sans-serif;
+        font-weight:500 ;     
+      }
+    .circle_selected {
+        
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        padding: 0px 5px;
+        background: #fff;
+        border: 2px solid #0fca80;
+        color: #0fca80;
+        text-align: center;
+        font: 20px Arial, sans-serif;
+        font-weight:600 ;
+      }
+      .circle_after_check{
+        cursor: pointer;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        padding: 0px 5px;
+        background-color: #d6f2e4;
+        /* border: 2px solid #0fca80; */
+        color: #0fca80;
+        text-align: center;
+        font: 20px Arial, sans-serif;
+        font-weight:500 ;
+          
+      }
+.adress_field__note{
+    color: #000;
+    font-size: 1rem;
+    font-weight: inherit;
+    margin-bottom: 0;
+    margin-top: 20px;
+    line-height: 22px;
+}
+.parent_address_field_info {
+    display: grid;
+    margin-top: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    /* grid-template-rows:0.2fr 1.5fr 0.2fr 1.5fr 0.2fr 1.5fr 0.2fr 1.5fr; */
+    grid-column-gap: 0px;
+    }
+    
+    .div1_address_field_info { grid-area: 1 / 3 / 2 / 5; }
+    .div2_address_field_info { grid-area: 2 / 1 / 3 / 5; }
+    .div3_address_field_info {
+        margin-top: 10px;
+        grid-area: 3 / 3 / 4 / 5; }
+    .div4_address_field_info { grid-area: 4 / 1 / 5 / 5; }
+    .div5_address_field_info {
+        margin-top: 10px;
+         grid-area: 5 / 3 / 6 / 5; }
+    .div6_address_field_info { grid-area: 6 / 1 / 7 / 5; }
+    .div7_address_field_info {
+        margin-top: 10px;
+         grid-area: 7 / 3 / 8 / 5; }
+    .div8_address_field_info { grid-area: 8 / 1 / 9 / 5; }
+
+    @media screen and (min-width: 780px) {
+        .field_select{
+            width: 40%;
+            cursor: pointer;
+            height: 40px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            font-size: 14px;
+            text-indent: 8px;
+            direction: rtl;
+            font-family: Rubik,sans-serif;
+        }
+        .field_select_reverse{
+            width: 60%;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            font-size: 14px;
+            text-indent: 8px;
+            direction: rtl;
+            font-family: Rubik,sans-serif;
+        }
+        .flex_container_textArea {
+            width:60%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: normal;
+            align-content: normal;
+          }
+        .field_select__next{
+            width: 60%;
+            cursor: pointer;
+            height: 40px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            font-size: 14px;
+            text-indent: 8px;
+            direction: rtl;
+            font-family: Rubik,sans-serif;
+        }
+        .continue_button_ok::before{
+            content: "להמשיך לשלב הבא";
+          }
+          .parent_radios_responsive {
+              margin-left: 20px;
+            display: grid;
+            direction: ltr;
+            text-align: right;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            grid-column-gap: 20px;
+            grid-row-gap: 20px;
+            }
+            
+            .div1_radios_responsive { grid-area: 1 / 4 / 2 / 5; }
+            .div2_radios_responsive { grid-area: 1 / 3 / 2 / 4; }
+            .div3_radios_responsive { grid-area: 1 / 2 / 2 / 3; }
+            .div4_radios_responsive { grid-area: 1 / 1 / 2 / 2; }
+            .div5_radios_responsive { grid-area: 2 / 4 / 3 / 5; }
+            .div6_radios_responsive { grid-area: 2 / 3 / 3 / 4; }
+            .div7_radios_responsive { grid-area: 2 / 2 / 3 / 3; }
+            .div8_radios_responsive { grid-area: 2 / 1 / 3 / 2; }
+            .div9_radios_responsive { grid-area: 3 / 4 / 4 / 5; }
+            .div10_radios_responsive { grid-area: 3 / 3 / 4 / 4; }
+            .div11_radios_responsive { grid-area: 3 / 2 / 4 / 3; }
+            .div12_radios_responsive { grid-area: 3 / 1 / 4 / 2; }
+    }
+
+      @media screen and (max-width: 780px) {
+          
+        .parent_radios_responsive {
+            display: grid;
+            margin-left: 20px;
+            text-align: right;
+            direction: ltr;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            grid-column-gap: 20px;
+            grid-row-gap: 20px;
+            }
+            
+            .div1_radios_responsive { grid-area: 1 / 2 / 2 / 3; }
+            .div2_radios_responsive { grid-area: 1 / 1 / 2 / 2; }
+            .div3_radios_responsive { grid-area: 2 / 2 / 3 / 3; }
+            .div4_radios_responsive { grid-area: 2 / 1 / 3 / 2; }
+            .div5_radios_responsive { grid-area: 3 / 2 / 4 / 3; }
+            .div6_radios_responsive { grid-area: 3 / 1 / 4 / 2; }
+            .div7_radios_responsive { grid-area: 4 / 2 / 5 / 3; }
+            .div8_radios_responsive { grid-area: 4 / 1 / 5 / 2; }
+            .div9_radios_responsive { grid-area: 5 / 2 / 6 / 3; }
+            .div10_radios_responsive { grid-area: 5 / 1 / 6 / 2; }
+            .div11_radios_responsive { grid-area: 6 / 2 / 7 / 3; }
+            .div12_radios_responsive { grid-area: 6 / 1 / 7 / 2; }
+
+        .continue_button_ok::before{
+            content: "המשך";
+          }
+        .field_select{
+            width: 80%;
+            cursor: pointer;
+            height: 40px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            font-size: 14px;
+            text-indent: 8px;
+            direction: rtl;
+            font-family: Rubik,sans-serif;
+        }
+        .field_select_reverse{
+            width:90%;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            font-size: 14px;
+            text-indent: 8px;
+            direction: rtl;
+            font-family: Rubik,sans-serif;
+        }
+        .flex_container_textArea {
+            width:90%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: normal;
+            align-content: normal;
+          }
+
+        .field_select__next{
+            width: 80%;
+            cursor: pointer;
+            height: 40px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            font-size: 14px;
+            text-indent: 8px;
+            direction: rtl;
+            font-family: Rubik,sans-serif;
+        }
+      }
+.field_info_title{
+    font-size: 14px;
+    color: #333;
+}
+    .parent_address_field_info__next {
+        margin-top: 15px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        /* grid-template-rows:0.2fr 1.5fr 0.2fr 1.5fr 0.2fr 1.5fr repeat(6, 1fr); */
+        grid-column-gap: 0px;
+        grid-row-gap: 10px;
+        }
+        
+        .div1_address_field_info__next { grid-area: 1 / 3 / 2 / 5; }
+        .div2_address_field_info__next { grid-area: 2 / 3 / 3 / 5; }
+        .div3_address_field_info__next { grid-area: 3 / 3 / 4 / 5; }
+        .div4_address_field_info__next { grid-area: 4 / 3 / 5 / 5; }
+        .div5_address_field_info__next { grid-area: 3 / 1 / 4 / 3; }
+        .div6_address_field_info__next { grid-area: 4 / 1 / 5 / 3; }
+        .div7_address_field_info__next { grid-area: 5 / 3 / 6 / 5; }
+        .div8_address_field_info__next { grid-area: 6 / 2 / 7 / 5; }
+        .div9_address_field_info__next { grid-area: 7 / 2 / 8 / 5; }
+        .div10_address_field_info__next { grid-area: 8 / 3 / 9 / 5; }
+        .div11_address_field_info__next { grid-area: 9 / 2 / 10 / 5; }
+        .div12_address_field_info__next { grid-area: 10 / 2 / 11 / 5; }
+        .div13_address_field_info__next { grid-area: 11 / 1 / 13 / 5; }
+#field_select__disabled::placeholder{
+    color: gray;
+    opacity: 0.5;
+}
+.goverment_note{
+    font-size: 11px;
+}
+.updated_checkbox{
+    width: 16px;
+    height: 16px;    
+    color: #ccc;
+    text-align: right;
+    float: right;
+    margin-top: 4px;
+    border: 1px solid #eee;
+}
+.updated_title{
+    margin-right: 20px;
+    font-size: 14px;
+    color: #ccc;
+}
+.parent_buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    }
+    
+    .div1_buttons {  grid-area: 1 / 2 / 2 / 3; }
+    .div2_buttons { text-align: left; grid-area: 1 / 1 / 2 / 2; }
+
+    .continue_button_ok{
+        margin-left: 10%;
+        font-family: Rubik;
+        font-size: 14px;
+        background-color: #fff;
+        color: #ff7100;
+        border: 1px solid #ff7100;
+        text-align: center;
+        box-sizing: border-box;
+        height: 35px;
+        width: fit-content;
+        border-radius: 17.5px;
+        padding: 6px;
+        font-weight: 500;
+    }
+    .back_button_ok{
+    font-family: Rubik;
+    font-size: 14px;
+    color: #363636;
+    text-align: center;
+    box-sizing: border-box;
+    height: 35px;
+    width: 90px;
+    border: 1px solid #ccc;
+    border-radius: 17.5px;
+    background-color: #fff;
+    }
+    
+.invalid_field_note{
+    color: #ff2a2b;
+}
+/* section2 */
+.parent_section2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* grid-template-rows: repeat(6, 1fr); */
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    }
+    
+    .div1_section2 { grid-area: 1 / 1 / 2 / 2; }
+    .div2_section2 { grid-area: 2 / 1 / 3 / 2; }
+    .div3_section2 { grid-area: 3 / 1 / 4 / 2; }
+    .div4_section2 { grid-area: 4 / 1 / 5 / 2; }
+    .div5_section2 { grid-area: 5 / 1 / 6 / 2; }
+    .div6_section2 { grid-area: 6 / 1 / 7 / 2; }
+
+    .parent_parking {
+        display: grid;
+        direction: ltr;
+  align-items: center;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: 1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        }
+        
+        .div1_parking {display: flex;
+            align-items: center;
+             grid-area: 1 / 4 / 2 / 5; }
+        .div2_parking {display: flex; align-items: center;
+            grid-area: 1 / 4 / 2 / 5; grid-area: 1 / 3 / 2 / 4; }
+        .div3_parking {display: flex;align-items: center;
+            grid-area: 1 / 4 / 2 / 5; grid-area: 1 / 2 / 2 / 3; }
+        .div4_parking {display: flex;align-items: center;
+            grid-area: 1 / 4 / 2 / 5; grid-area: 1 / 1 / 2 / 2; }
+    .selected{
+     background-color: rgb(238,238,238);
+     width: 100%;
+     height: 100%;
+    }
+    .selected:hover{
+        background-color: rgb(202, 202, 202);
+        width: 100%;
+        height: 100%;
+       }
+    .not_selected{
+        background-color: white;
+        width: 100%;
+        height: 100%;
+    }
+    .not_selected:hover{
+        background-color: white;
+        width: 100%;
+        height: 100%;
+        color: orange;
+    }
+    
+    .radio_select_center_text{
+        margin: 0 auto;
+    }
+    .bold_title{
+        font-size: 1.2em;
+    font-weight: 500;
+    }
+    .radio_button_field{
+        direction: rtl;
+        background-color: white;
+        padding: 2px 6px;
+        font-size: 14px;
+        width: 100%;
+        border-radius: 17px;
+        border: 1px solid gray;
+        height: 36px;
+        text-align: right;
+    }
+    .radio_button_field_selected{
+        direction: rtl;
+        background-color: rgb(242, 242, 242);
+        padding: 2px 6px;
+        font-size: 14px;
+        width: 100%;
+        border-radius: 17px;
+        border: 1px solid gray;
+        height: 36px;
+        text-align: right;
+    }
+    .radio_button_field:focus{
+        direction: rtl;
+        background-color: rgb(255, 255, 255);
+        padding: 2px 6px;
+        color: #ff7100;
+        font-size: 14px;
+        width: 100%;
+        border-radius: 17px;
+        border: 1px solid gray;
+        height: 36px;
+        text-align: right;
+    }      
+      .flex_items_textArea:nth-child(1) {
+        display: block;
+        flex-grow: 0;
+        flex-shrink: 1;
+        flex-basis: auto;
+        align-self: auto;
+        order: 0;
+      }
+      
+      .flex_items_textArea:nth-child(2) {
+        display: block;
+        flex-grow: 0;
+        flex-shrink: 1;
+        flex-basis: auto;
+        align-self: auto;
+        order: 0;
+      }
