@@ -7,12 +7,14 @@ import { createProduct, getCategories,uploadImage } from "./apiAdmin";
 import { FaRegSnowflake,FaWheelchair } from 'react-icons/fa';
 import { FiBox } from 'react-icons/fi';
 import { BiBox,BiCabinet } from 'react-icons/bi';
+import { CgCamera } from 'react-icons/cg';
 import { RiDoorClosedLine } from 'react-icons/ri';
 import { GiElevator,GiTap,GiSolarPower } from 'react-icons/gi';
 import { BsHouseDoor } from 'react-icons/bs';
 import { RiPaintBrushLine } from 'react-icons/ri';
-import { AiOutlineTable } from 'react-icons/ai';
+import { AiOutlineTable,AiOutlinePlus } from 'react-icons/ai';
 import { API } from "../config";
+
 import icon2 from './../icons/digit_2.ico'
 
 
@@ -154,11 +156,11 @@ p.then(async function(v) {
 }
 
 const handleFileInputChange=(e)=>{
+  
 const file=e.target.files[0]
 previewFile(file,e.target.name)
-
-console.log(file)
 }
+
 const handleSubmitFile=(e)=>{
 e.preventDefault()
 // console.log(e.target)
@@ -185,37 +187,36 @@ if(!previewPic4
 uploadImageToCloud(previewSource,previewVideo,previewPic1,previewPic2,previewPic3,previewPic4)
 }
 const previewFile=(file,name)=>{
-  console.log(name)
-const reader=new FileReader()
+  const reader=new FileReader()
 reader.readAsDataURL(file)
+
 reader.onloadend=()=>{
   switch (name) {
     case 'main_image':
       setPreviewSource(reader.result)
-      console.log('asss')
+      console.log('main_image')
       break;
       case 'main_video':
         setPreviewVideo(reader.result)
-      console.log('sadasd gfawsfd')
+      console.log('main video')
       break;
       case 'pic1':
         setPreviewPic1(reader.result)
-      console.log('sadasd gfawsfd')
+      console.log('pic1')
       break;
       case 'pic2':
         setPreviewPic2(reader.result)
-      console.log('sadasd gfawsfd')
+      console.log('pic2')
       break;
       case 'pic3':
         setPreviewPic3(reader.result)
-      console.log('sadasd gfawsfd')
+      console.log('pic3')
       break;
       case 'pic4':
         setPreviewPic4(reader.result)
-      console.log('sadasd gfawsfd')
+      console.log('pic4')
       break;
       
-    
   }
   
 }
@@ -592,8 +593,10 @@ reader.onloadend=()=>{
         //     }
         // });
     };
-    const [isSelected,setIselected]=useState('2')
+    const [isSelected,setIselected]=useState('5')
     const [iscCicked_next,setIsCicked_next]=useState(false)
+    const [iscCicked2_next,setIsCicked2_next]=useState(false)
+    const [iscCicked3_next,setIsCicked3_next]=useState(false)
 
     const [firstFields,setFirstFields]=useState({
       type:false,
@@ -604,8 +607,9 @@ reader.onloadend=()=>{
       total_floors:false
     })
     
+    
     const firstNext=()=>{     
-      setIsCicked_next(true)
+      setIsCicked2_next(true)
       if(document.getElementById('property_type').value=='null')
       {
         document.getElementById('property_type').style.borderColor='#c00'
@@ -721,10 +725,12 @@ reader.onloadend=()=>{
       }
       console.log(firstFields)
       if(Object.keys(firstFields).every((k) => firstFields[k]))
-      moveNextSection()
+      moveNextSection(2)
       }
-const moveNextSection=()=>{
-  setIselected('2')
+
+
+const moveNextSection=(num)=>{
+  setIselected(num)
 }
 
 // 
@@ -759,10 +765,55 @@ const moveNextSection=()=>{
           break;
       }
     }
+
+    const secondeNext=()=>{     
+      setIsCicked2_next(true)
+      if(values.num_of_rooms==null)
+      {
+        document.getElementById('num_of_rooms').style.borderColor='#c00'  
+         }else{
+        document.getElementById('num_of_rooms').style.borderColor='#ccc'
+        moveNextSection(3)
+      }
+}
+const thirdNext=()=>{     
+  setIsCicked3_next(true)
+  if(values.build_mr==null)
+  {
+    document.getElementById('build_mr').style.borderColor='#c00'  
+     }else{
+    document.getElementById('build_mr').style.borderColor='#ccc'
+  }
+  if(values.build_mr_total==null)
+  {
+    document.getElementById('build_mr_total').style.borderColor='#c00'  
+     }else{
+    document.getElementById('build_mr_total').style.borderColor='#ccc'
+  }
+  if(values.price==null)
+  {
+    document.getElementById('price').style.borderColor='#c00'  
+     }else{
+    document.getElementById('price').style.borderColor='#ccc'
+  }
+  if(values.entry_date==null)
+  {
+    document.getElementById('entry_date').style.borderColor='#c00'  
+     }else{
+    document.getElementById('entry_date').style.borderColor='#ccc'
+  }
+  if(values.entry_date!=null&&values.price!=null&&values.build_mr_total!=null&&values.build_mr!=null)
+  {
+moveNextSection(4)
+  }
+
+}
+
+
+
     const newPostForm = () => (
       <div className={'full_page'}>
         <div class="parent_add_product_acordion">
-          
 <div   className={isSelected=='1'?"field_style div1_add_product_acordion":"field_style_not_selected div1_add_product_acordion"}>
 <div  style={{direction:'rtl'}}>
   <span   className={isSelected=='1'?"circle_selected":'circle_after_check'}>{isSelected=='1'?<span name={'adress_field'} onClick={handleFieldSelection}>1</span>:<span name={'adress_field'} onClick={handleFieldSelection}>&#10003;</span>}</span>
@@ -771,7 +822,6 @@ const moveNextSection=()=>{
   {isSelected=='1'&&
   <div style={{paddingRight:'5.5%'}}>
     <span className={'adress_field__note'}>סימנו עבורך את שדות החובה. שלא נפספס פרט חשוב </span>
-
     {/* first section */}
     <div class="parent_address_field_info">
 <div class="div1_address_field_info">
@@ -861,7 +911,7 @@ const moveNextSection=()=>{
 </div>
 </div>
 {/* buttons */}
-<div class="parent_buttons">
+<div style={{direction:'ltr'}} class="parent_buttons">
 <div class="div1_buttons">
 <button className={'back_button_ok'}>חזרה</button>
 </div>
@@ -910,6 +960,7 @@ const moveNextSection=()=>{
 <option value="11.5">11.5</option>
 <option value="12">12</option>
 </select>
+{values.num_of_rooms==null&&iscCicked2_next&&<p className={'invalid_field_note'}>שדה חובה סוג הנכס</p>}
 </div>
 {/* parking */}
 <div class="div3_section2"><span className={'field_info_title'}>חניה</span></div>
@@ -1046,10 +1097,10 @@ const moveNextSection=()=>{
 </div>
 <div class="flex_container_textArea">
    <div class="flex_items_textArea">
-<span>פרוט הנכס</span>
+<span >פרוט הנכס</span>
    </div>
    <div class="flex_items_textArea">
-   <span  id={'leftA'} >{maxLetters}/400</span>
+   <span className={'word_limit_textArea'}  id={'leftA'} >{maxLetters}/400</span>
    </div>
 </div>
 
@@ -1065,6 +1116,14 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
            />
 
 {/*  */}
+<div style={{direction:'ltr'}} class="parent_buttons">
+<div class="div1_buttons">
+<button className={'back_button_ok'}>חזרה</button>
+</div>
+<div class="div2_buttons">
+  <button onClick={secondeNext} className={'continue_button_ok'}></button>
+</div>
+</div>
     </div>}
   </div>
 </div>
@@ -1073,6 +1132,45 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 <div  style={{direction:'rtl'}}>
 <span onClick={handleFieldSelection} name={'payments_field'} className={isSelected=='3'?"circle_selected":'circle_before_select'}>3</span>
   <span className={isSelected=='3'?"text_select":'text_not_select'} >תשלומים, תאריכים ועוד</span>
+  {isSelected=='3'&&
+  <div style={{paddingRight:'5.5%',marginTop:'10px'}}>
+    {/* hello */}
+    <div class="parent_section2">
+<div class="div1_section2"><span className={'field_info_title'}>מר בנוי*</span></div>
+<div class="div2_section2">
+    <input style={{marginRight:'-15px'}} type="number" onChange={handleChange("build_mr")} className={'field_select'} id={"build_mr"} placeholder={`כמה מ"ר יש בנכס`} />
+{/* {values.build_mr!==null&&<p className={'invalid_field_note'}>שדה חובה סוג הנכס</p>} */}
+</div>
+{/* parking */}
+<div class="div3_section2">
+<span className={'field_info_title'} >גודל במ"ר סך הכל*</span>
+  </div>
+<div class="div4_section2">
+    <input type="number" style={{marginRight:'-15px'}} onChange={handleChange("build_mr_total")} className={'field_select'} id={"build_mr_total"} placeholder={``} />
+</div>
+<div class="div5_section2">
+<span className={'field_info_title'} >מחיר*</span>
+</div>
+<div class="div6_section2">
+    <input type="number" style={{marginRight:'-15px'}} onChange={handleChange("price")} className={'field_select'} id={"price"} placeholder={`סכום מינימלי 100,000`} />
+</div>
+<p className={"field_info_title"} >תאריך כניסה*</p>
+<div dir='rtl' >
+    <input style={{marginRight:'-15px',maxWidth:'45%'}} className={'field_select'} type="date" onChange={handleChange("entry_date")}  id={'entry_date'} />
+    <input  onChange={date()} className={'inline_box'} type='checkbox'/>
+<span className={'inline_box'}>מיידי</span>
+</div>
+{/* buttons */}
+<div style={{direction:'ltr'}}  class="parent_buttons">
+<div class="div1_buttons">
+<button className={'back_button_ok'}>חזרה</button>
+</div>
+<div class="div2_buttons">
+  <button onClick={thirdNext} className={'continue_button_ok'}></button>
+</div>
+</div>
+</div>
+    </div>}
   </div>
 </div>
 
@@ -1080,6 +1178,187 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 <div  style={{direction:'rtl'}}>
 <span onClick={handleFieldSelection} name={'media_field'} className={isSelected=='4'?"circle_selected":'circle_before_select'}>4</span>
   <span className={isSelected=='4'?"text_select":'text_not_select'} >תמונות וסרטונים</span>
+  {isSelected=='4'&&
+  <div style={{paddingRight:'5.5%',marginTop:'10px'}}>
+    <span className={'media_note'} >ידעת שמודעות עם תמונות ברורות מקבלות פי 10 יותר פניות? </span>
+    <br/>
+    <span className={'media_note'} >לא להסס להעלות לפה תמונות (אפשר עד 10 + וידאו) ולהבליט את הצדדים הטובים ביותר של הנכס</span>
+    <div class="parent_media_main">
+<div class="div1_media_main">
+<div  class="flex-container_video video_input_border">
+  {
+    !previewVideo&&
+    <>
+    <div class="flex-items_video"><CgCamera size={'30px'} color={'gray'}/></div>
+    <div class="flex-items_video">העלאת סרטון</div>
+    <input className={'video_input'} type='file' accept='video/*' name='main_video' onChange={handleFileInputChange} value={videoInput}  />
+    </>
+  }
+  {
+    previewVideo&&
+    <>
+    <span style={{textAlign:'center'}} class="flex-items_video">הסרטון עלה, אפשר להמשיך בפרסום</span>    
+    </>
+  }
+</div>
+</div>
+
+<div class="div2_media_main">
+<div  class="flex-container_video main_pic_input_border">
+  { 
+    !previewSource&&
+    <>
+    <div class="flex-items_video"><AiOutlinePlus size={'30px'} color={'gray'}/></div>
+    <div class="flex-items_video">העלאת תמונות</div>
+    <input accept="image/*" className={'video_input'} type='file' name='main_image' onChange={handleFileInputChange} value={videoInput}  />
+    </>
+  }
+  {
+    previewSource&&
+    <>
+    <span style={{textAlign:'center'}} class="flex-items_video">
+  <img className={'fit_image'}  src={previewSource}/>
+      </span>    
+    </>
+  }
+</div>
+</div>
+</div>
+<hr style={{marginLeft:'20px',background:'black'}} />    
+<div class="parent_media_body">
+<div class="div1_media_body">
+
+<div  class="flex-container_video video_input_border">
+  { 
+    !previewPic1&&
+    <>
+    <div class="flex-items_video"><AiOutlinePlus size={'30px'} color={'gray'}/></div>
+    <div class="flex-items_video">העלאת תמונות</div>
+    <input accept="image/*" className={'video_input'} type='file' name='pic1' onChange={handleFileInputChange} value={videoInput}  />
+    </>
+  }
+  {
+    previewPic1&&
+    <>
+    <span style={{textAlign:'center'}} class="flex-items_video">
+  <img className={'fit_image'}  src={previewPic1}/>
+      </span>    
+    </>
+  }
+</div>
+</div>
+
+<div class="div2_media_body">
+<div  class="flex-container_video video_input_border">
+  { 
+    !previewPic2&&
+    <>
+    <div class="flex-items_video"><AiOutlinePlus size={'30px'} color={'gray'}/></div>
+    <div class="flex-items_video">העלאת תמונות</div>
+    <input accept="image/*" className={'video_input'} type='file' name='pic2' onChange={handleFileInputChange} value={videoInput}  />
+    </>
+  }
+  {
+    previewPic2&&
+    <>
+    <span style={{textAlign:'center'}} class="flex-items_video">
+  <img className={'fit_image'}  src={previewPic2}/>
+      </span>    
+    </>
+  }
+</div>
+</div>
+<div class="div3_media_body">
+<div  class="flex-container_video video_input_border">
+  { 
+    !previewPic3&&
+    <>
+    <div class="flex-items_video"><AiOutlinePlus size={'30px'} color={'gray'}/></div>
+    <div class="flex-items_video">העלאת תמונות</div>
+    <input accept="image/*" className={'video_input'} type='file' name='pic3' onChange={handleFileInputChange} value={videoInput}  />
+    </>
+  }
+  {
+    previewPic3&&
+    <>
+    <span style={{textAlign:'center'}} class="flex-items_video">
+  <img className={'fit_image'}  src={previewPic3}/>
+      </span>    
+    </>
+  }
+</div>
+</div>
+<div class="div4_media_body">
+<div  class="flex-container_video video_input_border">
+  { 
+    !previewPic4&&
+    <>
+    <div class="flex-items_video"><AiOutlinePlus size={'30px'} color={'gray'}/></div>
+    <div class="flex-items_video">העלאת תמונות</div>
+    <input accept="image/*" className={'video_input'} type='file' name='pic4' onChange={handleFileInputChange} value={videoInput}  />
+    </>
+  }
+  {
+    previewPic4&&
+    <>
+    <span style={{textAlign:'center'}} class="flex-items_video">
+  <img className={'fit_image'}  src={previewPic4}/>
+      </span>    
+    </>
+  }
+</div>
+</div>
+<div class="div5_media_body">
+<div  class="flex-container_video video_input_border">
+    <div class="flex-items_video"><AiOutlinePlus size={'30px'} color={'gray'}/></div>
+    <div class="flex-items_video">העלאת תמונות</div>
+    <input disabled accept="image/*" className={'video_input'} type='file' name='pic3' onChange={handleFileInputChange} value={videoInput}  />
+</div>
+</div>
+
+<div class="div6_media_body">
+<div  class="flex-container_video video_input_border">
+    <div class="flex-items_video"><AiOutlinePlus size={'30px'} color={'gray'}/></div>
+    <div class="flex-items_video">העלאת תמונות</div>
+    <input disabled accept="image/*" className={'video_input'} type='file' name='pic3' onChange={handleFileInputChange} value={videoInput}  />
+</div>
+</div>
+
+<div class="div7_media_body">
+<div  class="flex-container_video video_input_border">
+    <div class="flex-items_video"><AiOutlinePlus size={'30px'} color={'gray'}/></div>
+    <div class="flex-items_video">העלאת תמונות</div>
+    <input disabled accept="image/*" className={'video_input'} type='file' name='pic3' onChange={handleFileInputChange} value={videoInput}  />
+</div>
+</div>
+
+<div class="div8_media_body">
+<div  class="flex-container_video video_input_border">
+    <div class="flex-items_video"><AiOutlinePlus size={'30px'} color={'gray'}/></div>
+    <div class="flex-items_video">העלאת תמונות</div>
+    <input disabled accept="image/*" className={'video_input'} type='file' name='pic3' onChange={handleFileInputChange} value={videoInput}  />
+</div>
+</div>
+
+<div class="div9_media_body">
+<div style={{maxWidth:'220px',margin:'0 auto'}}  class="flex-container_video video_input_border">
+    <div class="flex-items_video"><AiOutlinePlus size={'30px'} color={'gray'}/></div>
+    <div class="flex-items_video">העלאת תמונות</div>
+    <input disabled accept="image/*" className={'video_input'} type='file' name='pic3' onChange={handleFileInputChange} value={videoInput}  />
+</div>
+</div>
+</div>
+{/* buttons */}
+<div style={{direction:'ltr'}}  class="parent_buttons">
+<div class="div1_buttons">
+<button className={'back_button_ok'}>חזרה</button>
+</div>
+<div class="div2_buttons">
+  <button onClick={()=>{moveNextSection(5)}} className={'continue_button_ok'}></button>
+</div>
+</div>
+    </div>
+    }
   </div>
 </div>
 
@@ -1087,6 +1366,37 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 <div  style={{direction:'rtl'}}>
 <span onClick={handleFieldSelection} name={'contact_field'} className={isSelected=='5'?"circle_selected":'circle_before_select'}>5</span>
   <span className={isSelected=='5'?"text_select":'text_not_select'} >פרטים ליצירת קשר</span>
+  {isSelected=='5'&&
+  <div style={{paddingRight:'5.5%',marginTop:'10px'}}>
+    <div class="parent_contact_info">
+<div class="div1_contact_info">
+<span className={'field_info_title'}>*שם איש הקשר</span>
+</div>
+<div class="div2_contact_info">
+<span className={'field_info_title'}>*טלפון ראשי</span>
+</div>
+<div class="div3_contact_info">
+    <input  className={'contact_info_input'} type="text" onChange={handleChange("contact_name")} placeholder={`${isAuthenticated().user.name}`} defaultValue={`${isAuthenticated().user.name}`} />
+</div>
+<div class="div4_contact_info">
+    <input className={'contact_info_input'}  type="number"  placeholder="630-50-81" pattern={"[0-9]{3}-[0-9]{2}-[0-9]{2}"} required onBlur={handleChange("contact_number")}  />
+</div>
+<div class="div5_contact_info">
+<select  className={'contact_info_input contact_info_input__preNumber'}  defaultValue={'null'}  onChange={handleChange("contact_number_start")} >
+<option  value="050">050</option>
+<option  value="051">051</option>
+<option  value="052">052</option>
+<option  value="053">053</option>
+<option  value="054">054</option>
+<option  value="055">055</option>
+<option  value="058">058</option>
+</select>
+</div>
+<div class="div6_contact_info">
+  <button className={'contact_info_input__verified_num'} >המספר אומת<span>&#10004;</span></button>
+</div>
+</div>
+    </div>}
   </div>
 </div>
 
