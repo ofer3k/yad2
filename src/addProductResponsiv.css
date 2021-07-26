@@ -132,7 +132,22 @@ margin-top: 40px;
     .div8_address_field_info { grid-area: 8 / 1 / 9 / 5; }
 
     @media screen and (min-width: 780px) {
-        
+        .parent_contact_infoA {
+            display: grid;
+            direction: ltr;
+            text-align: right;
+            grid-template-columns: repeat(8, 1fr);
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+            }
+            
+            .div1_contact_infoA { grid-area: 1 / 6 / 2 / 9; }
+            .div2_contact_infoA {grid-area: 1 / 4 / 2 / 6; }
+            .div3_contact_infoA {grid-area: 2 / 6 / 3 / 9; }
+            .div4_contact_infoA {grid-area: 2 / 4 / 3 / 6; }
+            .div5_contact_infoA {grid-area: 2 / 3 / 3 / 4; }
+            .div6_contact_infoA {grid-area: 2 / 1 / 3 / 3; }
+
         .parent_media_body {
             direction: ltr;
             text-align: center;
@@ -270,7 +285,22 @@ margin-top: 40px;
         }
     
       @media screen and (max-width: 780px) {
-        
+        .parent_contact_infoA {
+            display: grid;
+            direction: ltr;
+            text-align: right;
+            grid-template-columns: repeat(8, 1fr);
+            /* grid-template-rows: repeat(5, 1fr); */
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+            }
+            
+            .div1_contact_infoA { grid-area: 1 / 5 / 2 / 9; }
+            .div2_contact_infoA { grid-area: 3 / 5 / 4 / 9; }
+            .div3_contact_infoA { grid-area: 2 / 1 / 3 / 9; }
+            .div4_contact_infoA { grid-area: 4 / 4 / 5 / 9; }
+            .div5_contact_infoA { grid-area: 4 / 1 / 5 / 4; }
+            .div6_contact_infoA { grid-area: 5 / 4 / 6 / 9; }
         
         .parent_media_body {
             direction: ltr;
@@ -657,61 +687,36 @@ margin-top: 40px;
             align-self: auto;
             order: 0;
           }
-          .contact_info_input{
-              width: 90%;
-              text-align: right;
-              height: 38px;
+         
+
+.contact_infoA_input{
+    width: 80%;
+    text-align: right;
+    height: 38px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #fff;
     font-size: 14px;
-          }
-          .contact_info_input__verified_num{
-            /* width: 90%; */
-            text-align: right;
-            height: 38px;
-            border-radius: 4px;
-            color: #4dd8a1;
-            border: 1px solid #4dd8a1;
-            background-color: #dff7ed;
-            padding: 0 2.2em 0 1.6em;
-        }
-
-        @media screen and (min-width: 1070px) {
-            .parent_contact_info {
-                display: grid;
-                direction: ltr;
-                margin-left: 20px;
-                grid-template-columns: repeat(8, 1fr);
-                grid-column-gap: 0px;
-                grid-row-gap: 0px;
-                }
-                
-                .div1_contact_info { grid-area: 1 / 6 / 2 / 9; }
-                .div2_contact_info { grid-area: 1 / 4 / 2 / 6; }
-                .div3_contact_info { grid-area: 2 / 6 / 3 / 9; }
-                .div4_contact_info { grid-area: 2 / 4 / 3 / 6; }
-                .div5_contact_info { grid-area: 2 / 3 / 3 / 4; }
-                .div6_contact_info { grid-area: 2 / 1 / 3 / 3; }
-               
-        }
-        @media screen and (max-width: 1070px) {
-            .parent_contact_info {
-                display: grid;
-                /* direction: ltr; */
-                margin-left: 20px;
-                grid-template-columns: repeat(5, 1fr);
-                grid-column-gap: 0px;
-                grid-row-gap: 0px;
-                }
-                
-                .div1_contact_info { grid-area: 1 / 1 / 2 / 6; }
-                .div2_contact_info { grid-area: 3 / 3 / 4 / 6; }
-                .div3_contact_info { grid-area: 2 / 1 / 3 / 6; }
-                .div4_contact_info { grid-area: 4 / 3 / 5 / 6; }
-                .div5_contact_info { grid-area: 4 / 1 / 5 / 3; }
-                .div6_contact_info { grid-area: 5 / 3 / 6 / 6; }
-
-                
-               
-        }
+    text-indent: 8px;
+    font-family: Rubik;
+    padding: 0;
+}
+.name_contact_infoA_input{
+    width: 93%;
+    text-align: right;
+    height: 38px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    text-indent: 8px;
+    font-family: Rubik;
+    padding: 0;
+}
+.verified_number{
+    color: #4dd8a1;
+    border: 1px solid #4dd8a1;
+    background-color: #dff7ed;
+    /* padding: 0 2.2em 0 1.6em; */
+    height: 38px;
+}

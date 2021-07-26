@@ -1368,21 +1368,22 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
   <span className={isSelected=='5'?"text_select":'text_not_select'} >פרטים ליצירת קשר</span>
   {isSelected=='5'&&
   <div style={{paddingRight:'5.5%',marginTop:'10px'}}>
-    <div class="parent_contact_info">
-<div class="div1_contact_info">
-<span className={'field_info_title'}>*שם איש הקשר</span>
+<div class="parent_contact_infoA">
+<div class="div1_contact_infoA"> 
+<span>*שם איש קשר</span>
 </div>
-<div class="div2_contact_info">
-<span className={'field_info_title'}>*טלפון ראשי</span>
+<div class="div2_contact_infoA">
+<span>*טלפון ראשי</span>
 </div>
-<div class="div3_contact_info">
-    <input  className={'contact_info_input'} type="text" onChange={handleChange("contact_name")} placeholder={`${isAuthenticated().user.name}`} defaultValue={`${isAuthenticated().user.name}`} />
+<div class="div3_contact_infoA">
+  <input className={'name_contact_infoA_input'} onChange={handleChange("contact_name")} placeholder={`${isAuthenticated().user.name}`} defaultValue={`${isAuthenticated().user.name}`} type="text" />
 </div>
-<div class="div4_contact_info">
-    <input className={'contact_info_input'}  type="number"  placeholder="630-50-81" pattern={"[0-9]{3}-[0-9]{2}-[0-9]{2}"} required onBlur={handleChange("contact_number")}  />
+<div class="div4_contact_infoA"> 
+    <input className={'contact_infoA_input'}  type="number"  placeholder="630-50-81" pattern={"[0-9]{3}-[0-9]{2}-[0-9]{2}"} required onBlur={handleChange("contact_number")}  />
 </div>
-<div class="div5_contact_info">
-<select  className={'contact_info_input contact_info_input__preNumber'}  defaultValue={'null'}  onChange={handleChange("contact_number_start")} >
+
+<div class="div5_contact_infoA">
+<select  defaultValue={'null'}  onChange={handleChange("contact_number_start")} className={'contact_infoA_input'}>
 <option  value="050">050</option>
 <option  value="051">051</option>
 <option  value="052">052</option>
@@ -1392,8 +1393,8 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 <option  value="058">058</option>
 </select>
 </div>
-<div class="div6_contact_info">
-  <button className={'contact_info_input__verified_num'} >המספר אומת<span>&#10004;</span></button>
+<div class="div6_contact_infoA"> 
+<input disabled className={'verified_number'} placeholder={`המספר אומת`} style={{width:'80%',textAlign:'right'}}/>
 </div>
 </div>
     </div>}
