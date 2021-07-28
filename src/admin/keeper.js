@@ -243,9 +243,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
                    onKeyUp={
                      handleChange('description')
                    }
-               // className="form-control"
                maxlength={400}
-               // value={description}
            />
 </div>
 <div class="flex-container">

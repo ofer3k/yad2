@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import Layout from "./Layout";
 import { API } from "../config";
 import Card from "./Card";
+import SearchContext from "../context/search-context";
+
 import { Container, Row, Col } from 'reactstrap';
 import { getCategories, getFilteredProducts } from "./apiCore";
 import Checkbox from "./Checkbox";
@@ -160,7 +162,7 @@ const submitSearch=()=>{
       'Content-Type': 'application/json'
     },
     method: "POST",
-    body: JSON.stringify({...values})
+    body: JSON.stringify({...searchParameters})
 })
 .then(function(res){ res.json().then(body =>  {
 
@@ -183,6 +185,7 @@ const date = () => event => {
       
       document.getElementById('entery_date').value=today 
       setValues({ ...values, entery_date: today }); 
+      setSearchParameters({ ...searchParameters, entery_date: today }); 
       console.log(values)
       document.getElementById('entery_date').disabled = true;
     }
@@ -205,6 +208,7 @@ const radiosChange=(e)=>{
        countRadiosCheck++ 
     }
     setValues({...values, [e.target.name]: !answer})
+    setSearchParameters({...searchParameters, [e.target.name]: !answer})
     setNumberOfRadioSelected(countRadiosCheck)
     
 }
@@ -231,6 +235,7 @@ switch (e.target.value) {
         minRooms.selectedIndex  = 3;
         maxRooms.selectedIndex  = 3;
         setValues({...values, min_num_of_rooms: '2',max_num_of_rooms: '3' })
+        setSearchParameters({...searchParameters, min_num_of_rooms: '2',max_num_of_rooms: '3' })
         
         break;
         case '2':
@@ -238,6 +243,7 @@ switch (e.target.value) {
         minRooms.selectedIndex  = 5;
         maxRooms.selectedIndex  = 3;
         setValues({...values, min_num_of_rooms: '3',max_num_of_rooms: '4' })
+        setSearchParameters({...searchParameters, min_num_of_rooms: '3',max_num_of_rooms: '4' })
         
         break;
         case '3':
@@ -245,6 +251,7 @@ switch (e.target.value) {
             minRooms.selectedIndex  = 7;
         maxRooms.selectedIndex  = 3;
         setValues({...values, min_num_of_rooms: '4',max_num_of_rooms: '5' })
+        setSearchParameters({...searchParameters, min_num_of_rooms: '4',max_num_of_rooms: '5' })
 
         break;
         case '4':
@@ -252,7 +259,7 @@ switch (e.target.value) {
             minRooms.selectedIndex  = 9;
         maxRooms.selectedIndex  = 3;
         setValues({...values, min_num_of_rooms: '5',max_num_of_rooms: '6' })
-
+        setSearchParameters({...searchParameters, min_num_of_rooms: '5',max_num_of_rooms: '6' })
         break;
     default:
         break;
@@ -263,22 +270,26 @@ const priceQuickButtonFunc=(e)=>{
     const maxPrice=document.getElementById("max_price")
 switch (e.target.value) {
     case '1':
-        setValues({...values, min_price: '0',max_price: '1,500,000' })
+      setValues({...values, min_price: '0',max_price: '1,500,000' })
+      setSearchParameters({...searchParameters, min_price: '0',max_price: '1500000' })
         minPrice.value = "0";
         maxPrice.value = "1,500,000";
         break;
         case '2':
-            setValues({...values, min_price: '1,500,000',max_price: '2,000,000' })
+          setValues({...values, min_price: '1500000',max_price: '2000000' })
+          setSearchParameters({...searchParameters, min_price: '1500000',max_price: '2000000' })
             minPrice.value = "1,500,000";
             maxPrice.value = "2,000,000";
             break;
         case '3':
-            setValues({...values, min_price: '2,000,000',max_price: '3,500,000' })
+          setValues({...values, min_price: '2000000',max_price: '3500000' })
+          setSearchParameters({...searchParameters, min_price: '2000000',max_price: '3500000' })
             minPrice.value = "2,000,000";
             maxPrice.value = "3,500,000";
             break;
         case '4':
-            setValues({...values, min_price: '3,500,000',max_price: '5,000,000' })
+            setValues({...values, min_price: '3500000',max_price: '5000000' })
+            setSearchParameters({...searchParameters, min_price: '3500000',max_price: '5000000' })
             minPrice.value = "3,500,000";
             maxPrice.value = "5,000,000";
             break;
@@ -299,19 +310,25 @@ switch (e.target.value) {
     function inputChangeHandler(event) {
         if(event.target.name==='property_type1')
         {
-            console.log(values)
             document.getElementById('apartmentsImg').classList.contains('image_style_orange')?
             setValues({...values, [event.target.name]: event.target.value }):
             setValues({...values, [event.target.name]: '' });
+
+            document.getElementById('apartmentsImg').classList.contains('image_style_orange')?
+            setSearchParameters({...searchParameters, [event.target.name]: event.target.value }):
+            setSearchParameters({...searchParameters, [event.target.name]: '' });
             return 
         }
 
         if(event.target.name==='property_type2')
         {
-            console.log(values)
             document.getElementById('housesImg').classList.contains('image_style_orange')?
             setValues({...values, [event.target.name]: event.target.value }):
             setValues({...values, [event.target.name]: '' });
+
+            document.getElementById('housesImg').classList.contains('image_style_orange')?
+            setSearchParameters({...searchParameters, [event.target.name]: event.target.value }):
+            setSearchParameters({...searchParameters, [event.target.name]: '' });
             return 
         }
         if(event.target.name==='property_type3')
@@ -320,11 +337,15 @@ switch (e.target.value) {
             document.getElementById('extraImg').classList.contains('image_style_orange')?
             setValues({...values, [event.target.name]: event.target.value }):
             setValues({...values, [event.target.name]: '' });
+
+            document.getElementById('extraImg').classList.contains('image_style_orange')?
+            setSearchParameters({...searchParameters, [event.target.name]: event.target.value }):
+            setSearchParameters({...searchParameters, [event.target.name]: '' });
             return 
         }
-        
+        setSearchParameters({...searchParameters, [event.target.name]: event.target.value }); 
         setValues({...values, [event.target.name]: event.target.value }); 
-        console.log(values) 
+        console.log(searchParameters,' searchParameters searchParameters') 
     } 
 
     const loadFilteredResults = newFilters => {
@@ -347,99 +368,122 @@ switch (e.target.value) {
                 case '1':
                     setNumOfRooms([1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '1'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '1'})
                   break;
                   case 'הכל':
                     setNumOfRooms([1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '1'})
-    
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '1'})
                     break;
                 case '1.5':
                     setNumOfRooms([1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '1.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '1.5'})
                     break;
                   case '2':
                     setNumOfRooms([2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '2'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '2'})
                     break;
                   case '2.5':
                     setNumOfRooms([2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '2.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '2.5'})
                   break;
                   case '3':
                     setNumOfRooms([3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '3'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '3'})
                   break;
                   case '3.5':
                     setNumOfRooms([3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '3.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '3.5'})
                   break;
                   case '4':
                     setNumOfRooms([4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '4'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '4'})
                   break;
                   case '4.5':
                     setNumOfRooms([4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '4.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '4.5'})
                   break;
                   case '5':
                     setNumOfRooms([5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '5'})
                   break;
                   case '5.5':
                     setNumOfRooms([5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '5.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '5.5'})
                   break;
                   case '6':
                     setNumOfRooms([6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '6'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '6'})
                   break;
                   case '6.5':
                     setNumOfRooms([6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '6.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '6.5'})
                   break;
                   case '7':
                     setNumOfRooms([7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '7'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '7'})
                   break;
                   case '7.5':
                     setNumOfRooms([7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '7.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '7.5'})
                   break;
                   case '8':
                     setNumOfRooms([8,8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '8'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '8'})
                   break;
                   case '8.5':
                     setNumOfRooms([8.5,9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '8.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '8.5'})
                   break;
                   case '9':
                     setNumOfRooms([9,9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '9'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '9'})
                   break;
                   case '9.5':
                     setNumOfRooms([9.5,10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '9.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '9.5'})
                   break;
                   case '10':
                     setNumOfRooms([10,10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '10'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '10'})
                   break;
                   case '10.5':
                     setNumOfRooms([10.5,11,11.5,12])
                     setValues({...values, min_num_of_rooms: '10.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '10.5'})
                   break;
                   case '11':
                     setNumOfRooms([11,11.5,12])
                     setValues({...values, min_num_of_rooms: '11'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '11'})
                   break;
                   case '11.5':
                     setNumOfRooms([11.5,12])
                     setValues({...values, min_num_of_rooms: '11.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '11.5'})
                   break;
                   case '12':
                     setNumOfRooms([12])
                     setValues({...values, min_num_of_rooms: '12'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '12'})
                   break;
                 default:
                     // setNumOfRooms([1,1.5,2,2.5,3,3.5,4,4.5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
@@ -452,70 +496,84 @@ switch (e.target.value) {
                 case '1':
                     setNumOfFloors(['פרטר/מרתף',1,2,3,4,5,6,7,8,9,10,11,12,13,14])
                     setValues({...values, min_num_of_floors: '1'})
+                    setSearchParameters({...searchParameters, min_num_of_floors: '1'})
                   break;
                   case 'הכל':
                     setNumOfFloors([1,2,3,4,5,6,7,8,9,10,11,12,13,14])
                     setValues({...values, min_num_of_floors: '1'})
-    
+                    setSearchParameters({...searchParameters, min_num_of_floors: '1'})
                     break;
                   case '2':
                     setNumOfFloors([2,3,4,5,6,7,8,9,10,11,12,13,14])
                     setValues({...values, min_num_of_floors: '2'})
+                    setSearchParameters({...searchParameters, min_num_of_floors: '2'})
                     break;
                   case '3':
                     setNumOfFloors([3,4,5,6,7,8,9,10,11,12,13,14])
                     setValues({...values, min_num_of_floors: '3'})
+                    setSearchParameters({...searchParameters, min_num_of_floors: '3'})
                   break;
                 
                   case '4':
                     setNumOfFloors([4,5,6,7,8,9,10,11,12,13,14])
                     setValues({...values, min_num_of_floors: '4'})
+                    setSearchParameters({...searchParameters, min_num_of_floors: '4'})
                   break;
                   case '5':
                     setNumOfFloors([5,6,7,8,9,10,11,12,13,14])
                     setValues({...values, min_num_of_floors: '5'})
+                    setSearchParameters({...searchParameters, min_num_of_floors: '5'})
                   break;
                   case '6':
                     setNumOfFloors([6,7,8,9,10,11,12,13,14])
                     setValues({...values, min_num_of_floors: '6'})
+                    setSearchParameters({...searchParameters, min_num_of_floors: '6'})
                   break;
                   
                   case '7':
                     setNumOfFloors([7,8,9,10,11,12,13,14])
                     setValues({...values, min_num_of_floors: '7'})
+                    setSearchParameters({...searchParameters, min_num_of_floors: '7'})
                   break;
                   
                   case '8':
                     setNumOfFloors([8,9,10,11,12,13,14])
                     setValues({...values, min_num_of_floors: '8'})
+                    setSearchParameters({...searchParameters, min_num_of_floors: '8'})
                   break;
                   
                   case '9':
                     setNumOfFloors([9,10,11,12,13,14])
                     setValues({...values, min_num_of_floors: '9'})
+                    setSearchParameters({...searchParameters, min_num_of_floors: '9'})
                   break;
                   
                   case '10':
                     setNumOfFloors([10,11,12,13,14])
                     setValues({...values, min_num_of_floors: '10'})
+                    setSearchParameters({...searchParameters, min_num_of_floors: '10'})
                   break;
                   
                   case '11':
                     setNumOfFloors([11,12,13,14])
                     setValues({...values, min_num_of_floors: '11'})
+                    setSearchParameters({...searchParameters, min_num_of_floors: '11'})
                   break;
                   
                   case '12':
                     setNumOfFloors([12,13,14])
                     setValues({...values, min_num_of_floors: '12'})
+                    setSearchParameters({...searchParameters, min_num_of_floors: '12'})
                   break;
                   case '13':
                     setNumOfFloors([13,14])
                     setValues({...values, min_num_of_floors: '13'})
+                    setSearchParameters({...searchParameters, min_num_of_floors: '13'})
                   break;
                   case '14':
                     setNumOfFloors([14])
                     setValues({...values, min_num_of_floors: '14'})
+                    setSearchParameters({...searchParameters, min_num_of_floors: '14'})
                   break;
                 default:
                     // setNumOfRooms([1,1.5,2,2.5,3,3.5,4,4.5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
@@ -576,6 +634,8 @@ switch (e.target.value) {
         }
         return array;
     };
+        const {searchParameters,setSearchParameters} = useContext(SearchContext);
+
 
     return (
         <Layout
@@ -583,6 +643,7 @@ switch (e.target.value) {
             description="Search and find books of your choice"
             className="container-fluid"
         >
+
             <div className="row">
             <div className={'property_type'}>
 <p className={"property_type_title"} >חפשו אזור עיר או שכונה</p>

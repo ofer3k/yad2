@@ -1,33 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { Modal, Button } from 'antd';
 import Layout from "./Layout";
-import Card from "./Card";
+import SearchContext from "../context/search-context";
 import CardYad2 from "./CardYad2";
 import CardYad2Acordion  from "./CardYad2Acordion";
 import { getCategories, getFilteredProducts } from "./apiCore";
-import Checkbox from "./Checkbox";
-import RadioBox from "./RadioBox";
 import { prices } from "./fixedPrices";
 import { BiFilterAlt } from 'react-icons/bi';
 import { RiMapPinLine } from 'react-icons/ri';
-import { Accordion,Form,ButtonGroup ,ToggleButton,Pagination } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
 import LineSearch from './LineSearch'
 import { BsImage,BsSearch } from 'react-icons/bs';
 
-
 import './../cardYad2.css'
-import { orange } from "@material-ui/core/colors";
-
-// 
-const getValue = ({ price }) => +price.slice(1) || 0;
-// var studios = [{ name: "Whole Yoga", price: "$17.00" }, { name: "Rino Yoga Social", price: "Suggested Donation" }, { name: "Samadhi Yoga", price: "$20.00" }, { name: "Corepower Yoga", price: "$25.00" }, { name: "The River Yoga", price: "$20.00" }, { name: "Endorphin Yoga", price: "$10.00" }, { name: "Kindness Yoga", price: "$20.00" }, { name: "Yoga High", price: "$15.00" }, { name: "Freyja Project", price: "$22.00" }, { name: "Kula Yoga", price: "$17.00" }];
-
-// 
+ 
 const Shop = (state) => {
+    const { searchParameters,setSearchParameters } = useContext(SearchContext);
+
     let history = useHistory();
-    const mq = window.matchMedia( "(max-width: 690px)" );    
-    // console.log(state.location.state.body,'state')
+    const mq = window.matchMedia( "(max-width: 690px)" );
 
     const [myFilters, setMyFilters] = useState({
         filters: { category: [], price: [] }
@@ -39,9 +30,6 @@ const Shop = (state) => {
     const [size, setSize] = useState(0);
     const [filteredResults, setFilteredResults] = useState([]);
     const [originalFullList, setOriginalFullList] = useState([]);
-    const [isShowOnlyPic, setisShowOnlyPic] = useState(false);
-    const [isShowOnlyPrice, setisShowOnlyPrice] = useState(false);
-
 
 const [isModalVisible, setIsModalVisible] = useState(false);
     const showModal = () => {
@@ -103,7 +91,6 @@ const [isModalVisible, setIsModalVisible] = useState(false);
 
     const loadMore = () => {
         let toSkip = skip + limit;
-        // console.log(newFilters);
         getFilteredProducts(toSkip, limit, myFilters.filters).then(data => {
             if (data.error) {
                 setError(data.error);
@@ -127,22 +114,10 @@ const [isModalVisible, setIsModalVisible] = useState(false);
     };
 
     useEffect(() => {
-        init();
         loadFilteredResults(skip, limit, myFilters.filters);
     }, []);
 
-    const handleFilters = (filters, filterBy) => {
-        // console.log("SHOP", filters, filterBy);
-        const newFilters = { ...myFilters };
-        newFilters.filters[filterBy] = filters;
 
-        if (filterBy === "price") {
-            let priceValues = handlePrice(filters);
-            newFilters.filters[filterBy] = priceValues;
-        }
-        loadFilteredResults(myFilters.filters);
-        setMyFilters(newFilters);
-    };
 
     const handlePrice = value => {
         const data = prices;
@@ -216,7 +191,6 @@ const [isModalVisible, setIsModalVisible] = useState(false);
             description="Search and find books of your choice"
             className="container-fluid"
         >
-            
             {!(mq.matches)&& <div className={'lineSearch_container'}> <span  ><LineSearch/></span></div>}
             {(mq.matches)&&            <div onClick={redirectToSearchForm} className={'fixed_searchBar'}>
             <span className={'another_search'} style={{position:'absolute',left:'15px'}}>חיפוש</span>

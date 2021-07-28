@@ -1,30 +1,17 @@
-import React, { useState, useEffect } from "react";
-import Layout from "./Layout";
+import React, { useState, useEffect,useContext } from "react";
 import { API } from "../config";
-import Card from "./Card";
-import { Container, Row, Col } from 'reactstrap';
-import { getCategories, getFilteredProducts } from "./apiCore";
-import Checkbox from "./Checkbox";
-import RadioBox from "./RadioBox";
+import SearchContext from "../context/search-context";
+import { getFilteredProducts } from "./apiCore";
 import { prices } from "./fixedPrices";
 import '../searchForm.css'
-import extra from '../imgs/extra.png';
-import apartments from '../imgs/apartments.png';
-import houses from '../imgs/houses.png';
-import orangeExtra from '../imgs/orangeExtra.png';
-import orangeApartments from '../imgs/orangeApartments.png';
-import orangeHouses from '../imgs/orangeHouses.png';
 import './../LineSearch.css'
 import { BsSearch } from 'react-icons/bs';
 import { BsXCircle,BsQuestionCircle,BsPlusCircle } from 'react-icons/bs';
-
-
-
-
 import { useHistory } from "react-router-dom";
 
 
 const LineSearch = () => {
+  const { searchParameters,setSearchParameters } = useContext(SearchContext);
   let history = useHistory();
   const [dropDown,setDropDown]=useState(false)
   const [dropDownRooms,setdropDownRooms]=useState(false)
@@ -34,7 +21,6 @@ const LineSearch = () => {
     });
     const [numOfRooms,setNumOfRooms]= useState([1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
     const [numOfFloors,setNumOfFloors]= useState(['פרטר/מרתף',1,2,3,4,5,6,7,8,9,10,11,12,13,14])
-    const [categories, setCategories] = useState([]);
     const [error, setError] = useState(false);
     const [limit, setLimit] = useState(6);
     const [skip, setSkip] = useState(0);
@@ -44,7 +30,6 @@ const LineSearch = () => {
     const [numberOfRadioSelected,setNumberOfRadioSelected]=useState(0)
     let countRadiosCheck=numberOfRadioSelected;
     
-
     const [values, setValues] = useState({
         entery_date:null,
         exclusively:null,
@@ -104,63 +89,64 @@ const LineSearch = () => {
         boiler:false,
         bars:false
     });
-const {
-    entery_date,
-    exclusively,
-    name,
-    description,
-    price,
-    min_price,
-    max_price,
-    min_mr,
-    max_mr,
-    category,
-    shipping,
-    quantity,
-    photo,
-    loading,
-    createdProduct,
-    redirectToProfile,
-    formData,
-    property_type1,
-    property_type2,
-    property_type3,
-    property_condition,
-    property_address_city,
-    property_address_street,
-    property_address_num,
-    property_floor,
-    property_total_floors,
-    num_of_rooms,
-    min_num_of_rooms,
-    max_num_of_rooms,
-    min_num_of_floors,
-    max_num_of_floors,
-    is_on_pillars,
-    num_of_parking,
-    num_of_balcony,
-    balcony,
-    build_mr,
-    build_mr_total,
-    contact_name,
-    contact_number_start,
-    contact_number,
-    mail,
-    Route,
-    air_condition,
-    shelter,
-    garage,
-    pandor,
-    furniture,
-    handicapped,
-    elevator,
-    tadiran,
-    unit,
-    renovated,
-    kosher,
-    boiler,
-    bars
-}=values
+
+// const {
+//     entery_date,
+//     exclusively,
+//     name,
+//     description,
+//     price,
+//     min_price,
+//     max_price,
+//     min_mr,
+//     max_mr,
+//     category,
+//     shipping,
+//     quantity,
+//     photo,
+//     loading,
+//     createdProduct,
+//     redirectToProfile,
+//     formData,
+//     property_type1,
+//     property_type2,
+//     property_type3,
+//     property_condition,
+//     property_address_city,
+//     property_address_street,
+//     property_address_num,
+//     property_floor,
+//     property_total_floors,
+//     num_of_rooms,
+//     min_num_of_rooms,
+//     max_num_of_rooms,
+//     min_num_of_floors,
+//     max_num_of_floors,
+//     is_on_pillars,
+//     num_of_parking,
+//     num_of_balcony,
+//     balcony,
+//     build_mr,
+//     build_mr_total,
+//     contact_name,
+//     contact_number_start,
+//     contact_number,
+//     mail,
+//     Route,
+//     air_condition,
+//     shelter,
+//     garage,
+//     pandor,
+//     furniture,
+//     handicapped,
+//     elevator,
+//     tadiran,
+//     unit,
+//     renovated,
+//     kosher,
+//     boiler,
+//     bars
+// }=values
 const submitSearch=()=>{
     fetch(`${API}/products/by/Filter`,
 {
@@ -169,19 +155,18 @@ const submitSearch=()=>{
       'Content-Type': 'application/json'
     },
     method: "POST",
-    body: JSON.stringify({...values})
+    body: JSON.stringify({...searchParameters})
 })
 .then(function(res){ res.json().then(body =>  {
   history.push("/shop", { body});
   window.location.reload(false);
    }); })
 .catch(function(res){ console.log(res) })
-
 }
+
 const date = (event)   => {
     if(event.target.checked===true)
     {
-      // alert('yes')
       var now = new Date();
       var month = (now.getMonth() + 1);               
       var day = now.getDate();
@@ -193,7 +178,7 @@ const date = (event)   => {
       
       document.getElementById('entery_date').value=today 
       setValues({ ...values, entery_date: today }); 
-      console.log(values)
+      setSearchParameters({ ...searchParameters, entery_date: today }); 
       document.getElementById('entery_date').disabled = true;
     }
     else{
@@ -201,12 +186,16 @@ const date = (event)   => {
 
     }
 };
+
 const changeMaxRooms=(e)=>{
   setValues({...values, ['max_rooms']: e.target.value})
+  setSearchParameters({...searchParameters,['max_rooms']: e.target.value})
   console.log(values)
 }
+
 const changeMaxfloors=(e)=>{
   setValues({...values, ['max_num_of_floors']: e.target.value})
+  setSearchParameters({...searchParameters, ['max_num_of_floors']: e.target.value})
   console.log(values)
 }
 
@@ -222,89 +211,90 @@ const radiosChange=(e)=>{
         radio.value='v'
        countRadiosCheck++ 
     }
+
     setValues({...values, [e.target.name]: !answer})
+    setSearchParameters({...searchParameters, [e.target.name]: !answer})
     setNumberOfRadioSelected(countRadiosCheck)
-    console.log({...values})
     
 }
-const advancedSearchFunc=(e)=>{    
-    if(advancedSearch===false)
-    {
-        setAdvancedSearch(true)
-        document.getElementById('plusButton').innerHTML='-'
-    }else{
-        setAdvancedSearch(false)
-        document.getElementById('plusButton').innerHTML='+'
+// const advancedSearchFunc=(e)=>{    
+//     if(advancedSearch===false)
+//     {
+//         setAdvancedSearch(true)
+//         document.getElementById('plusButton').innerHTML='-'
+//     }else{
+//         setAdvancedSearch(false)
+//         document.getElementById('plusButton').innerHTML='+'
 
-    }
+//     }
     
-}
+// }
 
 
-const roomsQuickButtonFunc=(e)=>{
-    const minRooms=document.getElementById("selectRooms")
-    const maxRooms=document.getElementById("selectRooms2")
-switch (e.target.value) {
-    case '1':
-        setNumOfRooms([2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-        minRooms.selectedIndex  = 3;
-        maxRooms.selectedIndex  = 3;
-        setValues({...values, min_num_of_rooms: '2',max_num_of_rooms: '3' })
+// const roomsQuickButtonFunc=(e)=>{
+//     const minRooms=document.getElementById("selectRooms")
+//     const maxRooms=document.getElementById("selectRooms2")
+// switch (e.target.value) {
+//     case '1':
+//         setNumOfRooms([2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
+//         minRooms.selectedIndex  = 3;
+//         maxRooms.selectedIndex  = 3;
+//         setValues({...values, min_num_of_rooms: '2',max_num_of_rooms: '3' })
         
-        break;
-        case '2':
-        setNumOfRooms([3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-        minRooms.selectedIndex  = 5;
-        maxRooms.selectedIndex  = 3;
-        setValues({...values, min_num_of_rooms: '3',max_num_of_rooms: '4' })
+//         break;
+//         case '2':
+//         setNumOfRooms([3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
+//         minRooms.selectedIndex  = 5;
+//         maxRooms.selectedIndex  = 3;
+//         setValues({...values, min_num_of_rooms: '3',max_num_of_rooms: '4' })
         
-        break;
-        case '3':
-            setNumOfRooms([4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-            minRooms.selectedIndex  = 7;
-        maxRooms.selectedIndex  = 3;
-        setValues({...values, min_num_of_rooms: '4',max_num_of_rooms: '5' })
+//         break;
+//         case '3':
+//             setNumOfRooms([4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
+//             minRooms.selectedIndex  = 7;
+//         maxRooms.selectedIndex  = 3;
+//         setValues({...values, min_num_of_rooms: '4',max_num_of_rooms: '5' })
 
-        break;
-        case '4':
-            setNumOfRooms([5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-            minRooms.selectedIndex  = 9;
-        maxRooms.selectedIndex  = 3;
-        setValues({...values, min_num_of_rooms: '5',max_num_of_rooms: '6' })
+//         break;
+//         case '4':
+//             setNumOfRooms([5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
+//             minRooms.selectedIndex  = 9;
+//         maxRooms.selectedIndex  = 3;
+//         setValues({...values, min_num_of_rooms: '5',max_num_of_rooms: '6' })
 
-        break;
-    default:
-        break;
-}
-}
-const priceQuickButtonFunc=(e)=>{
-    const minPrice=document.getElementById("min_price")
-    const maxPrice=document.getElementById("max_price")
-switch (e.target.value) {
-    case '1':
-        setValues({...values, min_price: '0',max_price: '1,500,000' })
-        minPrice.value = "0";
-        maxPrice.value = "1,500,000";
-        break;
-        case '2':
-            setValues({...values, min_price: '1,500,000',max_price: '2,000,000' })
-            minPrice.value = "1,500,000";
-            maxPrice.value = "2,000,000";
-            break;
-        case '3':
-            setValues({...values, min_price: '2,000,000',max_price: '3,500,000' })
-            minPrice.value = "2,000,000";
-            maxPrice.value = "3,500,000";
-            break;
-        case '4':
-            setValues({...values, min_price: '3,500,000',max_price: '5,000,000' })
-            minPrice.value = "3,500,000";
-            maxPrice.value = "5,000,000";
-            break;
-    default:
-        break;
-}
-}
+//         break;
+//     default:
+//         break;
+// }
+// }
+// const priceQuickButtonFunc=(e)=>{
+//     const minPrice=document.getElementById("min_price")
+//     const maxPrice=document.getElementById("max_price")
+// switch (e.target.value) {
+//     case '1':
+//         setValues({...values, min_price: '0',max_price: '1,500,000' })
+//         minPrice.value = "0";
+//         maxPrice.value = "1,500,000";
+//         break;
+//         case '2':
+//             setValues({...values, min_price: '1,500,000',max_price: '2,000,000' })
+//             minPrice.value = "1,500,000";
+//             maxPrice.value = "2,000,000";
+//             break;
+//         case '3':
+//             setValues({...values, min_price: '2,000,000',max_price: '3,500,000' })
+//             minPrice.value = "2,000,000";
+//             maxPrice.value = "3,500,000";
+//             break;
+//         case '4':
+//             setValues({...values, min_price: '3,500,000',max_price: '5,000,000' })
+//             minPrice.value = "3,500,000";
+//             maxPrice.value = "5,000,000";
+//             break;
+//     default:
+//         break;
+// }
+// }
     // const init = () => {
     //     getCategories().then(data => {
     //         if (data.error) {
@@ -316,38 +306,51 @@ switch (e.target.value) {
     // };
     
     function inputChangeHandler(event) {
-        if(event.target.name==='property_type1')
-        {
-            console.log(values)
-            document.getElementById('apartmentsImg').classList.contains('image_style_orange')?
-            setValues({...values, [event.target.name]: event.target.value }):
-            setValues({...values, [event.target.name]: '' });
-            return 
-        }
-
-        if(event.target.name==='property_type2')
-        {
-            console.log(values)
-            document.getElementById('housesImg').classList.contains('image_style_orange')?
-            setValues({...values, [event.target.name]: event.target.value }):
-            setValues({...values, [event.target.name]: '' });
-            return 
-        }
-        if(event.target.name==='property_type3')
-        {
-            console.log(values)
-            document.getElementById('extraImg').classList.contains('image_style_orange')?
-            setValues({...values, [event.target.name]: event.target.value }):
-            setValues({...values, [event.target.name]: '' });
-            return 
-        }
+        // if(event.target.name==='property_type1')
+        // {
+        //     console.log(values)
+        //     document.getElementById('apartmentsImg').classList.contains('image_style_orange')?
+        //     setValues({...values, [event.target.name]: event.target.value }):
+        //     setValues({...values, [event.target.name]: '' });
+        //     // context 
+        //     document.getElementById('apartmentsImg').classList.contains('image_style_orange')?
+        //     setSearchParameters({...searchParameters, [event.target.name]: event.target.value }):
+        //     setSearchParameters({...searchParameters, [event.target.name]: '' });
+        //     return 
+        // }
+        // if(event.target.name==='property_type2')
+        // {
+        //     console.log(values)
+        //     document.getElementById('housesImg').classList.contains('image_style_orange')?
+        //     setValues({...values, [event.target.name]: event.target.value }):
+        //     setValues({...values, [event.target.name]: '' });
+        //   // context
+        //   document.getElementById('housesImg').classList.contains('image_style_orange')?
+        //   setSearchParameters({...searchParameters, [event.target.name]: event.target.value }):
+        //   setSearchParameters({...searchParameters, [event.target.name]: '' });
+        //     return 
+        // }
+        // if(event.target.name==='property_type3')
+        // {
+        //     console.log(values)
+        //     document.getElementById('extraImg').classList.contains('image_style_orange')?
+        //     setValues({...values, [event.target.name]: event.target.value }):
+        //     setValues({...values, [event.target.name]: '' });
+        //     // 
+        //     document.getElementById('extraImg').classList.contains('image_style_orange')?
+        //     searchParameters({...searchParameters, [event.target.name]: event.target.value }):
+        //     searchParameters({...searchParameters, [event.target.name]: '' });
+        //     return 
+        // }
         
-        setValues({...values, [event.target.name]: event.target.value }); 
-        console.log(values) 
+        // setValues({...values, [event.target.name]: event.target.value });
+        setSearchParameters({...searchParameters, [event.target.name]: event.target.value }); 
+
+        console.log(searchParameters,'search parameters from context') 
+        console.log(values,'search parameters from value') 
     } 
 
     const loadFilteredResults = newFilters => {
-        // console.log(newFilters);
         getFilteredProducts(skip, limit, newFilters).then(data => {
             if (data.error) {
                 setError(data.error);
@@ -358,108 +361,132 @@ switch (e.target.value) {
             }
         });
     };
+    // changing room drop down so it will be from ''min num of rooms chosen'' to the end
     const changeRoomSelection=(e)=>{
             let num=document.getElementById('selectRooms').value
-               console.log(numOfRooms)
-               console.log(num)
-               console.log({...values})
+              //  console.log(numOfRooms)
+              //  console.log(num)
+              //  console.log({...values})
                switch(num) {
                 case '1':
                     setNumOfRooms([1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '1'})
+                    // setValues({...values, min_num_of_rooms: '1'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '1'})
                   break;
                   case 'הכל':
                     setNumOfRooms([1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '1'})
-    
+                    // setValues({...values, min_num_of_rooms: '1'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '1'})
                     break;
                 case '1.5':
                     setNumOfRooms([1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '1.5'})
+                    // setValues({...values, min_num_of_rooms: '1.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '1.5'})
                     break;
                   case '2':
                     setNumOfRooms([2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '2'})
+                    // setValues({...values, min_num_of_rooms: '2'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '2'})
                     break;
                   case '2.5':
                     setNumOfRooms([2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '2.5'})
-                  break;
+                    // setValues({...values, min_num_of_rooms: '2.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '2.5'})
+                    break;
                   case '3':
                     setNumOfRooms([3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '3'})
+                    // setValues({...values, min_num_of_rooms: '3'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '3'})
                   break;
                   case '3.5':
                     setNumOfRooms([3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '3.5'})
+                    // setValues({...values, min_num_of_rooms: '3.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '3.5'})
                   break;
                   case '4':
                     setNumOfRooms([4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '4'})
+                    // setValues({...values, min_num_of_rooms: '4'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '4'})
                   break;
                   case '4.5':
                     setNumOfRooms([4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '4.5'})
+                    // setValues({...values, min_num_of_rooms: '4.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '4.5'})
                   break;
                   case '5':
                     setNumOfRooms([5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '5'})
+                    // setValues({...values, min_num_of_rooms: '5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '5'})
                   break;
                   case '5.5':
                     setNumOfRooms([5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '5.5'})
+                    // setValues({...values, min_num_of_rooms: '5.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '5.5'})
                   break;
                   case '6':
                     setNumOfRooms([6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '6'})
+                    // setValues({...values, min_num_of_rooms: '6'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '6'})
                   break;
                   case '6.5':
                     setNumOfRooms([6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '6.5'})
+                    // setValues({...values, min_num_of_rooms: '6.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '6.5'})
                   break;
                   case '7':
                     setNumOfRooms([7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '7'})
+                    // setValues({...values, min_num_of_rooms: '7'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '7'})
                   break;
                   case '7.5':
                     setNumOfRooms([7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '7.5'})
+                    // setValues({...values, min_num_of_rooms: '7.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '7.5'})
                   break;
                   case '8':
                     setNumOfRooms([8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '8'})
+                    // setValues({...values, min_num_of_rooms: '8'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '8'})
                   break;
                   case '8.5':
                     setNumOfRooms([8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '8.5'})
+                    // setValues({...values, min_num_of_rooms: '8.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '8.5'})
                   break;
                   case '9':
                     setNumOfRooms([9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '9'})
+                    // setValues({...values, min_num_of_rooms: '9'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '9'})
                   break;
                   case '9.5':
                     setNumOfRooms([9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '9.5'})
+                    // setValues({...values, min_num_of_rooms: '9.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '9.5'})
                   break;
                   case '10':
                     setNumOfRooms([10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '10'})
+                    // setValues({...values, min_num_of_rooms: '10'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '10'})
                   break;
                   case '10.5':
                     setNumOfRooms([10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '10.5'})
+                    // setValues({...values, min_num_of_rooms: '10.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '10.5'})
                   break;
                   case '11':
                     setNumOfRooms([11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '11'})
+                    // setValues({...values, min_num_of_rooms: '11'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '11'})
                   break;
                   case '11.5':
                     setNumOfRooms([11.5,12])
-                    setValues({...values, min_num_of_rooms: '11.5'})
+                    // setValues({...values, min_num_of_rooms: '11.5'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '11.5'})
                   break;
                   case '12':
                     setNumOfRooms([12])
-                    setValues({...values, min_num_of_rooms: '12'})
+                    // setValues({...values, min_num_of_rooms: '12'})
+                    setSearchParameters({...searchParameters, min_num_of_rooms: '12'})
                   break;
                 default:
                     // setNumOfRooms([1,1.5,2,2.5,3,3.5,4,4.5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
@@ -467,75 +494,83 @@ switch (e.target.value) {
            }
            const changeFloorSelection=(e)=>{
             let num=document.getElementById('selectFloors').value
-               console.log({...values})
+              //  console.log({...values})
                switch(num) {
                 case '1':
                     setNumOfFloors(['פרטר/מרתף',1,2,3,4,5,6,7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '1'})
+                    // setValues({...values, min_num_of_floors: '1'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '1'})
                   break;
                   case 'הכל':
-                    setNumOfFloors([1,2,3,4,5,6,7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '1'})
-    
+                    setNumOfFloors(['פרטר/מרתף',1,2,3,4,5,6,7,8,9,10,11,12,13,14])
+                    // setValues({...values, min_num_of_floors: '1'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '1'})    
                     break;
                   case '2':
                     setNumOfFloors([2,3,4,5,6,7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '2'})
+                    // setValues({...values, min_num_of_floors: '2'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '2'})
                     break;
                   case '3':
                     setNumOfFloors([3,4,5,6,7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '3'})
+                    // setValues({...values, min_num_of_floors: '3'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '3'})
                   break;
-                
                   case '4':
                     setNumOfFloors([4,5,6,7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '4'})
+                    // setValues({...values, min_num_of_floors: '4'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '4'})
                   break;
                   case '5':
                     setNumOfFloors([5,6,7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '5'})
+                    // setValues({...values, min_num_of_floors: '5'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '5'})
                   break;
                   case '6':
                     setNumOfFloors([6,7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '6'})
+                    // setValues({...values, min_num_of_floors: '6'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '6'})
                   break;
                   
                   case '7':
                     setNumOfFloors([7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '7'})
+                    // setValues({...values, min_num_of_floors: '7'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '7'})
                   break;
-                  
                   case '8':
                     setNumOfFloors([8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '8'})
+                    // setValues({...values, min_num_of_floors: '8'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '8'})
                   break;
-                  
                   case '9':
                     setNumOfFloors([9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '9'})
+                    // setValues({...values, min_num_of_floors: '9'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '9'})
                   break;
-                  
                   case '10':
                     setNumOfFloors([10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '10'})
+                    // setValues({...values, min_num_of_floors: '10'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '10'})
                   break;
-                  
                   case '11':
                     setNumOfFloors([11,12,13,14])
-                    setValues({...values, min_num_of_floors: '11'})
+                    // setValues({...values, min_num_of_floors: '11'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '11'})
                   break;
-                  
                   case '12':
                     setNumOfFloors([12,13,14])
-                    setValues({...values, min_num_of_floors: '12'})
+                    // setValues({...values, min_num_of_floors: '12'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '12'})
                   break;
                   case '13':
                     setNumOfFloors([13,14])
-                    setValues({...values, min_num_of_floors: '13'})
+                    // setValues({...values, min_num_of_floors: '13'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '13'})
                   break;
                   case '14':
                     setNumOfFloors([14])
-                    setValues({...values, min_num_of_floors: '14'})
+                    // setValues({...values, min_num_of_floors: '14'})
+                    setSearchParameters({...searchParameters,min_num_of_floors: '14'})
                   break;
                 default:
                     // setNumOfRooms([1,1.5,2,2.5,3,3.5,4,4.5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
@@ -572,30 +607,31 @@ switch (e.target.value) {
         loadFilteredResults(skip, limit, myFilters.filters);
     }, []);
 
-    const handleFilters = (filters, filterBy) => {
-        // console.log("SHOP", filters, filterBy);
-        const newFilters = { ...myFilters };
-        newFilters.filters[filterBy] = filters;
+    // const handleFilters = (filters, filterBy) => {
+    //     // console.log("SHOP", filters, filterBy);
+    //     const newFilters = { ...myFilters };
+    //     newFilters.filters[filterBy] = filters;
 
-        if (filterBy === "price") {
-            let priceValues = handlePrice(filters);
-            newFilters.filters[filterBy] = priceValues;
-        }
-        // loadFilteredResults(myFilters.filters);
-        setMyFilters(newFilters);
-    };
+    //     if (filterBy === "price") {
+    //         let priceValues = handlePrice(filters);
+    //         newFilters.filters[filterBy] = priceValues;
+    //     }
+    //     // loadFilteredResults(myFilters.filters);
+    //     setMyFilters(newFilters);
+    // };
 
-    const handlePrice = value => {
-        const data = prices;
-        let array = [];
+    // const handlePrice = value => {
+    //     const data = prices;
+    //     let array = [];
 
-        for (let key in data) {
-            if (data[key]._id === parseInt(value)) {
-                array = data[key].array;
-            }
-        }
-        return array;
-    };
+    //     for (let key in data) {
+    //         if (data[key]._id === parseInt(value)) {
+    //             array = data[key].array;
+    //         }
+    //     }
+    //     return array;
+    // };
+
     const openDropDown=()=>{
 setDropDown(!dropDown)
 !dropDown?
@@ -620,17 +656,14 @@ document.getElementById('dropDown_arrow').innerHTML=('&#709;')
             document.getElementById('circle_icon_x').classList=('display_none')
           }
                 }
-          
 
-
-// document.getElementById('graphlabel2').style.width = style.getPropertyValue("height");
-
+//-----------------------------------------------return---------------------------------------------------
     return (
 <div className={'parent_lineSearch_upper'} style={{width:'90vw',margin:'0 auto',textAlign:'right'}}>
+  <p>{searchParameters.max_rooms}</p>
 <div class="parent_lineSearch">
 <div class="div1_lineSearch"><input placeholder={'לדוגמה:תל אביב יפו'} className={'adress_input_search_bar'} /></div>
 <div class="div2_lineSearch">
-
   <p onClick={openDropDown} style={{fontSize:'.875rem',color:'#ccc'}} id={'dropDown_father'} className={'adress_input_search_bar'}><span id={'dropDown_arrow'} className={'down_arrow'} style={{float:'left'}} >&#709;</span> בחרו סוגי נכסים</p>
   {dropDown&&
   <div id={'new_dropDown'} dir='rtl' className={'new_dropDown'}>
@@ -638,8 +671,8 @@ document.getElementById('dropDown_arrow').innerHTML=('&#709;')
     <input type='checkbox' />
     <span className={'dropDown_checkbox_title'}>כל סוגי הנכסים</span>
     </div>
-
     <div className={'dropDown_field'}>
+    
     <input  type='checkbox' />
     <span className={'dropDown_checkbox_title'}>דירות</span>
     <br/>
@@ -660,13 +693,11 @@ document.getElementById('dropDown_arrow').innerHTML=('&#709;')
     </div>
     <hr/>
     <p className={'dropDown_submit'}>בחירה</p>
-    
     </div>    
-    
     }
     
   </div>
-<div class="div3_lineSearch">  <p onClick={openDropDownRooms} style={{fontSize:'.875rem',color:'#ccc'}} id={'dropDown_father'} className={'adress_input_search_bar'}><span id={'dropDown_arrow_rooms'} className={'down_arrow'} style={{float:'left'}} >&#709;</span>חדרים</p>
+  <div class="div3_lineSearch">  <p onClick={openDropDownRooms} style={{fontSize:'.875rem',color:'#ccc'}} id={'dropDown_father'} className={'adress_input_search_bar'}><span id={'dropDown_arrow_rooms'} className={'down_arrow'} style={{float:'left'}} >&#709;</span>חדרים</p>
   {dropDownRooms&&
   <div  dir='rtl' className={'new_dropDownRooms'}>
     <span >

@@ -4,15 +4,15 @@ import useStateWithCallback from 'use-state-with-callback';
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import { createProduct, getCategories,uploadImage } from "./apiAdmin";
-import { FaRegSnowflake,FaWheelchair } from 'react-icons/fa';
+import { FaRegSnowflake,FaWheelchair,FaShekelSign } from 'react-icons/fa';
 import { FiBox } from 'react-icons/fi';
-import { BiBox,BiCabinet } from 'react-icons/bi';
+import { BiBox,BiCabinet} from 'react-icons/bi';
 import { CgCamera } from 'react-icons/cg';
 import { RiDoorClosedLine } from 'react-icons/ri';
 import { GiElevator,GiTap,GiSolarPower } from 'react-icons/gi';
-import { BsHouseDoor } from 'react-icons/bs';
+import { BsPlusCircle,BsFillTrashFill } from 'react-icons/bs';
 import { RiPaintBrushLine } from 'react-icons/ri';
-import { AiOutlineTable,AiOutlinePlus } from 'react-icons/ai';
+import { AiOutlineTable,AiOutlinePlus,AiOutlineCrown } from 'react-icons/ai';
 import { API } from "../config";
 
 import icon2 from './../icons/digit_2.ico'
@@ -30,7 +30,7 @@ let picsList={
   pic5:'',
   pic6:'',
 }
-
+const mq = window.matchMedia( "(max-width: 690px)" );   
 const AddProduct = () => {
 
   const [fileInput,setFileInput]=useState('')
@@ -49,13 +49,14 @@ const [previewPic2,setPreviewPic2]=useState('')
 const [previewPic3,setPreviewPic3]=useState('')
 const [previewPic4,setPreviewPic4]=useState('')
 const [imagesUrlList,setImagesUrlList]=useState([])
+const [isAddContact,setIsAddContact]=useState(false)
+const [isAgreeTerms,setIsAgreeTerms]=useState(false)
 
 
 
 
 
 const uploadImageToCloud=async (base64,video,pic1,pic2,pic3,pic4)=>{
- 
   try {
     await fetch(`${API}/upload`,{
       // method:'POST',
@@ -328,6 +329,10 @@ reader.onloadend=()=>{
         init();
     }, []);
     
+    const handleCheckTerms=(e)=>{
+      let value=e.target.checked
+      setIsAgreeTerms(!isAgreeTerms)
+    }
 
     const handleChange = name => event => {
   console.log(imagesUrlList)
@@ -573,8 +578,12 @@ reader.onloadend=()=>{
         event.preventDefault();
         setValues({ ...values, error: "", loading: true });
         console.log(picsList)
+        let switchig1=picsList.pic1
+        let switchig2=picsList.pic2
+        picsList.pic1=switchig2
+        picsList.pic2=switchig1
         let obj={fullForm:values,redioButtons:radios,pics:picsList}
-        createProduct(user._id, token, obj).then()
+        createProduct(user._id, token, obj).then(console.log('new post is cool cool cool'))
           
         //   data => {
         //     if (data.error) {
@@ -593,10 +602,11 @@ reader.onloadend=()=>{
         //     }
         // });
     };
-    const [isSelected,setIselected]=useState('5')
+    const [isSelected,setIselected]=useState('6')
     const [iscCicked_next,setIsCicked_next]=useState(false)
     const [iscCicked2_next,setIsCicked2_next]=useState(false)
     const [iscCicked3_next,setIsCicked3_next]=useState(false)
+    const [iscCicked5_next,setIsCicked5_next]=useState(false)
 
     const [firstFields,setFirstFields]=useState({
       type:false,
@@ -808,7 +818,11 @@ moveNextSection(4)
   }
 
 }
-
+const fifthNext=()=>{     
+  
+  isAgreeTerms===false?setIsCicked5_next(true):moveNextSection(6)
+  
+}
 
 
     const newPostForm = () => (
@@ -1394,10 +1408,77 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 </select>
 </div>
 <div class="div6_contact_infoA"> 
-<input disabled className={'verified_number'} placeholder={`המספר אומת`} style={{width:'80%',textAlign:'right'}}/>
+<input disabled className={'verified_number'} placeholder={`   המספר אומת`} style={{width:'80%',textAlign:'right'}}/>
+</div>
+</div>
+{
+  !isAddContact&&
+<div onClick={()=>{setIsAddContact(true)}} className={'add_contact'}>
+<span><BsPlusCircle/></span>
+<span style={{marginRight:'6px'}}>הוספת אישר קשר נוסף</span>
+</div>
+}
+{
+  isAddContact&&
+<div style={{marginTop:'40px'}} class="parent_contact_infoA">
+<div class="div1_contact_infoA"> 
+<span>איש קשר נוסף</span>
+</div>
+<div class="div2_contact_infoA">
+<span>טלפון נוסף</span>
+</div>
+<div class="div3_contact_infoA">
+  <input className={'name_contact_infoA_input'}  type="text" />
+</div>
+<div class="div4_contact_infoA"> 
+    <input className={'contact_infoA_input'}  type="number"  pattern={"[0-9]{3}-[0-9]{2}-[0-9]{2}"} />
+</div>
+
+<div class="div5_contact_infoA">
+<select  defaultValue={'null'}   className={'contact_infoA_input'}>
+<option  value="050">050</option>
+<option  value="051">051</option>
+<option  value="052">052</option>
+<option  value="053">053</option>
+<option  value="054">054</option>
+<option  value="055">055</option>
+<option  value="058">058</option>
+</select>
+</div>
+
+<div onClick={()=>{setIsAddContact(false)}} style={{color:'gray',fontSize:'14px',marginTop:'6px'}} class="div6_contact_infoA"> 
+<span>ביטול</span>
+<span><BsFillTrashFill/></span>
+</div>
+
+</div>
+}
+<div>
+  <span  className={'field_info_title'}>
+    דוא"ל
+  </span>
+  <br/>
+      <input style={{marginRight:'-15px'}} className={'field_select'} value={isAuthenticated().user.email} type={"email"} onChange={handleChange("mail")} placeholder={`${isAuthenticated().user.email}`} />
+</div>
+<div className={'field_select agree_terms'}>
+  <input onChange={handleCheckTerms} style={{marginTop:'0'}}  className={'updated_checkbox'} type={'checkbox'}/>
+  <span>קראתי ואישרתי את <a href={'https://www.yad2.co.il/eula'} style={{color: '#ff6600'}} className={'terms_link'}>התקנון</a>*</span>
+</div>
+
+{
+  !isAgreeTerms&&iscCicked5_next&&
+  <p className={'terms_note'}>חובה לסמן אם תרצו להמשיך</p>
+}
+{/* buttons */}
+<div style={{direction:'ltr'}} class="parent_buttons">
+<div class="div1_buttons">
+</div>
+<div class="div2_buttons">
+  <button onClick={fifthNext} className={'continue_button_pic_route'}>המשך לבחירת מסלול</button>
 </div>
 </div>
     </div>}
+
   </div>
 </div>
 
@@ -1405,7 +1486,140 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 <div  style={{direction:'rtl'}}>
 <span onClick={handleFieldSelection} name={'publish_field'} className={isSelected=='6'?"circle_selected":'circle_before_select'}>6</span>
   <span className={isSelected=='6'?"text_select":'text_not_select'} >סיום פרסום</span>
+  {isSelected=='6'&&!(mq.matches)&&
+  <div style={{paddingRight:'5.5%',marginTop:'10px'}}>
+  <span className={'pick_route_title'}>זהו, אנחנו בסוף. לנו נשאר לשמור את המודעה שלך, לך נשאר לבחור את מסלול הפרסום.</span>
+<hr style={{marginLeft:'20px',background:'black'}} />    
+<span style={{fontWeight:'400'}} className={'pick_route_title'}>באיזה מסלול לפרסם את המודעה? זה הרגע לבלוט מעל כולם</span>
+<div class="parent_routes">
+<div class="div1_routes basic_route">
+  <div style={{backgroundColor:'rgb(252,251,251)'}} class="parent_basic">
+  <div class="div1_basic">
+<span className={'route_title'}>בסיסי</span>
   </div>
+  <div class="div2_basic">
+<span className={'route_include'} >מודעה רגילה  &#10003;</span>
+  </div>
+  <div class="div3_basic">
+  <span className={'route_not_include'}>הקפצה אוטומטית לחסכון בזמן  &#10005;
+</span>
+  </div>
+  <div onClick={()=>{setValues({ ...values, 'Route': 'basic' })}} class="div4_basic">
+  <span className={'not_vip_button'}>  
+    <span>חינם</span>
+    <span> / 120 ימים</span>
+  </span>
+  </div>
+</div>
+</div>
+<div class="div2_routes vip_route">
+<div class="parent_vip">
+<div class="div1_vip">
+<span className={'route_title'}>VIP</span>
+</div>
+<div class="div2_vip">
+<span className={'crown_vip'}> <span>מומלץ</span> <span className={'crown_icon'}><AiOutlineCrown /></span></span>
+</div>
+<div class="div3_vip">
+<span className={'route_include'} >מודעה מודגשת בצבע צהוב  &#10003;</span>
+</div>
+<div class="div4_vip">
+<span className={'route_include'} >הקפצה אוטומטית לחסכון בזמן  &#10003;</span>
+</div>
+<div class="div5_vip">
+<span className={'route_include'} >הופעה לפני הודעות רגילות וורודות  &#10003;</span>
+</div>
+<div onClick={()=>{setValues({ ...values, 'Route': 'vip' })}} class="div6_vip">
+  <span className={'vip_button'}>
+  <span>199 <FaShekelSign/>  </span>
+  <span className={'vip_button__days'}> / 28 ימים</span>
+  </span>
+
+</div>
+</div>
+</div>
+<div class="div3_routes marked">
+<div class="parent_basic">
+  <div class="div1_basic">
+<span className={'route_title'}>מודגשת</span>
+  </div>
+  <div class="div2_basic">
+<span className={'route_include'} >מודעה מודגשת בצבע ורוד  &#10003;</span>
+  </div>
+  <div class="div3_basic">
+  <span className={'route_include'}>הקפצה אוטומטית לחסכון בזמן  &#10003;
+</span>
+  </div>
+  <div onClick={()=>{setValues({ ...values, 'Route': 'marked' })}} style={{direction:'rtl'}} class="div4_basic">
+  <span style={{color:'#ff7100',backgroundColor:'white'}} className={'vip_button'}>
+  <span  >99 <FaShekelSign/>  </span>
+  <span className={'vip_button__days'}> / 28 ימים</span>
+  </span>
+  </div>
+</div>
+</div>
+</div>
+
+<button onClick={clickSubmit}>יד 2</button>
+
+<button style={{marginRight:'40px'}} onClick={handleSubmitFile}>מדיה לענן</button>
+  </div>}
+  {isSelected=='6'&&(mq.matches)&&
+  <div style={{paddingRight:'5.5%',marginTop:'10px'}}>
+    
+    <span className={'pick_route_title'}>זהו, אנחנו בסוף. לנו נשאר לשמור את המודעה שלך, לך נשאר לבחור את מסלול הפרסום.</span>
+<hr style={{marginLeft:'20px',background:'black'}} />    
+<span style={{fontWeight:'400'}} className={'pick_route_title'}>באיזה מסלול לפרסם את המודעה? זה הרגע לבלוט מעל כולם</span>
+<div class="parent_route_s_sc">
+<div class="div1_route_s_sc vip_route_s_sc">
+  <p className={'route_title_s_sc'}>vip</p>
+  <span className={'crown_vip_s_sc'}>  <span className={'crown_icon'}><AiOutlineCrown /></span><span>מומלץ</span></span>
+  <p style={{marginTop:'10px'}}><span className={'route_include_s_sc'} >&#10003; מודעה מודגשת בצבע צהוב  </span></p>
+  <p><span className={'route_include_s_sc'} >&#10003; הקפצה אוטומטית לחסון בזמן  </span></p>
+  <p><span className={'route_include_s_sc'} >&#10003; הופעה לפני מודעות רגילות וורודות  </span></p>
+  
+  <p className={'vip_button_s_sc'}>
+    <span >
+  <span>199 <FaShekelSign/>  </span>
+  <span className={'vip_button__days'}> / 28 ימים</span>
+  </span>
+  </p>  
+</div>
+{/*  */}
+<div class="div2_route_s_sc">
+<div class="div1_route_s_sc marked_route_s_sc">
+  <p className={'route_title_s_sc'}>מודגשת</p>
+  <p style={{marginTop:'10px'}}><span className={'route_include_s_sc'} >&#10003; מודעה מודגשת בצבע ורוד  </span></p>
+  <p><span className={'route_include_s_sc'} >&#10003; הקפצה אוטומטית לחסון בזמן  </span></p>
+  
+  <p className={'marked_button_s_sc'}>
+  <span >
+  <span  >99 <FaShekelSign/>  </span>
+  <span className={'vip_button__days'}> / 28 ימים</span>
+  </span>
+  </p>  
+</div>
+</div>
+{/*  */}
+<div class="div3_route_s_sc">
+<div class="div1_route_s_sc marked_route_s_sc">
+  <p className={'route_title_s_sc'}>בסיסי</p>
+  <p style={{marginTop:'10px'}}><span className={'route_include_s_sc'} >&#10003; מודעה רגילה  </span></p>
+  <p><span style={{opacity:'0.5'}} className={'route_include_s_sc'} >&#10005; הקפצה אוטומטית לחסון בזמן  </span></p>
+  
+  <p className={'marked_button_s_sc'}>
+  <span >
+  <span  >חינם </span>
+  <span className={'vip_button__days'}> / 120 ימים</span>
+  </span>
+  </p>  
+</div>
+</div>
+</div>
+
+
+    </div>}
+    </div>
 </div>
 
 </div>

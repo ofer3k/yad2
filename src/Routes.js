@@ -14,17 +14,22 @@ import SearchForm from "./core/SearchForm";
 import Product from "./core/Product";
 import Cart from "./core/Cart";
 import ProductPopup from "./core/ProductPopUp";
-
+import AppState from "./context/AppState";
+import SearchState from "./context/SearchState";
 const Routes = () => {
     return (
         <BrowserRouter>
+            
             <Switch>
-                <Route path="/" exact component={Shop} />
-                <Route path="/" exact component={Home} />
+
+                <SearchState>
+                <Route path={["/", "/shop"]} exact component={Shop} />
                 <Route path="/SearchForm" exact component={SearchForm} />
-                <Route path="/shop" exact component={Shop} />
+                </SearchState>
+
                 <Route path="/signin" exact component={Signin} />
                 <Route path="/signup" exact component={Signup} />
+                
                 <PrivateRoute
                     path="/user/dashboard"
                     exact
