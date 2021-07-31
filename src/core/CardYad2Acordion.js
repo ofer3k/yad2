@@ -11,7 +11,7 @@ import { BsHouseDoor } from 'react-icons/bs';
 import { RiPaintBrushLine } from 'react-icons/ri';
 import { AiOutlineTable } from 'react-icons/ai';
 import airconditioner from './../imgs/air-conditioner.ico'
-
+import Popup_IconTitle from "./small-components/Popup_IconTitle";
 
 import { addItem, updateItem, removeItem } from "./cartHelpers";
 import { Accordion,Card,Button,Form,ButtonGroup ,ToggleButton,Pagination } from 'react-bootstrap';
@@ -63,13 +63,9 @@ const CardYad2Acordion = ({
 }) => {
     const [showInfo,setShowInfo]= useState(false);
     const [redirect, setRedirect] = useState(false);
-    // const [count, setCount] = useState(product.count);
-// if(product.Route!==undefined)
-// document.getElementById('card_acordion').classList.add('vip')
     
     return (
 <div style={{color:'black'}}  >
-
         <div  dir='ltr' style={{border:'none'}} className="card">
 {/* <div style={{height:'110px'}} class="parent_card">
 <div class="div1_card"> <img className={'img1'} src={product.pic1}></img> </div>

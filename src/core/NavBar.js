@@ -1,8 +1,6 @@
 import React, { useState,Fragment } from 'react';
 import { Link, withRouter } from "react-router-dom";
-// import { signout, isAuthenticated } from "../auth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
 import { faBars,faArrowLeft,faAngleLeft,faHome,faCar, faCouch, faSuitcase, faSearch, faPaw, faGraduationCap } from '@fortawesome/free-solid-svg-icons'
 import Avatar from '@material-ui/core/Avatar';
 import { Redirect } from "react-router-dom";

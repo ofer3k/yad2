@@ -1,0 +1,169 @@
+.container_line_navBar{
+    width:100vw;
+    position:absolute ;
+    top: 0; 
+    height: 70px;
+    border-top: 5.5px solid rgb(255,113,0);
+    background-color: rgb(255,255,255);
+    box-shadow: 0 5px 6px 0 rgb(0 0 0 / 10%);
+}
+.parent_line_navBar {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    text-align: center;
+    align-items: center;
+    height: 100%;
+    }
+    
+    .div1_line_navBar {width: 100%;
+        height: 100%;   grid-area: 1 / 12 / 2 / 13; }
+    .div2_line_navBar {width: 100%;
+        height: 100%;  grid-area: 1 / 11 / 2 / 12; }
+    .div3_line_navBar {width: 100%;
+        height: 100%; grid-area: 1 / 10 / 2 / 11; }
+    .div4_line_navBar {width: 100%;
+        height: 100%; grid-area: 1 / 9 / 2 / 10; }
+    .div5_line_navBar {width: 100%;
+        height: 100%; grid-area: 1 / 8 / 2 / 9; }
+    .div6_line_navBar {width: 100%;
+        height: 100%; grid-area: 1 / 7 / 2 / 8; }
+    .div7_line_navBar {width: 100%;
+        height: 100%; grid-area: 1 / 6 / 2 / 7; }
+    .div8_line_navBar {width: 100%;
+        height: 100%; grid-area: 1 / 5 / 2 / 6; }
+    .div9_line_navBar {width: 100%;
+        height: 100%; grid-area: 1 / 4 / 2 / 5; }
+    .div10_line_navBar {width: 100%;
+        height: 100%; grid-area: 1 / 3 / 2 / 4; }
+    .div11_line_navBar {width: 100%;
+        height: 100%; grid-area: 1 / 2 / 2 / 3; }
+    .div12_line_navBar {width: 100%;
+        height: 100%; grid-area: 1 / 1 / 2 / 2; }
+    
+
+.lineBar_icon__container{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    background-color: white;
+    justify-content: center;
+}
+.lineBar_icon__container__avatar{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+
+}
+.lineBar_icon__container_smaller{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    background-color: white;
+    justify-content: center;
+}
+.lineBar_icon__container:hover{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    cursor: pointer;
+    background-color: rgb(243, 243, 243);
+    justify-content: center;
+}
+
+.select_content{
+    position: absolute;
+    top:-24px;
+    margin-left: -300px;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 5px 6px 0 rgb(0 0 0 / 30%);
+z-index: 100 !important ;
+    width: 400px;
+}
+.select_content__avatar{
+    position: absolute;
+    top:-24px;
+    margin-left: -300px;
+    background-color: white;
+    /* padding: 10px; */
+    box-shadow: 0 5px 6px 0 rgb(0 0 0 / 30%);
+z-index: 100 !important ;
+    width: 400px;
+}
+
+.parent_flex {
+    margin-top: 90px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    text-align: right;
+    grid-row-gap: 0px;
+    justify-content: space-between;
+    }
+    .parent_flex_one_list {
+    width: 200px;
+    margin-left: -100px;
+    margin-top: 90px;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: 1fr;
+        grid-column-gap: 0px;
+        text-align: right;
+        }
+    
+    .div1_flex { grid-area: 1 / 2 / 2 / 3; }
+    .div2_flex { grid-area: 1 / 1 / 2 / 2; }
+.li_LineBar{
+        text-decoration: none;
+        margin: 1px;
+    }
+.li_LineBar:hover{
+        text-decoration: none;
+        margin: 1px;
+        color: #ff7100;
+    }
+.single_note{
+    text-align: center;
+    width: 250px;
+    font-size: 14px;
+    padding: 10px 20px;
+}
+.note_msg__icon{
+    font-size: 20px;
+    font-weight: 600;
+}
+.avatar_navBar{
+    margin: auto;
+    background-color: rgb(249,249,249);
+    border-radius: 50%;
+    padding: 8px 13px;
+}
+.user_private_dropDown{
+    text-align: right;
+    width: 100%;
+    height: 100%;
+   padding: 6px 0;
+
+}
+.user_private_dropDown:hover{
+    text-align: right;
+   width: 100%;
+   padding: 6px 0;
+    height: 100%;
+    background-color: rgb(216, 216, 216);
+
+}
+.user_choice{
+    font-size: 14px;
+}
+.user_choice_title{
+margin-right: 4px;
+}

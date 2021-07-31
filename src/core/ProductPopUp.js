@@ -1,65 +1,22 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import { read, listRelated } from "./apiCore";
-import Card from "./Card";
+import Popup_IconTitle from "./small-components/Popup_IconTitle";
+// react icon
 import { GoLocation } from 'react-icons/go';
-import { IoLogoWhatsapp } from 'react-icons/io';
 import { TiLocationArrowOutline } from 'react-icons/ti';
 import { SocialIcon } from 'react-social-icons';
-import checkYes from '../imgs/check_yes.png';
-import checkNo from '../imgs/check_no.png';
-// const { Modal, Button } = antd;
 import { Modal, Button } from 'antd';
-
-
-
-
+// css
 import './../productPopup.css'
-const correctNameProperty=(name)=>{
-    switch (name) {
-        case 'Apartment':
-            return('דירה')
-            break;
-        case 'Garden Apartment':
-            return('דירת גן')
-            break;
-    
-        default:
-            break;
-    }
-}
-const correctNamePropertyCondition=(name)=>{
-    switch (name) {
-        case "In saved mode":
-            return('במצב שמור, (במצב טוב, לא שופץ)')
-            break;
-    
-        default:
-            break;
-    }
-}
+import {correctNamePropertyCondition,correctDate,correctNameProperty} from './../controller/popupController'
 
-const correctDate=(date)=>{
-    let today = new Date().toLocaleDateString()
-let entryDate =new Date(date).toLocaleDateString()
-
-// console.log(typeof date,'date')
-switch (entryDate) {
-    case today:
-        return('כניסה מיידית')
-        break;
-
-    default:
-        return(entryDate)
-        break;
-}
-}
 const ProductPopup = props => {
     const [product, setProduct] = useState({});
     const [relatedProduct, setRelatedProduct] = useState([]);
+    
     const [error, setError] = useState(false);
-console.log(product)
-const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 const showModal = () => {
     setIsModalVisible(true);
 };
@@ -102,20 +59,7 @@ const handleCancel = () => {
                 product.description.substring(0, 100)
             }
         >
-
-            {/*         <div  dir='ltr' className="card">
-<div style={{height:'110px'}} class="parent_card">
-<div class="div1_card"> <img className={'img1'} src={product.pic1}></img> </div>
-<div class="div2_card price_style"> <p className={'price_style'}><span>&#8362;</span> {product.price}  </p> </div>
-<div class="div3_card updated_today "> עודכן היום </div>
-<div class="div4_card address_tile_style"> {product.property_address_street} {product.property_address_num} </div>
-<div class="div5_card address_tile_style"> {correctName(product.property_type)} {product.property_address_city} </div>
-<div  class="div6_card data_style"> {product.num_of_rooms} </div>
-<div class="div7_card data_style" > {product.property_floor} </div>
-<div class="div8_card data_style"> {product.build_mr_total} </div>
-<div class="div9_card data_title_style"> חדרים </div>
-<div class="div10_card data_title_style"> קומה </div>
-<div class="div11_card data_title_style"> מ"ר </div> */}
+           
 <div className={'popup_container'}>
        <div class="flex-container_popUp">
    <div class="flex-items_popUp">עודכן היום</div>
@@ -179,118 +123,80 @@ const handleCancel = () => {
 <div style={{marginBottom:'10px'}} class="div1_radios_section popUp_description_title">?מה יש בנכס</div>
 {/* air_condition */}
 <div class="div2_radios_section">{product.air_condition===true?
-<p>
-<span className={'checkYes_title'} >מיזוג</span>    
-<img src={checkYes}/>
-</p>:
-<p>
-<span className={'checkNo_title'} >מיזוג</span>    
-<img src={checkNo}/>
-</p>} </div>
+<Popup_IconTitle class1='checkYes_title' isTrue='true' title1='מיזוג' />
+: 
+<Popup_IconTitle class1='checkNo_title' isTrue='false' title1='מיזוג' />
+} 
+</div>
 <div class="div3_radios_section">
 {/* bars */}
 {product.bars===true?
-<p>
-<span className={'checkYes_title'} >סורגים</span>    
-<img src={checkYes}/>
-</p>:
-<p>
-<span className={'checkNo_title'} >סורגים</span>    
-<img src={checkNo}/>
-</p>} 
+<Popup_IconTitle class1='checkYes_title' isTrue='true' title1='סורגים' />
+:
+<Popup_IconTitle class1='checkNo_title' isTrue='false' title1='סורגים' />
+} 
 </div>
 <div class="div4_radios_section">
      {/* elevator */}
 {product.elevator===true?
-<p>
-<span className={'checkYes_title'} >מעלית</span>    
-<img src={checkYes}/>
-</p>:
-<p>
-<span className={'checkNo_title'} >מעלית</span>    
-<img src={checkNo}/>
-</p>} 
+<Popup_IconTitle class1='checkYes_title' isTrue='true' title1='מעלית' />
+:
+<Popup_IconTitle class1='checkNo_title' isTrue='false' title1='מעלית' />
+} 
      </div>
 <div class="div5_radios_section">
     
         {/* kosher */}
 {product.kosher===true?
-<p>
-<span className={'checkYes_title'} >מטבח כשר</span>    
-<img src={checkYes}/>
-</p>:
-<p>
-<span className={'checkNo_title'} >מטבח כשר</span>    
-<img src={checkNo}/>
-</p>}  </div>
+<Popup_IconTitle class1='checkYes_title' isTrue='true' title1='מטבח כשר' />
+:
+<Popup_IconTitle class1='checkNo_title' isTrue='false' title1='מטבח כשר' />
+}  
+</div>
 <div class="div6_radios_section">
        {/* handicapped*/}
 {product.handicapped===true?
-<p>
-<span className={'checkYes_title'} >גישה לנכים</span>    
-<img src={checkYes}/>
-</p>:
-<p>
-<span className={'checkNo_title'} >גישה לנכים</span>    
-<img src={checkNo}/>
-</p>} </div>
+    <Popup_IconTitle class1='checkYes_title' isTrue='true' title1='גישה לנכים' />
+:
+<Popup_IconTitle class1='checkNo_title' isTrue='false' title1='גישה לנכים' />
+} </div>
 <div class="div7_radios_section">
     {/* renovated*/}
 {product.renovated===true?
-<p>
-<span className={'checkYes_title'} >משופצת</span>    
-<img src={checkYes}/>
-</p>:
-<p>
-<span className={'checkNo_title'} >משופצת</span>    
-<img src={checkNo}/>
-</p>} </div>
+    <Popup_IconTitle class1='checkYes_title' isTrue='true' title1='משופצת' />
+   :
+   <Popup_IconTitle class1='checkNo_title' isTrue='false' title1='משופצת' />
+} </div>
 <div class="div8_radios_section">
     
       {/* renovated*/}
 {product.shelter===true?
-<p>
-<span className={'checkYes_title'} >ממ"ד</span>    
-<img src={checkYes}/>
-</p>:
-<p>
-<span className={'checkNo_title'} >ממ"ד</span>    
-<img src={checkNo}/>
-</p>} </div>
+    <Popup_IconTitle class1='checkYes_title' isTrue='true' title1='ממ"ד' />
+   :
+   <Popup_IconTitle class1='checkNo' isTrue='false' title1='ממ"ד' />
+} </div>
 <div class="div9_radios_section">
     {/* garage*/}
 {product.garage===true?
-<p>
-<span className={'checkYes_title'} >מחסן</span>    
-<img src={checkYes}/>
-</p>:
-<p>
-<span className={'checkNo_title'} >מחסן</span>    
-<img src={checkNo}/>
-</p>}  </div>
+    <Popup_IconTitle title1='מחסן' class1='checkYes_title' isTrue='true'  />
+    :
+    <Popup_IconTitle title1='מחסן' class1='checkNo_title' isTrue='false'  />
+}  </div>
 <div class="div10_radios_section">
     
       {/* pandor*/}
 {product.pandor===true?
-<p>
-<span className={'checkYes_title'} >דלתות פנדור</span>    
-<img src={checkYes}/>
-</p>:
-<p>
-<span className={'checkNo_title'} >דלתות פנדור</span>    
-<img src={checkNo}/>
-</p>}  </div>
+    <Popup_IconTitle title1='דלתות פנדור' class1='checkYes_title' isTrue='true'  />
+    :
+    <Popup_IconTitle title1='דלתות פנדור' class1='checkNo_title' isTrue='false'  />
+}  </div>
 <div class="div11_radios_section">
     {/* pandor*/}
 {product.tadiran===true?
-<p>
-<span className={'checkYes_title'} >מזגן תדיראן</span>    
-<img src={checkYes}/>
-</p>:
-<p>
-<span className={'checkNo_title'} >מזגן תדיראן</span>    
-<img src={checkNo}/>
-</p>}  </div>
+    <Popup_IconTitle title1='מזגן תדיראן' class1='checkYes_title' isTrue='true'  />
+    :
+    <Popup_IconTitle title1='מזגן תדיראן' class1='checkNo_title' isTrue='fale'  />
+}  </div>
 </div>
 <div onClick={showModal} className={'popUp_footer'}> <span className={'popUp_footer_text'} >הצגת מספר טלפון</span> </div>
 </div>

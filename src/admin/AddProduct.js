@@ -1,27 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
+import ProductContext from "../context/product-context";
 import Layout from "../core/Layout";
-import useStateWithCallback from 'use-state-with-callback';
 import { isAuthenticated } from "../auth";
-import { Link } from "react-router-dom";
 import { createProduct, getCategories,uploadImage } from "./apiAdmin";
 import { FaRegSnowflake,FaWheelchair,FaShekelSign } from 'react-icons/fa';
 import { FiBox } from 'react-icons/fi';
 import { BiBox,BiCabinet} from 'react-icons/bi';
 import { CgCamera } from 'react-icons/cg';
-import { RiDoorClosedLine } from 'react-icons/ri';
+import { RiPaintBrushLine,RiDoorClosedLine } from 'react-icons/ri';
 import { GiElevator,GiTap,GiSolarPower } from 'react-icons/gi';
 import { BsPlusCircle,BsFillTrashFill } from 'react-icons/bs';
-import { RiPaintBrushLine } from 'react-icons/ri';
 import { AiOutlineTable,AiOutlinePlus,AiOutlineCrown } from 'react-icons/ai';
 import { API } from "../config";
-
-import icon2 from './../icons/digit_2.ico'
-
-
 import '../addProduct.css'
 import '../addProductResponsiv.css'
 
-import { Accordion,Card,Button,Form,ButtonGroup ,ToggleButton,Pagination } from 'react-bootstrap';
+
 let picsList={
   pic1:'',
   pic2:'',
@@ -32,7 +26,13 @@ let picsList={
 }
 const mq = window.matchMedia( "(max-width: 690px)" );   
 const AddProduct = () => {
-
+// context
+  const {valuesContext,
+    setValuesContext,
+    radiosContext,
+    setRadiosContext
+  } = useContext(ProductContext);
+  // 
   const [fileInput,setFileInput]=useState('')
   const [videoInput,setVideoInput]=useState('')
   const [pic1,setPic1]=useState('')
@@ -277,36 +277,9 @@ reader.onloadend=()=>{
 
     const { user, token } = isAuthenticated();
     const {
-        name,
-        description,
-        price,
-        categories,
-        category,
-        shipping,
-        quantity,
         loading,
         error,
         createdProduct,
-        redirectToProfile,
-        formData,
-        property_type,
-        property_condition,
-        property_address_city,
-        property_address_street,
-        property_address_num,
-        property_floor,
-        property_total_floors,
-        num_of_rooms,
-        is_on_pillars,
-        num_of_parking,
-        num_of_balcony,
-        build_mr,
-        build_mr_total,
-        contact_name,
-        contact_number_start,
-        contact_number,
-        mail,
-        Route
     } = values;
     // load categories and set form data
     const init = () => {
@@ -340,8 +313,6 @@ reader.onloadend=()=>{
             name === "photo" ? event.target.files[0] : event.target.value;
         if(name==='property_address_city'||name==='property_address_street')
         {
-            // let index=event.target.value.indexOf(',')
-            // console.log(index)
             value=event.target.value.split(',')[0]
         }
         if (name ==='is_on_pillars'){
@@ -353,8 +324,9 @@ reader.onloadend=()=>{
           else
           value=parseFloat(event.target.innerHTML) 
         }
+        setValuesContext({...valuesContext, [name]: value})
         setValues({ ...values, [name]: value });
-        console.log(values)
+        console.log(valuesContext,'setValuesContext')
         // formData.set(name, value);
 
     };
@@ -378,6 +350,7 @@ reader.onloadend=()=>{
       var today = now.getFullYear() + '-' + month + '-' + day;
       
       document.getElementById('entry_date').value=today 
+      setValuesContext({ ...valuesContext, entry_date: today })
       setValues({ ...values, entry_date: today }); 
       console.log(values)
       document.getElementById('entry_date').disabled = true;
@@ -550,6 +523,7 @@ reader.onloadend=()=>{
             break; 
             
       }
+      setRadiosContext({...radiosContext, [name]: value})
       setRadios({ ...radios, [name]: value });
       console.log(radios)
   };
@@ -582,7 +556,7 @@ reader.onloadend=()=>{
         let switchig2=picsList.pic2
         picsList.pic1=switchig2
         picsList.pic2=switchig1
-        let obj={fullForm:values,redioButtons:radios,pics:picsList}
+        let obj={fullForm:valuesContext,redioButtons:radiosContext,pics:picsList}
         createProduct(user._id, token, obj).then(console.log('new post is cool cool cool'))
           
         //   data => {
@@ -823,8 +797,7 @@ const fifthNext=()=>{
   isAgreeTerms===false?setIsCicked5_next(true):moveNextSection(6)
   
 }
-
-
+// ------------------------------------------------return----------------------------------------------------
     const newPostForm = () => (
       <div className={'full_page'}>
         <div class="parent_add_product_acordion">
@@ -1504,7 +1477,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
   <span className={'route_not_include'}>הקפצה אוטומטית לחסכון בזמן  &#10005;
 </span>
   </div>
-  <div onClick={()=>{setValues({ ...values, 'Route': 'basic' })}} class="div4_basic">
+  <div onClick={()=>{setValuesContext({ ...valuesContext, 'Route': 'basic' })}} class="div4_basic">
   <span className={'not_vip_button'}>  
     <span>חינם</span>
     <span> / 120 ימים</span>
@@ -1529,7 +1502,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 <div class="div5_vip">
 <span className={'route_include'} >הופעה לפני הודעות רגילות וורודות  &#10003;</span>
 </div>
-<div onClick={()=>{setValues({ ...values, 'Route': 'vip' })}} class="div6_vip">
+<div onClick={()=>{setValuesContext({ ...valuesContext, 'Route': 'vip' })}} class="div6_vip">
   <span className={'vip_button'}>
   <span>199 <FaShekelSign/>  </span>
   <span className={'vip_button__days'}> / 28 ימים</span>
@@ -1550,7 +1523,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
   <span className={'route_include'}>הקפצה אוטומטית לחסכון בזמן  &#10003;
 </span>
   </div>
-  <div onClick={()=>{setValues({ ...values, 'Route': 'marked' })}} style={{direction:'rtl'}} class="div4_basic">
+  <div onClick={()=>{setValuesContext({ ...valuesContext, 'Route': 'marked' })}} style={{direction:'rtl'}} class="div4_basic">
   <span style={{color:'#ff7100',backgroundColor:'white'}} className={'vip_button'}>
   <span  >99 <FaShekelSign/>  </span>
   <span className={'vip_button__days'}> / 28 ימים</span>

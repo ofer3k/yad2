@@ -16,6 +16,7 @@ import Cart from "./core/Cart";
 import ProductPopup from "./core/ProductPopUp";
 import AppState from "./context/AppState";
 import SearchState from "./context/SearchState";
+import ProductState from "./context/ProductState";
 const Routes = () => {
     return (
         <BrowserRouter>
@@ -26,7 +27,9 @@ const Routes = () => {
                 <Route path={["/", "/shop"]} exact component={Shop} />
                 <Route path="/SearchForm" exact component={SearchForm} />
                 </SearchState>
-
+                </Switch>
+ 
+                <Switch>    
                 <Route path="/signin" exact component={Signin} />
                 <Route path="/signup" exact component={Signup} />
                 
@@ -45,13 +48,18 @@ const Routes = () => {
                     exact
                     component={AddCategory}
                 />
-                <AdminRoute
+
+                  <ProductState>
+                  <AdminRoute
                     path="/create/product"
                     exact
                     component={AddProduct}
                 />
                 <Route path="/product/:productId" exact component={Product} />
                 <Route path="/product/popup/:productId" exact component={ProductPopup} />
+
+                  </ProductState>
+                
                 <Route path="/cart" exact component={Cart} />
             </Switch>
         </BrowserRouter>

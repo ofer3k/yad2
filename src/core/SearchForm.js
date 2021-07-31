@@ -1,23 +1,20 @@
 import React, { useState, useEffect,useContext } from "react";
+import { useHistory } from "react-router-dom";
 import Layout from "./Layout";
 import { API } from "../config";
-import Card from "./Card";
 import SearchContext from "../context/search-context";
-
+import {submitSearchControl} from './../controller/searchControl';
 import { Container, Row, Col } from 'reactstrap';
-import { getCategories, getFilteredProducts } from "./apiCore";
-import Checkbox from "./Checkbox";
-import RadioBox from "./RadioBox";
+import { getFilteredProducts } from "./apiCore";
 import { prices } from "./fixedPrices";
 import '../searchForm.css'
+// photos
 import extra from '../imgs/extra.png';
 import apartments from '../imgs/apartments.png';
 import houses from '../imgs/houses.png';
 import orangeExtra from '../imgs/orangeExtra.png';
 import orangeApartments from '../imgs/orangeApartments.png';
-import orangeHouses from '../imgs/orangeHouses.png';
-
-import { useHistory } from "react-router-dom";
+import orangeHouses from '../imgs/orangeHouses.png'; 
 
 
 const Shop = () => {
@@ -991,7 +988,7 @@ switch (e.target.value) {
     </div>}
 
             <div className="row">
-                <div onClick={submitSearch} className={'footer'}>
+                <div onClick={()=>{submitSearchControl(searchParameters,history)}} className={'footer'}>
 חיפוש
                 </div>
                 
