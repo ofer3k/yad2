@@ -66,6 +66,7 @@
     align-items: center;
     background-color: white;
     justify-content: center;
+    cursor: pointer;
 }
 .lineBar_icon__container:hover{
     display: flex;
@@ -141,6 +142,7 @@ z-index: 100 !important ;
     font-weight: 600;
 }
 .avatar_navBar{
+    cursor: pointer;
     margin: auto;
     background-color: rgb(249,249,249);
     border-radius: 50%;
@@ -149,6 +151,7 @@ z-index: 100 !important ;
 .user_private_dropDown{
     text-align: right;
     width: 100%;
+    cursor: pointer;
     height: 100%;
    padding: 6px 0;
 
@@ -166,4 +169,40 @@ z-index: 100 !important ;
 }
 .user_choice_title{
 margin-right: 4px;
+}
+.addProduct_lineBar_container{
+    height: 40px;
+    width: 193px;
+    border: none;
+    margin-left: 20px;
+    border-radius: 20px;
+    background-color: #0fca80;
+    line-height: 41px;
+    font-weight: 500;
+    color: white;
+}
+.addProduct_lineBar_container:hover{
+    height: 40px;
+    width: 193px;
+    border: none;
+    margin-left: 20px;
+    border-radius: 20px;
+    background-color: #0ba064;
+    line-height: 41px;
+    font-weight: 500;
+    color: white;
+}
+.postProduct_line_nav{
+    background-color: violet;
+    display: flex;
+    width: 200px;
+    height: 100%;
+    align-items: center;
+    background-color: white;
+    justify-content: center;
+}
+.self_info_title{
+    width: 120%;
+    color: rgb(255,127,52);
+    cursor: pointer;
 }

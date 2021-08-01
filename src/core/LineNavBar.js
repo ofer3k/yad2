@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 import { Modal } from 'react-bootstrap';
 import signInPic from './../imgs/signInPic.png'
 import signUpPic from './../imgs/signUpPic.png'
-import { BsBell,BsHeart,BsSearch,BsHouseDoor} from 'react-icons/bs';
+import { BsBell,BsHeart,BsSearch,BsHouseDoor, BsPerson} from 'react-icons/bs';
 import { GrClose} from 'react-icons/gr';
 import { FaCarSide} from 'react-icons/fa';
 import { RiArrowLeftRightFill} from 'react-icons/ri';
@@ -20,14 +20,21 @@ import LineBar_icon from './small-components/LineBar_icon'
 import LineBar_icon_single_list from './small-components/LineBar_icon_single_list'
 import LineBar_icon_single_list_note from './small-components/LineBar_icon_single_list_note'
 import LineBar_icon_single_list_avatar from './small-components/LineBar_icon_single_list_avatar'
+import AddProduct_lineBar from './small-components/AddProduct_lineBar'
 export default function LineNavBar() {
+    let pathname = window.location.pathname; 
     return (
         <div className={'container_line_navBar'}>
-            
             <div class="parent_line_navBar">
-<div class="div1_line_navBar lineBar_icon__container">
-    <img style={{maxWidth:'70%'}} src={'//assets.yad2.co.il/yad2site/y2assets/images/header/yad2Logo.png'} />
+                
+<div style={{backgroundColor:'white'}} class="div1_line_navBar lineBar_icon__container">
+<Link to="/" >
+<img style={{maxWidth:'70%',backgroundColor:'white'}} src={'//assets.yad2.co.il/yad2site/y2assets/images/header/yad2Logo.png'} />
+</Link>
 </div>
+
+{!(pathname==='/create/product')&&
+<>
 <div class="div2_line_navBar">
 <LineBar_icon  name={'נדל"ן'} options={['דירות למכירה','דירות להשכרה','שותפים','מסחרי','חיפוש על גבי מפה','כונס נכסים','מדד הנדל"ן','יד1 דירות חדשות','הערכת שווי נכס','משרדי תיווך בישראל']} />
 </div>
@@ -63,7 +70,25 @@ export default function LineNavBar() {
 <div class="div11_line_navBar lineBar_icon__container_smaller">
 <LineBar_icon_single_list_avatar head={'מודעות שאהבתי'} name={'a'} note={'הרשימה שלך עדיין ריקה אפשר להוסיף מודעות לרשימה בלחיצה על הסימן בפינה הימנית של כל מודעה'}/> 
 </div>
-<div class="div12_line_navBar lineBar_icon__container_smaller" >l </div>
+<div class="div12_line_navBar lineBar_icon__container_smaller" >
+<AddProduct_lineBar/>    
+</div>
+</>
+}
+
+{(pathname==='/create/product')&&
+<>
+<div class="div2_line_navBar postProduct_line_nav">
+פרסום מודעה חדשה
+</div>
+<div class="div11_line_navBar lineBar_icon__container_smaller self_info_title">
+<span style={{marginRight:'10px'}} ><BsPerson size={'20px'} /></span>  {isAuthenticated().user.name}
+</div>
+<div class="div12_line_navBar lineBar_icon__container_smaller " >
+צור קשר   
+</div>
+</>
+}
 </div>
         </div>
     )

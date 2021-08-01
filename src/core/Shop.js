@@ -13,6 +13,10 @@ import LineSearch from './LineSearch'
 import { BsImage,BsSearch } from 'react-icons/bs';
 
 import './../cardYad2.css'
+import { submitSearchControlScroll } from "../controller/searchControl";
+
+let num=0;
+let token=null
  
 const Shop = (state) => {
     const { searchParameters,setSearchParameters } = useContext(SearchContext);
@@ -29,6 +33,7 @@ const Shop = (state) => {
     const [skip, setSkip] = useState(0);
     const [size, setSize] = useState(0);
     const [filteredResults, setFilteredResults] = useState([]);
+    const [tokenFromServer, setTokenFromServer] = useState('');
     const [originalFullList, setOriginalFullList] = useState([]);
 
 const [isModalVisible, setIsModalVisible] = useState(false);
@@ -70,9 +75,11 @@ const [isModalVisible, setIsModalVisible] = useState(false);
                 if (data.error) {
                     setError(data.error);
                 } else {
+                    setTokenFromServer(data.token)
                     setFilteredResults(data.data);
                     setOriginalFullList(data.data)
                     console.log(data.data,'data.data')
+                    console.log(data.token,'data.token')
                     setSize(data.size);
                     setSkip(0);
                 }
@@ -191,12 +198,17 @@ const [isModalVisible, setIsModalVisible] = useState(false);
             description="Search and find books of your choice"
             className="container-fluid"
         >
+
             {!(mq.matches)&& <div className={'lineSearch_container'}> <span  ><LineSearch/></span></div>}
-            {(mq.matches)&&            <div onClick={redirectToSearchForm} className={'fixed_searchBar'}>
+            {(mq.matches)&&
+            <>     
+            <div onClick={redirectToSearchForm} className={'fixed_searchBar'}>
             <span className={'another_search'} style={{position:'absolute',left:'15px'}}>חיפוש</span>
                 <span className={'fixed_searchBar_text'}>נדלן למכירה</span>
                 <span className={'search_icon'} style={{position:'absolute',right:'15px'}}><BsSearch/></span>
-            </div>}
+            </div>
+            </>
+            }
             {!(mq.matches)&&
             <div>
                 <div class="parent_line_sort">
@@ -239,6 +251,8 @@ const [isModalVisible, setIsModalVisible] = useState(false);
 
 </div>
 }
+<h1 onClick={()=>submitSearchControlScroll('num','token',history)}>click</h1>
+
 <p className={'amount_of_products'} > מציג {filteredResults.length} מודעות</p>
      
 

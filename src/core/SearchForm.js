@@ -3,10 +3,11 @@ import { useHistory } from "react-router-dom";
 import Layout from "./Layout";
 import { API } from "../config";
 import SearchContext from "../context/search-context";
-import {submitSearchControl} from './../controller/searchControl';
+import {submitSearchControl, submitSearchControlScroll} from './../controller/searchControl';
 import { Container, Row, Col } from 'reactstrap';
 import { getFilteredProducts } from "./apiCore";
 import { prices } from "./fixedPrices";
+import Book from './small-components/Book'
 import '../searchForm.css'
 // photos
 import extra from '../imgs/extra.png';
@@ -18,6 +19,10 @@ import orangeHouses from '../imgs/orangeHouses.png';
 
 
 const Shop = () => {
+  const {searchParameters,setSearchParameters} = useContext(SearchContext);
+  const [query,setQuery]=useState('')
+  const[page,setPage]=useState(1)
+  // const {loadingB,errorB,booksB,hasMoreB }=Book(query,page)
   let history = useHistory();
     const [myFilters, setMyFilters] = useState({
         filters: { category: [], price: [] }
@@ -33,141 +38,8 @@ const Shop = () => {
     const [advancedSearch,setAdvancedSearch]= useState(false)
     const [numberOfRadioSelected,setNumberOfRadioSelected]=useState(0)
     let countRadiosCheck=numberOfRadioSelected;
-    
 
-    const [values, setValues] = useState({
-        entery_date:null,
-        exclusively:null,
-        name:'',
-        description: "",
-        price: "",
-        categories: [],
-        category: "",
-        shipping: "",
-        quantity: "",
-        photo: "",
-        loading: false,
-        error: "",
-        createdProduct: "",
-        redirectToProfile: false,
-        formData: "",
-        property_type1:"",
-        property_type2:"",
-        property_type3:"",
-        property_condition:"",
-        property_address_city:"",
-        property_address_street:"",
-        property_address_num:null,
-        property_floor:null,
-        property_total_floors:null,
-        num_of_rooms:null,
-        min_num_of_rooms:null,
-        max_num_of_rooms:null,
-        min_num_of_floors:null,
-        max_num_of_floors:null,
-        min_price:null,
-        max_price:null,
-        min_mr:null,
-        max_mr:null,
-        is_on_pillars:null,
-        num_of_parking:null,
-        num_of_balcony:null,
-        balcony:null,
-        build_mr:null,
-        build_mr_total:null,
-        contact_name:'',
-        contact_number_start:'',
-        contact_number:'',
-        mail:'',
-        Route:null,
-        air_condition:false,
-        shelter:false,
-        garage:false,
-        pandor:false,
-        furniture:false,
-        handicapped:false,
-        elevator:false,
-        tadiran:false,
-        unit:false,
-        renovated:false,
-        kosher:false,
-        boiler:false,
-        bars:false
-    });
-const {
-    entery_date,
-    exclusively,
-    name,
-    description,
-    price,
-    min_price,
-    max_price,
-    min_mr,
-    max_mr,
-    category,
-    shipping,
-    quantity,
-    photo,
-    loading,
-    createdProduct,
-    redirectToProfile,
-    formData,
-    property_type1,
-    property_type2,
-    property_type3,
-    property_condition,
-    property_address_city,
-    property_address_street,
-    property_address_num,
-    property_floor,
-    property_total_floors,
-    num_of_rooms,
-    min_num_of_rooms,
-    max_num_of_rooms,
-    min_num_of_floors,
-    max_num_of_floors,
-    is_on_pillars,
-    num_of_parking,
-    num_of_balcony,
-    balcony,
-    build_mr,
-    build_mr_total,
-    contact_name,
-    contact_number_start,
-    contact_number,
-    mail,
-    Route,
-    air_condition,
-    shelter,
-    garage,
-    pandor,
-    furniture,
-    handicapped,
-    elevator,
-    tadiran,
-    unit,
-    renovated,
-    kosher,
-    boiler,
-    bars
-}=values
-const submitSearch=()=>{
-    fetch(`${API}/products/by/Filter`,
-{
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    method: "POST",
-    body: JSON.stringify({...searchParameters})
-})
-.then(function(res){ res.json().then(body =>  {
 
-  history.push("/shop", { body}); 
-  console.log()}); })
-.catch(function(res){ console.log(res) })
-
-}
 const date = () => event => {
     if(event.target.checked===true)
     {
@@ -181,9 +53,9 @@ const date = () => event => {
       var today = now.getFullYear() + '-' + month + '-' + day;
       
       document.getElementById('entery_date').value=today 
-      setValues({ ...values, entery_date: today }); 
+      // setValues({ ...values, entery_date: today }); 
       setSearchParameters({ ...searchParameters, entery_date: today }); 
-      console.log(values)
+      // console.log(values)
       document.getElementById('entery_date').disabled = true;
     }
     else{
@@ -204,11 +76,10 @@ const radiosChange=(e)=>{
         radio.value='v'
        countRadiosCheck++ 
     }
-    setValues({...values, [e.target.name]: !answer})
     setSearchParameters({...searchParameters, [e.target.name]: !answer})
-    setNumberOfRadioSelected(countRadiosCheck)
-    
+    setNumberOfRadioSelected(countRadiosCheck)    
 }
+
 const advancedSearchFunc=(e)=>{    
     if(advancedSearch===false)
     {
@@ -217,11 +88,8 @@ const advancedSearchFunc=(e)=>{
     }else{
         setAdvancedSearch(false)
         document.getElementById('plusButton').innerHTML='+'
-
-    }
-    
+    }    
 }
-
 
 const roomsQuickButtonFunc=(e)=>{
     const minRooms=document.getElementById("selectRooms")
@@ -231,7 +99,7 @@ switch (e.target.value) {
         setNumOfRooms([2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
         minRooms.selectedIndex  = 3;
         maxRooms.selectedIndex  = 3;
-        setValues({...values, min_num_of_rooms: '2',max_num_of_rooms: '3' })
+        // setValues({...values, min_num_of_rooms: '2',max_num_of_rooms: '3' })
         setSearchParameters({...searchParameters, min_num_of_rooms: '2',max_num_of_rooms: '3' })
         
         break;
@@ -239,7 +107,7 @@ switch (e.target.value) {
         setNumOfRooms([3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
         minRooms.selectedIndex  = 5;
         maxRooms.selectedIndex  = 3;
-        setValues({...values, min_num_of_rooms: '3',max_num_of_rooms: '4' })
+        // setValues({...values, min_num_of_rooms: '3',max_num_of_rooms: '4' })
         setSearchParameters({...searchParameters, min_num_of_rooms: '3',max_num_of_rooms: '4' })
         
         break;
@@ -247,7 +115,7 @@ switch (e.target.value) {
             setNumOfRooms([4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
             minRooms.selectedIndex  = 7;
         maxRooms.selectedIndex  = 3;
-        setValues({...values, min_num_of_rooms: '4',max_num_of_rooms: '5' })
+        // setValues({...values, min_num_of_rooms: '4',max_num_of_rooms: '5' })
         setSearchParameters({...searchParameters, min_num_of_rooms: '4',max_num_of_rooms: '5' })
 
         break;
@@ -255,7 +123,7 @@ switch (e.target.value) {
             setNumOfRooms([5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
             minRooms.selectedIndex  = 9;
         maxRooms.selectedIndex  = 3;
-        setValues({...values, min_num_of_rooms: '5',max_num_of_rooms: '6' })
+        // setValues({...values, min_num_of_rooms: '5',max_num_of_rooms: '6' })
         setSearchParameters({...searchParameters, min_num_of_rooms: '5',max_num_of_rooms: '6' })
         break;
     default:
@@ -267,25 +135,25 @@ const priceQuickButtonFunc=(e)=>{
     const maxPrice=document.getElementById("max_price")
 switch (e.target.value) {
     case '1':
-      setValues({...values, min_price: '0',max_price: '1,500,000' })
+      // setValues({...values, min_price: '0',max_price: '1,500,000' })
       setSearchParameters({...searchParameters, min_price: '0',max_price: '1500000' })
         minPrice.value = "0";
         maxPrice.value = "1,500,000";
         break;
         case '2':
-          setValues({...values, min_price: '1500000',max_price: '2000000' })
+          // setValues({...values, min_price: '1500000',max_price: '2000000' })
           setSearchParameters({...searchParameters, min_price: '1500000',max_price: '2000000' })
             minPrice.value = "1,500,000";
             maxPrice.value = "2,000,000";
             break;
         case '3':
-          setValues({...values, min_price: '2000000',max_price: '3500000' })
+          // setValues({...values, min_price: '2000000',max_price: '3500000' })
           setSearchParameters({...searchParameters, min_price: '2000000',max_price: '3500000' })
             minPrice.value = "2,000,000";
             maxPrice.value = "3,500,000";
             break;
         case '4':
-            setValues({...values, min_price: '3500000',max_price: '5000000' })
+            // setValues({...values, min_price: '3500000',max_price: '5000000' })
             setSearchParameters({...searchParameters, min_price: '3500000',max_price: '5000000' })
             minPrice.value = "3,500,000";
             maxPrice.value = "5,000,000";
@@ -294,23 +162,10 @@ switch (e.target.value) {
         break;
 }
 }
-    // const init = () => {
-    //     getCategories().then(data => {
-    //         if (data.error) {
-    //             setError(data.error);
-    //         } else {
-    //             setCategories(data);
-    //         }
-    //     });
-    // };
     
     function inputChangeHandler(event) {
         if(event.target.name==='property_type1')
         {
-            document.getElementById('apartmentsImg').classList.contains('image_style_orange')?
-            setValues({...values, [event.target.name]: event.target.value }):
-            setValues({...values, [event.target.name]: '' });
-
             document.getElementById('apartmentsImg').classList.contains('image_style_orange')?
             setSearchParameters({...searchParameters, [event.target.name]: event.target.value }):
             setSearchParameters({...searchParameters, [event.target.name]: '' });
@@ -319,10 +174,7 @@ switch (e.target.value) {
 
         if(event.target.name==='property_type2')
         {
-            document.getElementById('housesImg').classList.contains('image_style_orange')?
-            setValues({...values, [event.target.name]: event.target.value }):
-            setValues({...values, [event.target.name]: '' });
-
+        
             document.getElementById('housesImg').classList.contains('image_style_orange')?
             setSearchParameters({...searchParameters, [event.target.name]: event.target.value }):
             setSearchParameters({...searchParameters, [event.target.name]: '' });
@@ -330,10 +182,6 @@ switch (e.target.value) {
         }
         if(event.target.name==='property_type3')
         {
-            console.log(values)
-            document.getElementById('extraImg').classList.contains('image_style_orange')?
-            setValues({...values, [event.target.name]: event.target.value }):
-            setValues({...values, [event.target.name]: '' });
 
             document.getElementById('extraImg').classList.contains('image_style_orange')?
             setSearchParameters({...searchParameters, [event.target.name]: event.target.value }):
@@ -341,12 +189,10 @@ switch (e.target.value) {
             return 
         }
         setSearchParameters({...searchParameters, [event.target.name]: event.target.value }); 
-        setValues({...values, [event.target.name]: event.target.value }); 
         console.log(searchParameters,' searchParameters searchParameters') 
     } 
 
     const loadFilteredResults = newFilters => {
-        // console.log(newFilters);
         getFilteredProducts(skip, limit, newFilters).then(data => {
             if (data.error) {
                 setError(data.error);
@@ -364,122 +210,120 @@ switch (e.target.value) {
                switch(num) {
                 case '1':
                     setNumOfRooms([1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '1'})
+                    // setValues({...values, min_num_of_rooms: '1'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '1'})
                   break;
                   case 'הכל':
                     setNumOfRooms([1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '1'})
+                    // setValues({...values, min_num_of_rooms: '1'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '1'})
                     break;
                 case '1.5':
                     setNumOfRooms([1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '1.5'})
+                    // setValues({...values, min_num_of_rooms: '1.5'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '1.5'})
                     break;
                   case '2':
                     setNumOfRooms([2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '2'})
+                    // setValues({...values, min_num_of_rooms: '2'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '2'})
                     break;
                   case '2.5':
                     setNumOfRooms([2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '2.5'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '2.5'})
                   break;
                   case '3':
                     setNumOfRooms([3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '3'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '3'})
                   break;
                   case '3.5':
                     setNumOfRooms([3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '3.5'})
+                    // setValues({...values, min_num_of_rooms: '3.5'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '3.5'})
                   break;
                   case '4':
                     setNumOfRooms([4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '4'})
+                    // setValues({...values, min_num_of_rooms: '4'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '4'})
                   break;
                   case '4.5':
                     setNumOfRooms([4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '4.5'})
+                    // setValues({...values, min_num_of_rooms: '4.5'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '4.5'})
                   break;
                   case '5':
                     setNumOfRooms([5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '5'})
+                    // setValues({...values, min_num_of_rooms: '5'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '5'})
                   break;
                   case '5.5':
                     setNumOfRooms([5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '5.5'})
+                    // setValues({...values, min_num_of_rooms: '5.5'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '5.5'})
                   break;
                   case '6':
                     setNumOfRooms([6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '6'})
+                    // setValues({...values, min_num_of_rooms: '6'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '6'})
                   break;
                   case '6.5':
                     setNumOfRooms([6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '6.5'})
+                    // setValues({...values, min_num_of_rooms: '6.5'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '6.5'})
                   break;
                   case '7':
                     setNumOfRooms([7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '7'})
+                    // setValues({...values, min_num_of_rooms: '7'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '7'})
                   break;
                   case '7.5':
                     setNumOfRooms([7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '7.5'})
+                    // setValues({...values, min_num_of_rooms: '7.5'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '7.5'})
                   break;
                   case '8':
                     setNumOfRooms([8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '8'})
+                    // setValues({...values, min_num_of_rooms: '8'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '8'})
                   break;
                   case '8.5':
                     setNumOfRooms([8.5,9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '8.5'})
+                    // setValues({...values, min_num_of_rooms: '8.5'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '8.5'})
                   break;
                   case '9':
                     setNumOfRooms([9,9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '9'})
+                    // setValues({...values, min_num_of_rooms: '9'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '9'})
                   break;
                   case '9.5':
                     setNumOfRooms([9.5,10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '9.5'})
+                    // setValues({...values, min_num_of_rooms: '9.5'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '9.5'})
                   break;
                   case '10':
                     setNumOfRooms([10,10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '10'})
+                    // setValues({...values, min_num_of_rooms: '10'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '10'})
                   break;
                   case '10.5':
                     setNumOfRooms([10.5,11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '10.5'})
+                    // setValues({...values, min_num_of_rooms: '10.5'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '10.5'})
                   break;
                   case '11':
                     setNumOfRooms([11,11.5,12])
-                    setValues({...values, min_num_of_rooms: '11'})
+                    // setValues({...values, min_num_of_rooms: '11'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '11'})
                   break;
                   case '11.5':
                     setNumOfRooms([11.5,12])
-                    setValues({...values, min_num_of_rooms: '11.5'})
+                    // setValues({...values, min_num_of_rooms: '11.5'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '11.5'})
                   break;
                   case '12':
                     setNumOfRooms([12])
-                    setValues({...values, min_num_of_rooms: '12'})
+                    // setValues({...values, min_num_of_rooms: '12'})
                     setSearchParameters({...searchParameters, min_num_of_rooms: '12'})
                   break;
                 default:
@@ -492,84 +336,84 @@ switch (e.target.value) {
                switch(num) {
                 case '1':
                     setNumOfFloors(['פרטר/מרתף',1,2,3,4,5,6,7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '1'})
+                    // setValues({...values, min_num_of_floors: '1'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '1'})
                   break;
                   case 'הכל':
                     setNumOfFloors([1,2,3,4,5,6,7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '1'})
+                    // setValues({...values, min_num_of_floors: '1'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '1'})
                     break;
                   case '2':
                     setNumOfFloors([2,3,4,5,6,7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '2'})
+                    // setValues({...values, min_num_of_floors: '2'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '2'})
                     break;
                   case '3':
                     setNumOfFloors([3,4,5,6,7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '3'})
+                    // setValues({...values, min_num_of_floors: '3'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '3'})
                   break;
                 
                   case '4':
                     setNumOfFloors([4,5,6,7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '4'})
+                    // setValues({...values, min_num_of_floors: '4'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '4'})
                   break;
                   case '5':
                     setNumOfFloors([5,6,7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '5'})
+                    // setValues({...values, min_num_of_floors: '5'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '5'})
                   break;
                   case '6':
                     setNumOfFloors([6,7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '6'})
+                    // setValues({...values, min_num_of_floors: '6'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '6'})
                   break;
                   
                   case '7':
                     setNumOfFloors([7,8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '7'})
+                    // setValues({...values, min_num_of_floors: '7'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '7'})
                   break;
                   
                   case '8':
                     setNumOfFloors([8,9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '8'})
+                    // setValues({...values, min_num_of_floors: '8'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '8'})
                   break;
                   
                   case '9':
                     setNumOfFloors([9,10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '9'})
+                    // setValues({...values, min_num_of_floors: '9'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '9'})
                   break;
                   
                   case '10':
                     setNumOfFloors([10,11,12,13,14])
-                    setValues({...values, min_num_of_floors: '10'})
+                    // setValues({...values, min_num_of_floors: '10'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '10'})
                   break;
                   
                   case '11':
                     setNumOfFloors([11,12,13,14])
-                    setValues({...values, min_num_of_floors: '11'})
+                    // setValues({...values, min_num_of_floors: '11'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '11'})
                   break;
                   
                   case '12':
                     setNumOfFloors([12,13,14])
-                    setValues({...values, min_num_of_floors: '12'})
+                    // setValues({...values, min_num_of_floors: '12'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '12'})
                   break;
                   case '13':
                     setNumOfFloors([13,14])
-                    setValues({...values, min_num_of_floors: '13'})
+                    // setValues({...values, min_num_of_floors: '13'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '13'})
                   break;
                   case '14':
                     setNumOfFloors([14])
-                    setValues({...values, min_num_of_floors: '14'})
+                    // setValues({...values, min_num_of_floors: '14'})
                     setSearchParameters({...searchParameters, min_num_of_floors: '14'})
                   break;
                 default:
@@ -631,7 +475,6 @@ switch (e.target.value) {
         }
         return array;
     };
-        const {searchParameters,setSearchParameters} = useContext(SearchContext);
 
 
     return (
@@ -641,21 +484,20 @@ switch (e.target.value) {
             className="container-fluid"
         >
 
-            <div className="row">
+            <div style={{marginTop:'20px'}} className="row">
             <div className={'property_type'}>
-<p className={"property_type_title"} >חפשו אזור עיר או שכונה</p>
+<p className={"property_type_title_fullForm"} style={{marginBottom:'0'}} >חפשו אזור עיר או שכונה</p>
     <input type="text" onChange={inputChangeHandler} className={"address_city"} id={"search_input"} placeholder="?איפה נמצא הנכס" />
 </div>
             </div>
 <hr/>
 
-<p className={"property_title1"} >סוג נכס</p>
-
+<p style={{marginRight:'20px'}} className={"property_title1"} >סוג נכס</p>
 <div className="row">
 <div class="flex-container">
    <div class="flex-items">
    <label>
-  <input onClick={inputChangeHandler} name='property_type3' id='property_type3' value={['Plots','Assisted living']}  type="checkbox"  />
+  <input class={'checkbox_special'} onClick={inputChangeHandler} name='property_type3' id='property_type3' value={['Plots','Assisted living']}  type="checkbox"  />
   <img id={'extraImg'} onClick={()=>{
       if(document.getElementById('extraImg').src===extra)
       {
@@ -672,7 +514,7 @@ switch (e.target.value) {
    </div>
    <div class="flex-items">
    <label>
-  <input onClick={inputChangeHandler} name='property_type2' id='property_type2' value={['Private house','Townhouse','Farm','Auxiliary farm']}   type="checkbox"/>
+  <input class={'checkbox_special'} onClick={inputChangeHandler} name='property_type2' id='property_type2' value={['Private house','Townhouse','Farm','Auxiliary farm']}   type="checkbox"/>
   <img  id={'housesImg'} onClick={()=>{
       if(document.getElementById('housesImg').src===houses)
       {
@@ -688,7 +530,7 @@ switch (e.target.value) {
    </div>
    <div class="flex-items"> 
 <label>
-  <input  onClick={inputChangeHandler} name='property_type1' id='property_type1' value={['Apartment','Garden Apartment','roof','Duplex','Vacation Apartment','basement','Triplex','Unit']} type="checkbox"  />
+  <input class={'checkbox_special'}  onClick={inputChangeHandler} name='property_type1' id='property_type1' value={['Apartment','Garden Apartment','roof','Duplex','Vacation Apartment','basement','Triplex','Unit']} type="checkbox"  />
   <img id={'apartmentsImg'} onClick={()=>{
       if(document.getElementById('apartmentsImg').src===apartments)
       {
@@ -711,7 +553,7 @@ switch (e.target.value) {
 <hr/>
 <div style={{direction:'rtl',marginRight:'10px'}} className="row">
 <div className={'property_type'}>
-<p className={"property_type_title"} >חדרים</p>
+<p className={"property_type_title_fullForm"} >חדרים</p>
 
 <div class="flex-container1">
    <div class="flex-items1">
@@ -781,7 +623,7 @@ switch (e.target.value) {
       <hr style={{marginTop:'40px'}} />
 <div style={{direction:'rtl',marginRight:'10px'}} className="row">
 <div className={'property_type'}>
-<p className={"property_type_title"} >מחיר</p>
+<p className={"property_type_title_fullForm"} >מחיר</p>
 
 <div class="flex-container1">
    <div class="flex-items1">
@@ -818,86 +660,86 @@ switch (e.target.value) {
 <br/>
 <hr/>
 <div style={{float:'right',marginRight:'10px'}} >
-<button onClick={advancedSearchFunc} className={'advancedButton'} id={'advancedSearch'}>חיפוש מתקדם  { (numberOfRadioSelected>0)&& <span>{`(${numberOfRadioSelected})`} </span>} <span id={'plusButton'} >+</span> </button>    
+<button onClick={advancedSearchFunc} className={!advancedSearch?'advancedButton':'advancedButton__no_padding'} id={'advancedSearch'}>חיפוש מתקדם  { (numberOfRadioSelected>0)&& <span>{`(${numberOfRadioSelected})`} </span>} <span id={'plusButton'} >+</span> </button>    
 </div>
 {/*  */}
 <br/>
 <br/>
 {advancedSearch &&<div dir='rtl' className={'advanced'}>
-<div style={{textAlign:'right',marginRight:'20px'}}  class="parent_radios">
-<div class="div1_radios">
+<div   class="parent_radios_fullForm">
+<div class="div1_radios_fullForm">
 <button onClick={radiosChange} id="pandor" name="pandor" className={'unCheckedButton'}>
 &#10003;
     </button> 
-<label style={{marginRight:'0.4em'}} for="ossm">דלתות פנדור</label> 
+<label  style={{marginRight:'0.4em'}} for="ossm">דלתות פנדור</label> 
 </div>
 
-<div class="div2_radios"> 
+<div class="div2_fullForm"> 
 <button onClick={radiosChange} id="parking" name="parking" className={'unCheckedButton'}>
 &#10003;
     </button> 
 <label style={{marginRight:'0.4em'}} for="ossm">חניה</label> 
 </div>
 
-<div class="div3_radios">
+<div class="div3_radios_fullForm">
 <button onClick={radiosChange} id="elevator" name="elevator" className={'unCheckedButton'}>
 &#10003;
     </button> 
 <label style={{marginRight:'0.4em'}} for="ossm">מעלית</label>     
     </div>
     
-    <div class="div4_radios">    
+    <div class="div4_radios_fullForm">    
 <button onClick={radiosChange} id="air_condition" name="air_condition" className={'unCheckedButton'}>
 &#10003;
     </button> 
 <label style={{marginRight:'0.4em'}} for="ossm">מיזוג</label>     
      </div>
 
-<div class="div5_radios">
+<div class="div5_radios_fullForm">
 <button onClick={radiosChange} id="balcony" name="balcony" className={'unCheckedButton'}>
 &#10003;
     </button> 
 <label style={{marginRight:'0.4em'}} for="ossm">מרפסת</label>  
 </div>
-<div class="div6_radios">
+<div class="div6_radios_fullForm">
 <button onClick={radiosChange} id="shelter" name="shelter" className={'unCheckedButton'}>
 &#10003;
     </button> 
 <label style={{marginRight:'0.4em'}} for="ossm">ממ"ד</label> 
 </div>
-<div class="div7_radios">
+<div class="div7_radios_fullForm">
 <button onClick={radiosChange} id="bars" name="bars" className={'unCheckedButton'}>
 &#10003;
     </button> 
 <label style={{marginRight:'0.4em'}} for="ossm">סורגים</label> 
 </div>
 
-<div class="div8_radios">
+<div class="div8_radios_fullForm">
 <button onClick={radiosChange} id="garage" name="garage" className={'unCheckedButton'}>
 &#10003;
     </button> 
 <label style={{marginRight:'0.4em'}} for="ossm">מחסן</label> 
  </div>
 
-<div class="div9_radios">
+<div class="div9_radios_fullForm">
 <button onClick={radiosChange} id="handicapped" name="handicapped" className={'unCheckedButton'}>
 &#10003;
     </button> 
 <label style={{marginRight:'0.4em'}} for="ossm">גישה לנכים</label> 
      </div>
-<div class="div10_radios">
+<div class="div10_radios_fullForm">
 <button onClick={radiosChange} id="renovated" name="renovated" className={'unCheckedButton'}>
 &#10003;
     </button> 
 <label style={{marginRight:'0.4em'}} for="ossm">משופצת</label>    
      </div>
-<div class="div11_radios">
+<div class="div11_radios_fullForm">
 <button onClick={radiosChange} id="furniture" name="furniture" className={'unCheckedButton'}>
 &#10003;
     </button> 
 <label style={{marginRight:'0.4em'}} for="ossm">מרוהטת</label>    
       </div>
-<div class="div12_radios">
+<div class="div12_radios_fullForm">
 <button onClick={radiosChange} id="exclusively" name="exclusively" className={'unCheckedButton'}>
 &#10003;
     </button> 
@@ -911,7 +753,7 @@ switch (e.target.value) {
 <hr/>
 <div style={{direction:'rtl',marginRight:'10px'}} className="row">
 <div className={'property_type'}>
-<p className={"property_type_title"} >קומה</p>
+<p className={"property_type_title_fullForm"} >קומה</p>
 <div class="flex-container1">
    <div class="flex-items1">
    <select name='min_num_of_floors' className={'roomSelection'} id={'selectFloors'} onChange={changeFloorSelection} >
@@ -948,7 +790,7 @@ switch (e.target.value) {
 <hr style={{marginTop:'40px'}} />
 <div style={{direction:'rtl',marginRight:'10px'}} className="row">
 <div className={'property_type'}>
-<p className={"property_type_title"} >גודל דירה (במ"ר)</p>
+<p className={"property_type_title_fullForm"} >גודל דירה (במ"ר)</p>
 
 <div class="flex-container1">
    <div class="flex-items1">
@@ -962,11 +804,11 @@ switch (e.target.value) {
 </div>
 <hr/>
 <div className={'property_type'}>
-<h4  >תאריך כניסה</h4>
+<h4 className={'entey_date_title__fullForm'} >תאריך כניסה</h4>
 <div dir='rtl' className={'inline_box1'}>
     <input placeholder="2013-01-25"  type="date" onChange={inputChangeHandler} name={'entery_date'} className={"date"} id={'entery_date'} />
 <br/>
-<input style={{width:'10px',height:'10px',opacity:'100'}} onChange={date()} className={'inline_box'} type='checkbox'/>
+<input style={{width:'15px',height:'15px',opacity:'100',marginBottom:'-15px'}} onChange={date()} className={'inline_box'} type='checkbox'/>
 <p className={'inline_box'}>כניסה מיידית</p>
 </div>
 </div>
@@ -976,14 +818,17 @@ switch (e.target.value) {
 <br/>
 <br/>
 <br/>
+<br/>
 
 <hr/>
 <div style={{marginRight:'10px',paddingBottom:'4rem'}} className="row">
             <div className={'property_type'}>
-<p className={"property_type_title"} >חיפוש חופשי</p>
+<p style={{marginBottom:'0'}} className={"property_type_title_fullForm"} >חיפוש חופשי</p>
     <input type="text" name={'description'} onChange={inputChangeHandler} className={"address_city"}  />
 </div>
+
             </div>
+            
 
     </div>}
 

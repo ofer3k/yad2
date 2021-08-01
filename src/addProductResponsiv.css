@@ -1,7 +1,7 @@
 .full_page{
     width: 100%;
 text-align: center;
-margin-top: 40px;
+margin-top: 80px;
 }
 .parent_add_product_acordion {
     display: grid;
@@ -996,3 +996,4 @@ margin-top: 40px;
             cursor: pointer;
             font-family: Rubik;
         }
+      

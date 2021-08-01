@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars,faArrowLeft,faAngleLeft,faHome,faCar, faCouch, faSuitcase, faSearch, faPaw, faGraduationCap } from '@fortawesome/free-solid-svg-icons'
 import Avatar from '@material-ui/core/Avatar';
 import { Redirect } from "react-router-dom";
-
 import { Modal } from 'react-bootstrap';
 import signInPic from './../imgs/signInPic.png'
 import signUpPic from './../imgs/signUpPic.png'
@@ -47,20 +46,16 @@ const NavBar = ({history}) => {
 
   
   const [show, setShow] = useState(false );
+  const [show1, setShow1] = useState(false );
   const handleClose = () => setShow(false);
   const handleShow = () => {
-
     setShow1(false)
     setShow(true)
   }
-  
-
-  const [show1, setShow1] = useState(false );
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () =>{
     setShow(false)   
     setShow1(true)
-
     } 
 
   const showDrawer = () => {
@@ -212,20 +207,23 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
     <>
     <div style={{zIndex:'1000'}} className={'headline'} >
     {/* <Button  > */}
-    <FontAwesomeIcon className={'arrowLeft'} icon={faAngleLeft}  onClick={showDrawer} />
+    <FontAwesomeIcon className={'arrowLeft'} icon={faAngleLeft} onClick={()=>window.history.back()}   />
+        <Link to="/">
         <img style={{    height: '25px'}} src='//assets.yad2.co.il/yad2site/y2assets/images/header/Yad2_logo_white2.svg'></img>
-    <FontAwesomeIcon className={'burgerMenu'} icon={faBars}  onClick={showDrawer} />
-    {/* <FontAwesomeIcon className={'burgerMenu'} icon={faBars}  onClick={showDrawer} /> */}
 
+        </Link>
+    <FontAwesomeIcon className={'burgerMenu'} icon={faBars} onClick={showDrawer}  />
+    {/* <FontAwesomeIcon className={'burgerMenu'} icon={faBars}  onClick={showDrawer} /> */}
+    
       {/* </Button> */}
     </div>
       
       <Drawer
-        // title={titleName}
         placement="right"
         closable={true}
         onClose={onClose}
         visible={visible}
+        width={'60vw'}
       >
           <div className={'navHeader'}>
               <div>
@@ -390,7 +388,7 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
 <div class="div7_navBar_icon navBar_icon_title">חיפושים אחרונים</div>
 <div class="div8_navBar_icon navBar_icon_title">השוואת רכבים</div>
 </div>
-
+<hr/>
 <div class="parent_navBar_quick_search">
 <div class="div1_navBar_quick_search"><span className={'navBar_quick_search_title'}>חיפוש מהיר באתר</span></div>
 <div class="div2_navBar_quick_search"><FontAwesomeIcon icon={faHome} /></div>
