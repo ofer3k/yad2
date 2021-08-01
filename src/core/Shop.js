@@ -1,5 +1,6 @@
 import React, { useState, useEffect,useContext } from "react";
 import { Modal, Button } from 'antd';
+import {submitSearchControl, submitSearchControlScroll} from './../controller/searchControl';
 import Layout from "./Layout";
 import SearchContext from "../context/search-context";
 import CardYad2 from "./CardYad2";
@@ -13,16 +14,19 @@ import LineSearch from './LineSearch'
 import { BsImage,BsSearch } from 'react-icons/bs';
 
 import './../cardYad2.css'
-import { submitSearchControlScroll } from "../controller/searchControl";
-
-let num=0;
-let token=null
  
 const Shop = (state) => {
     const { searchParameters,setSearchParameters } = useContext(SearchContext);
+    const [sortMethod,setSortMethod]=useState('')
 
     let history = useHistory();
     const mq = window.matchMedia( "(max-width: 690px)" );
+
+    function sortCCC() {
+        
+        setSortMethod(document.getElementById('sort_drop_down_id').value)
+        submitSearchControlScroll(numOfScrolling,history,filtersAfterSearch,document.getElementById('sort_drop_down_id').value)
+    }
 
     const [myFilters, setMyFilters] = useState({
         filters: { category: [], price: [] }
@@ -33,8 +37,10 @@ const Shop = (state) => {
     const [skip, setSkip] = useState(0);
     const [size, setSize] = useState(0);
     const [filteredResults, setFilteredResults] = useState([]);
-    const [tokenFromServer, setTokenFromServer] = useState('');
     const [originalFullList, setOriginalFullList] = useState([]);
+    const [filtersAfterSearch, setFiltersAfterSearch] = useState([]);
+    const [numOfScrolling, setNumOfScrolling] = useState(4);
+    
 
 const [isModalVisible, setIsModalVisible] = useState(false);
     const showModal = () => {
@@ -67,19 +73,29 @@ const [isModalVisible, setIsModalVisible] = useState(false);
             }
         });
     };
-    
+//      window.onscroll = function() {
+//          if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+//             setTimeout(
+//                 () => {
+//                     submitSearchControlScroll(numOfScrolling,history,filtersAfterSearch,sortMethod)
+//                 },
+//                 4 * 1000
+//               );
+//           }
+// };
+
 
     const loadFilteredResults = newFilters => {
+
+        console.log(state.location.state,'state.location.state')
         if(state.location.state== undefined){
             getFilteredProducts(skip, limit, newFilters).then(data => {
                 if (data.error) {
                     setError(data.error);
                 } else {
-                    setTokenFromServer(data.token)
                     setFilteredResults(data.data);
                     setOriginalFullList(data.data)
                     console.log(data.data,'data.data')
-                    console.log(data.token,'data.token')
                     setSize(data.size);
                     setSkip(0);
                 }
@@ -87,13 +103,18 @@ const [isModalVisible, setIsModalVisible] = useState(false);
         }
         else{
             console.log(state.location.state.body.data)
+            console.log(state.location.state.body.FiltersAfterSearch,'state.location.state.body.FiltersAfterSearch')
+            console.log(state.location.state.body.num||0,'state.location.state.body.num')
+            console.log(state.location.state.body.sortMethod,'state.location.state.body.sortMethod')
+            setSortMethod(state.location.state.body.sortMethod)
             setFilteredResults(state.location.state.body.data)
+            setFiltersAfterSearch(state.location.state.body.FiltersAfterSearch)
+            setNumOfScrolling(state.location.state.body.num||0)
             setOriginalFullList(state.location.state.body.data)
-                
                     setSize(state.location.state.body.size);
                     setSkip(0);
         }
-     
+       
     };
 
     const loadMore = () => {
@@ -152,14 +173,17 @@ const [isModalVisible, setIsModalVisible] = useState(false);
       }
       const sortPicker=(e)=>{
         console.log(e.target.value)
+        
         switch (e.target.value) {
             case 'byDate':
                 dateSort()
                 break;
             case 'byPriceLow':
+                setSortMethod('priceLowToHigh')
                 priceSort('lowToHigh')
                 break;
             case 'byPriceHigh':
+                setSortMethod('priceHighToHigh')
                     priceSort('highToLow')
                     break;
         
@@ -198,7 +222,6 @@ const [isModalVisible, setIsModalVisible] = useState(false);
             description="Search and find books of your choice"
             className="container-fluid"
         >
-
             {!(mq.matches)&& <div className={'lineSearch_container'}> <span  ><LineSearch/></span></div>}
             {(mq.matches)&&
             <>     
@@ -214,10 +237,10 @@ const [isModalVisible, setIsModalVisible] = useState(false);
                 <div class="parent_line_sort">
 <div class="div1_line_sort"><p className={'sort_by'}>מיין לפי</p></div>
 <div class="div2_line_sort">
-    <select onChange={sortPicker} className={'sort_drop_down'}>
-        <option value={'byDate'} onClick={dateSort} className={'sort_drop_down_field_text'}>לפי תאריך</option>
-        <option value={'byPriceLow'} onClick={()=>{priceSort('lowToHigh')}} className={'sort_drop_down_field_text'}>מחיר מהזול ליקר</option>
-        <option value={'byPriceHigh'} onClick={()=>{priceSort('highToLow')}} className={'sort_drop_down_field_text'}>מחיר מהיקר לזול</option>
+    <select onChange={()=>{sortCCC()}} id={'sort_drop_down_id'} className={'sort_drop_down'}>
+        <option  value={'byDate'}  className={'sort_drop_down_field_text'}>לפי תאריך</option>
+        <option  value={'priceLowToHigh'}  className={'sort_drop_down_field_text'}>מחיר מהזול ליקר</option>
+        <option  value={'priceHighToLow'}  className={'sort_drop_down_field_text'}>מחיר מהיקר לזול</option>
     </select>
 </div>
 <div class="div3_line_sort"><p className={'sort_by'}>הצג מודעות</p></div>
@@ -251,8 +274,6 @@ const [isModalVisible, setIsModalVisible] = useState(false);
 
 </div>
 }
-<h1 onClick={()=>submitSearchControlScroll('num','token',history)}>click</h1>
-
 <p className={'amount_of_products'} > מציג {filteredResults.length} מודעות</p>
      
 
@@ -266,12 +287,14 @@ const [isModalVisible, setIsModalVisible] = useState(false);
                                 <CardYad2 product={product} />
                             </div>
                         )) }
+                            
                         {/*  */}
                         {!(mq.matches)&& filteredResults.map((product, i) => (
                             <div key={i} className="col-12 mb-1">
                                 <CardYad2Acordion product={product} />
                             </div>
                         )) }
+                        <h1 onClick={()=>submitSearchControlScroll(numOfScrolling,history,filtersAfterSearch,sortMethod)} style={{textAlign:'center'}}>load more</h1>
                     </div>
                     <hr />
                     {loadMoreButton()}

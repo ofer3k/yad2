@@ -17,7 +17,7 @@ import { API } from "../config";
 .catch(function(res){ console.log(res) })
 }
 
-function submitSearchControlScroll(num,token,history){
+function submitSearchControlScroll(num,history,filters,sortMethod){
   fetch(`${API}/products/by/Filter/noSort`,
 {
   headers: {
@@ -25,7 +25,7 @@ function submitSearchControlScroll(num,token,history){
     'Content-Type': 'application/json'
   },
   method: "POST",
-  body: JSON.stringify(num,token)
+  body: JSON.stringify({num,filters,sortMethod})
 })
 .then(function(res){ res.json().then(body =>  {
 history.push("/shop", { body});
@@ -33,4 +33,4 @@ window.location.reload(false);
  }); })
 .catch(function(res){ console.log(res) })
 }
-export { submitSearchControl, submitSearchControlScroll}
+export { submitSearchControl,submitSearchControlScroll }

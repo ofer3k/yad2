@@ -7,7 +7,6 @@ import {submitSearchControl, submitSearchControlScroll} from './../controller/se
 import { Container, Row, Col } from 'reactstrap';
 import { getFilteredProducts } from "./apiCore";
 import { prices } from "./fixedPrices";
-import Book from './small-components/Book'
 import '../searchForm.css'
 // photos
 import extra from '../imgs/extra.png';
