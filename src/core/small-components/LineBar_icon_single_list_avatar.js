@@ -305,7 +305,9 @@ const [isMailValid, setIsMailValid] = useState(true);
     <ul >
         <li className={'user_private_dropDown'}>
         <span className={'user_choice'}>
-        <span className={'user_choice_title'}>איזור אישי</span> <BsPerson size={'20px'}/> 
+            <Link to={'/admin/dashboard'} className={'user_choice_title'} style={{color:'black'}}>
+            <span className={'user_choice_title'}>איזור אישי</span> <BsPerson size={'20px'}/> 
+            </Link>
         </span>
         </li>
         <li className={'user_private_dropDown'}>

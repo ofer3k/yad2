@@ -1,0 +1,63 @@
+.container_private_nav{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background-color: #ff7100;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+.yad2_logo_personal{
+    height: 68%;
+    margin:  auto ;
+}
+.arrow_left_personal{
+    font-size: 30px;
+    color: white;
+    font-weight: 600;
+    margin:  auto 0;
+
+}
+.name_logOut{
+    width: 95%;
+    margin: 40px auto 0;
+    display: flex;
+    justify-content: space-between;
+
+}
+.logout_personal_info{
+    color: #FF6700;
+    border-bottom: 1px solid #FF6700;
+}
+.personal_info_my_producys{
+    display: flex;
+    margin-top: 5px;
+    justify-content: center;
+    align-content: center;
+    background: #efefef;
+    font-weight: bold;
+    color: #525252;
+    text-align: center;
+    padding: 7px 0;
+    font-size: 16px;
+    border-bottom: 1px solid #acabab;
+}
+
+.my_posts_container{
+background-color: rgb(238,238,243);
+width: 90vw;
+height: 60vh;
+margin: 0 auto;
+}
+.my_posts_container__header{
+    height: 30px;
+    width:100%;
+    background-color: rgb(143,143,143);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* text-align: center; */
+}

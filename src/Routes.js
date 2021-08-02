@@ -6,7 +6,7 @@ import Home from "./core/Home";
 import PrivateRoute from "./auth/PrivateRoute";
 import Dashboard from "./user/UserDashboard";
 import AdminRoute from "./auth/AdminRoute";
-import AdminDashboard from "./user/AdminDashboard";
+import PrivateArea from "./user/AdminDashboard";
 import AddCategory from "./admin/AddCategory";
 import AddProduct from "./admin/AddProduct";
 import Shop from "./core/Shop";
@@ -41,7 +41,7 @@ const Routes = () => {
                 <AdminRoute
                     path="/admin/dashboard"
                     exact
-                    component={AdminDashboard}
+                    component={PrivateArea}
                 />
                 <AdminRoute
                     path="/create/category"

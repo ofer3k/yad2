@@ -86,7 +86,6 @@ const [isModalVisible, setIsModalVisible] = useState(false);
 
 
     const loadFilteredResults = newFilters => {
-
         console.log(state.location.state,'state.location.state')
         if(state.location.state== undefined){
             getFilteredProducts(skip, limit, newFilters).then(data => {

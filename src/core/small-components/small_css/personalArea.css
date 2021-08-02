@@ -1,0 +1,44 @@
+.parent_personalArea {
+    display: grid;
+    grid-template-columns: 0.2fr repeat(10, 1fr) 0.2fr;
+    grid-template-rows: 0.2fr repeat(8, 1fr) 0.2fr;
+    grid-column-gap: 5px;
+    grid-row-gap: 0px;
+    text-align: right;
+    border-top:0.5px solid gray;
+    background-color: #c9c9c936;
+    border-bottom:0.5px solid gray;
+    }
+    
+    .div1_personalArea {  width: 100%;height: 100%; grid-area: 2 / 10 / 12 / 12; }
+    .div2_personalArea {display: flex;
+        align-items: center;
+        justify-content: left;
+        width: 100%;height: 100%;   grid-area: 3 / 2 / 9 / 5; }
+    .div3_personalArea {width: 100%;height: 100%;  grid-area: 2 / 5 / 4 / 10; }
+    .div4_personalArea {width: 100%;height: 100%;  grid-area: 4 / 5 / 6 / 10; }
+    .div5_personalArea {width: 100%;height: 100%;  grid-area: 6 / 5 / 8 / 10; }
+    .div6_personalArea {width: 100%;height: 100%;  grid-area: 8 / 5 / 10 / 10; }
+
+    .personalArea__img{
+        width: 100%;
+        height: 90%;
+        margin-top: 2%;
+  
+    }
+    .edit_pencil{
+        font-size: 30px;
+        color: rgb(255,102,0);
+        margin-left: 4%;
+    }
+
+    .personalArea_field_title{
+     font-size: .8rem;
+     color: black;
+     font-weight: 600;
+    }
+    .green_title{
+        color: #087300;
+        font-size: .8rem;
+        font-weight: 600;
+    }
