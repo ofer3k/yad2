@@ -162,8 +162,8 @@ const file=e.target.files[0]
 previewFile(file,e.target.name)
 }
 
-const handleSubmitFile=(e)=>{
-e.preventDefault()
+const handleSubmitFile=()=>{
+// e.preventDefault()
 // console.log(e.target)
 if(!previewSource)return
 if(!previewVideo){
@@ -302,6 +302,10 @@ reader.onloadend=()=>{
         init();
     }, []);
     
+    const finishUpload=(route)=>{
+      setValuesContext({ ...valuesContext, 'Route': route })
+      clickSubmit()
+    }
     const handleCheckTerms=(e)=>{
       let value=e.target.checked
       setIsAgreeTerms(!isAgreeTerms)
@@ -548,8 +552,8 @@ reader.onloadend=()=>{
   }
 
 
-    const clickSubmit = event => {
-        event.preventDefault();
+    const clickSubmit = () => {
+        // event.preventDefault();
         setValues({ ...values, error: "", loading: true });
         console.log(picsList)
         let switchig1=picsList.pic1
@@ -557,7 +561,23 @@ reader.onloadend=()=>{
         picsList.pic1=switchig2
         picsList.pic2=switchig1
         let obj={fullForm:valuesContext,redioButtons:radiosContext,pics:picsList}
-        createProduct(user._id, token, obj).then(console.log('new post is cool cool cool'))
+        try {
+          createProduct(user._id, token, obj).then(console.log('new post is cool cool cool')).then(res=>{
+            console.log(res)
+            if(res.err)
+            {
+setValues({ ...values, error: "משהו בהעלאת המודעה השתבש", loading: false });
+            }
+            else{
+setValues({ ...values, error: "", loading: true });
+
+            }
+          })
+          
+        } catch (error) {
+setValues({ ...values, error: "משהו בהעלאת המודעה השתבש", loading: false });
+
+        }
           
         //   data => {
         //     if (data.error) {
@@ -576,7 +596,7 @@ reader.onloadend=()=>{
         //     }
         // });
     };
-    const [isSelected,setIselected]=useState('6')
+    const [isSelected,setIselected]=useState('1')
     const [iscCicked_next,setIsCicked_next]=useState(false)
     const [iscCicked2_next,setIsCicked2_next]=useState(false)
     const [iscCicked3_next,setIsCicked3_next]=useState(false)
@@ -596,7 +616,7 @@ reader.onloadend=()=>{
       setIsCicked2_next(true)
       if(document.getElementById('property_type').value=='null')
       {
-        document.getElementById('property_type').style.borderColor='#c00'
+        // document.getElementById('property_type').style.borderColor='#c00'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -604,7 +624,7 @@ reader.onloadend=()=>{
           };
         });
          }else{
-        document.getElementById('property_type').style.borderColor='#ccc'
+        // document.getElementById('property_type').style.borderColor='#ccc'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -615,7 +635,7 @@ reader.onloadend=()=>{
 
       if(document.getElementById('property_condition').value=='null')
       {
-        document.getElementById('property_condition').style.borderColor='#c00'
+        // document.getElementById('property_condition').style.borderColor='#c00'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -623,7 +643,7 @@ reader.onloadend=()=>{
           };
         });
       }else{
-        document.getElementById('property_condition').style.borderColor='#ccc'
+        // document.getElementById('property_condition').style.borderColor='#ccc'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -634,7 +654,7 @@ reader.onloadend=()=>{
       //city 
       if(document.getElementById('search_input').value.length<4)
       {
-        document.getElementById('search_input').style.borderColor='#c00'
+        // document.getElementById('search_input').style.borderColor='#c00'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -642,7 +662,7 @@ reader.onloadend=()=>{
           };
         });
       }else{
-        document.getElementById('search_input').style.borderColor='#ccc'
+        // document.getElementById('search_input').style.borderColor='#ccc'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -653,7 +673,7 @@ reader.onloadend=()=>{
       //number 
       if(document.getElementById('house_num').value==''||document.getElementById('house_num').value<=0||document.getElementById('house_num').value>999)
       {
-        document.getElementById('house_num').style.borderColor='#c00'
+        // document.getElementById('house_num').style.borderColor='#c00'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -661,7 +681,7 @@ reader.onloadend=()=>{
           };
         });
       }else{
-        document.getElementById('house_num').style.borderColor='#ccc'
+        // document.getElementById('house_num').style.borderColor='#ccc'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -672,7 +692,7 @@ reader.onloadend=()=>{
       //floor 
       if(document.getElementById('house_floor').value==''||document.getElementById('house_floor').value<0||document.getElementById('house_floor').value>70)
       {
-        document.getElementById('house_floor').style.borderColor='#c00'
+        // document.getElementById('house_floor').style.borderColor='#c00'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -680,7 +700,7 @@ reader.onloadend=()=>{
           };
         });
       }else{
-        document.getElementById('house_floor').style.borderColor='#ccc'
+        // document.getElementById('house_floor').style.borderColor='#ccc'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -691,7 +711,7 @@ reader.onloadend=()=>{
       //total_floor 
       if(document.getElementById('house_total_floors').value==''||document.getElementById('house_total_floors').value<0||document.getElementById('house_total_floors').value>70)
       {
-        document.getElementById('house_total_floors').style.borderColor='#c00'
+        // document.getElementById('house_total_floors').style.borderColor='#c00'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -699,7 +719,7 @@ reader.onloadend=()=>{
           };
         });
       }else{
-        document.getElementById('house_total_floors').style.borderColor='#ccc'
+        // document.getElementById('house_total_floors').style.borderColor='#ccc'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -715,6 +735,10 @@ reader.onloadend=()=>{
 
 const moveNextSection=(num)=>{
   setIselected(num)
+  if(num===5)
+  {
+    handleSubmitFile()
+  }
 }
 
 // 
@@ -751,40 +775,43 @@ const moveNextSection=(num)=>{
     }
 
     const secondeNext=()=>{     
-      setIsCicked2_next(true)
+      setIsCicked3_next(true)
       if(values.num_of_rooms==null)
       {
-        document.getElementById('num_of_rooms').style.borderColor='#c00'  
+        // document.getElementById('num_of_rooms').style.borderColor='#c00'  
          }else{
-        document.getElementById('num_of_rooms').style.borderColor='#ccc'
+        // document.getElementById('num_of_rooms').style.borderColor='#ccc'
         moveNextSection(3)
       }
 }
 const thirdNext=()=>{     
   setIsCicked3_next(true)
-  if(values.build_mr==null)
+  if(values.build_mr>2000000||values.build_mr<10)
   {
-    document.getElementById('build_mr').style.borderColor='#c00'  
+    values.build_mr=null
+    // document.getElementById('build_mr').style.borderColor='#c00'  
      }else{
-    document.getElementById('build_mr').style.borderColor='#ccc'
+    // document.getElementById('build_mr').style.borderColor='#ccc'
   }
-  if(values.build_mr_total==null)
+  if(values.build_mr_total<values.build_mr||values.build_mr_total<10)
   {
-    document.getElementById('build_mr_total').style.borderColor='#c00'  
+    values.build_mr_total=null
+    // document.getElementById('build_mr_total').style.borderColor='#c00'  
      }else{
-    document.getElementById('build_mr_total').style.borderColor='#ccc'
+    // document.getElementById('build_mr_total').style.borderColor='#ccc'
   }
-  if(values.price==null)
+  if(values.price>20000000||values.price<100000)
   {
-    document.getElementById('price').style.borderColor='#c00'  
+    values.price=null
+    // document.getElementById('price').style.borderColor='#c00'  
      }else{
-    document.getElementById('price').style.borderColor='#ccc'
+    // document.getElementById('price').style.borderColor='#ccc'
   }
   if(values.entry_date==null)
   {
-    document.getElementById('entry_date').style.borderColor='#c00'  
+    // document.getElementById('entry_date').style.borderColor='#c00'  
      }else{
-    document.getElementById('entry_date').style.borderColor='#ccc'
+    // document.getElementById('entry_date').style.borderColor='#ccc'
   }
   if(values.entry_date!=null&&values.price!=null&&values.build_mr_total!=null&&values.build_mr!=null)
   {
@@ -814,8 +841,8 @@ const fifthNext=()=>{
 <div class="div1_address_field_info">
   <span className={'field_info_title'}>*סוג הנכס</span>
   </div>
-<div class="div2_address_field_info">
-<select className={'field_select'} defaultValue={'null'}  onChange={handleChange("property_type")} id="property_type" name="property_type">
+<div class={"div2_address_field_info"}>
+<select className={iscCicked2_next&&!values.property_type?'field_select error':'field_select'} defaultValue={'null'}  onChange={handleChange("property_type")} id="property_type" name="property_type">
 <option hidden value="null">דירה או אולי פנטהאוז?</option>
 <option value="Apartment">דירה</option>
 <option value="Garden Apartment">דירת גן</option>
@@ -839,7 +866,7 @@ const fifthNext=()=>{
 
 <div class="div3_address_field_info"><span className={'field_info_title'}>*מצב הנכס</span></div>
 <div class="div4_address_field_info">
-<select className={'field_select'} defaultValue={'null'} onChange={handleChange("property_condition")} id="property_condition" name="property_condition">
+<select  className={iscCicked2_next&&!values.property_condition?'field_select error':'field_select'} defaultValue={'null'} onChange={handleChange("property_condition")} id="property_condition" name="property_condition">
 <option  hidden value="null">משופץ? חדש מקבלן?</option>
 <option value="New from a contractor">חדש מקבלן (לא גרו בו בכלל)</option>
 <option value="New (property up to 5 years old)">חדש (נכס בן עד 5 שנים)</option>
@@ -851,7 +878,7 @@ const fifthNext=()=>{
 </div>
 <div class="div5_address_field_info"> <span className={'field_info_title'}>*ישוב</span> </div>
 <div class="div6_address_field_info">
-    <input className={'field_select'} type="text" onBlur={handleChange("property_address_city")} onClick={handleChange("property_address_city")} onChange={handleChange("property_address_city")} id={"search_input"} placeholder="איפה נמצא הנכס?" />
+    <input className={iscCicked2_next&&!values.property_address_city?'field_select error':'field_select'} type="text" onBlur={handleChange("property_address_city")} onClick={handleChange("property_address_city")} onChange={handleChange("property_address_city")} id={"search_input"} placeholder="איפה נמצא הנכס?" />
 {!firstFields.city&&iscCicked_next&&values.property_address_city.length<1&&<p className={'invalid_field_note'}>יש לבחור ישוב מתוך הרשימה</p>}
 </div>
 <div class="div7_address_field_info"><span className={'field_info_title'}>רחוב</span></div>
@@ -863,17 +890,17 @@ const fifthNext=()=>{
 <div class="parent_address_field_info__next">
 <div class="div1_address_field_info__next"><span className={'field_info_title'}>*מס' בית</span></div>
 <div class="div2_address_field_info__next">
-    <input className={'field_select'} type="number" id={'house_num'} onChange={handleChange("property_address_num")}  />
+    <input className={iscCicked2_next&&!values.property_address_num?'field_select error':'field_select'} type="number" id={'house_num'} onChange={handleChange("property_address_num")}  />
 {!firstFields.number&&iscCicked_next&&values.property_address_num==null&&<p className={'invalid_field_note'}>יש לבחור מס' בית מתוך הרשימה</p>}
 </div>
 <div class="div3_address_field_info__next"><span className={'field_info_title'}>*קומה</span></div>
 <div class="div4_address_field_info__next">
-    <input className={'field_select__next'} id={'house_floor'} type="number" onChange={handleChange("property_floor")}  placeholder="הכנסת מספר קומה" />
+    <input className={iscCicked2_next&&!values.property_floor?'field_select__next error':'field_select__next'} id={'house_floor'} type="number" onChange={handleChange("property_floor")}  placeholder="הכנסת מספר קומה" />
 {!firstFields.floor&&iscCicked_next&&values.property_floor==null&&<p className={'invalid_field_note'}>שדה חובה קומה</p>}
 </div>
 <div style={{marginRight:'-20%'}} class="div5_address_field_info__next"><span  className={'field_info_title'}>*סה"כ קומות בבניין</span></div>
 <div class="div6_address_field_info__next">
-<input style={{marginRight:'-20%'}} className={'field_select__next'} type="number" onChange={handleChange("property_total_floors")} id={'house_total_floors'} placeholder={`הכנסת סה"כ קומות`} />
+<input className={iscCicked2_next&&!values.property_total_floors?'field_select__next error':'field_select__next'} style={{marginRight:'-20%'}}  type="number" onChange={handleChange("property_total_floors")} id={'house_total_floors'} placeholder={`הכנסת סה"כ קומות`} />
 {!firstFields.total_floors&&iscCicked_next&&values.property_total_floors==null&&<p className={'invalid_field_note'} style={{marginRight:'-20%'}}>שדה חובה סה"כ קומות בבניין</p>}
 </div>
 <div class="div7_address_field_info__next"><span style={{color: '#ccc'}} className={'field_info_title__disabled'}>שכונה</span></div>
@@ -920,7 +947,7 @@ const fifthNext=()=>{
     <div class="parent_section2">
 <div class="div1_section2"><span className={'field_info_title'}>מספר חדרים*</span></div>
 <div class="div2_section2">
-<select className={'field_select'} defaultValue={'null'}  onChange={handleChange("num_of_rooms")}  id="num_of_rooms" name="num_of_rooms">
+<select  className={iscCicked3_next&&!values.num_of_rooms?'field_select error':'field_select'} defaultValue={'null'}  onChange={handleChange("num_of_rooms")}  id="num_of_rooms" name="num_of_rooms">
 <option hidden value="null">בחירת מספר חדרים</option>
 <option value="0">0</option>
 <option value="1">1</option>
@@ -947,7 +974,7 @@ const fifthNext=()=>{
 <option value="11.5">11.5</option>
 <option value="12">12</option>
 </select>
-{values.num_of_rooms==null&&iscCicked2_next&&<p className={'invalid_field_note'}>שדה חובה סוג הנכס</p>}
+{values.num_of_rooms==null&&iscCicked3_next&&<p className={'invalid_field_note'}>שדה חובה סוג הנכס</p>}
 </div>
 {/* parking */}
 <div class="div3_section2"><span className={'field_info_title'}>חניה</span></div>
@@ -1125,7 +1152,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
     <div class="parent_section2">
 <div class="div1_section2"><span className={'field_info_title'}>מר בנוי*</span></div>
 <div class="div2_section2">
-    <input style={{marginRight:'-15px'}} type="number" onChange={handleChange("build_mr")} className={'field_select'} id={"build_mr"} placeholder={`כמה מ"ר יש בנכס`} />
+    <input style={{marginRight:'-15px'}} type="number" className={iscCicked3_next&&!values.build_mr?'field_select error':'field_select'} onChange={handleChange("build_mr")}  id={"build_mr"} placeholder={`כמה מ"ר יש בנכס`} />
 {/* {values.build_mr!==null&&<p className={'invalid_field_note'}>שדה חובה סוג הנכס</p>} */}
 </div>
 {/* parking */}
@@ -1133,18 +1160,18 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 <span className={'field_info_title'} >גודל במ"ר סך הכל*</span>
   </div>
 <div class="div4_section2">
-    <input type="number" style={{marginRight:'-15px'}} onChange={handleChange("build_mr_total")} className={'field_select'} id={"build_mr_total"} placeholder={``} />
+    <input type="number" style={{marginRight:'-15px'}} className={iscCicked3_next&&!values.build_mr_total?'field_select error':'field_select'} onChange={handleChange("build_mr_total")}  id={"build_mr_total"} placeholder={``} />
 </div>
 <div class="div5_section2">
 <span className={'field_info_title'} >מחיר*</span>
 </div>
 <div class="div6_section2">
-    <input type="number" style={{marginRight:'-15px'}} onChange={handleChange("price")} className={'field_select'} id={"price"} placeholder={`סכום מינימלי 100,000`} />
+    <input type="number" style={{marginRight:'-15px'}} onChange={handleChange("price")} className={iscCicked3_next&&!values.price?'field_select error':'field_select'} id={"price"} placeholder={`סכום מינימלי 100,000`} />
 </div>
 <p className={"field_info_title"} >תאריך כניסה*</p>
 <div dir='rtl' >
-    <input style={{marginRight:'-15px',maxWidth:'45%'}} className={'field_select'} type="date" onChange={handleChange("entry_date")}  id={'entry_date'} />
-    <input  onChange={date()} className={'inline_box'} type='checkbox'/>
+    <input style={{marginRight:'-15px',maxWidth:'45%'}} className={iscCicked3_next&&!values.entry_date?'field_select error':'field_select'} type="date" onChange={handleChange("entry_date")}  id={'entry_date'} />
+    <input onChange={date()} className={'inline_box'} type='checkbox'/>
 <span className={'inline_box'}>מיידי</span>
 </div>
 {/* buttons */}
@@ -1477,7 +1504,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
   <span className={'route_not_include'}>הקפצה אוטומטית לחסכון בזמן  &#10005;
 </span>
   </div>
-  <div onClick={()=>{setValuesContext({ ...valuesContext, 'Route': 'basic' })}} class="div4_basic">
+  <div onClick={()=>{finishUpload('basic') }} class="div4_basic">
   <span className={'not_vip_button'}>  
     <span>חינם</span>
     <span> / 120 ימים</span>
@@ -1502,7 +1529,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 <div class="div5_vip">
 <span className={'route_include'} >הופעה לפני הודעות רגילות וורודות  &#10003;</span>
 </div>
-<div onClick={()=>{setValuesContext({ ...valuesContext, 'Route': 'vip' })}} class="div6_vip">
+<div onClick={()=>{finishUpload('vip') }} class="div6_vip">
   <span className={'vip_button'}>
   <span>199 <FaShekelSign/>  </span>
   <span className={'vip_button__days'}> / 28 ימים</span>
@@ -1523,7 +1550,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
   <span className={'route_include'}>הקפצה אוטומטית לחסכון בזמן  &#10003;
 </span>
   </div>
-  <div onClick={()=>{setValuesContext({ ...valuesContext, 'Route': 'marked' })}} style={{direction:'rtl'}} class="div4_basic">
+  <div onClick={()=>{finishUpload('marked') }} style={{direction:'rtl'}} class="div4_basic">
   <span style={{color:'#ff7100',backgroundColor:'white'}} className={'vip_button'}>
   <span  >99 <FaShekelSign/>  </span>
   <span className={'vip_button__days'}> / 28 ימים</span>
@@ -1533,9 +1560,9 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 </div>
 </div>
 
-<button onClick={clickSubmit}>יד 2</button>
+{/* <button onClick={clickSubmit}>יד 2</button> */}
 
-<button style={{marginRight:'40px'}} onClick={handleSubmitFile}>מדיה לענן</button>
+{/* <button style={{marginRight:'40px'}} onClick={handleSubmitFile}>מדיה לענן</button> */}
   </div>}
   {isSelected=='6'&&(mq.matches)&&
   <div style={{paddingRight:'5.5%',marginTop:'10px'}}>
@@ -1624,7 +1651,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
     const showLoading = () =>
         loading && (
             <div className="alert alert-success">
-                <h2>Loading...</h2>
+                <h2>המודעה פורסמה בהצלחה</h2>
             </div>
         );
        
@@ -1633,13 +1660,12 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
             title="Add a new product"
             description={`G'day ${user.name}, ready to add a new product?`}
         >
-            <div className="row">
+            <div style={{backgroundColor:'rgb(245,245,245)'}} className="row">
                 <div className="col-md-8 offset-md-2">
                     {showLoading()}
                     {showSuccess()}
                     {showError()}
                     {newPostForm()}
-                    
                 </div>
             </div>
         </Layout>

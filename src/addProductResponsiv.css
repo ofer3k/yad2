@@ -996,4 +996,6 @@ margin-top: 80px;
             cursor: pointer;
             font-family: Rubik;
         }
-      
+        .error{
+            border:1px solid #c00 !important;
+        }

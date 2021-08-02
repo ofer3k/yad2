@@ -51,11 +51,19 @@ export const createProduct = (userId, token, product) => {
         body: data
     })
         .then(response => {
-            console.log('product',product)
-            return response.json();
+            if(response.ok)
+            {
+                console.log('product',product)
+                return response.json();
+            }
+            else{
+                throw new Error('בעיה ביצירת המודעה');
+            }
+            
         })
         .catch(err => {
-            console.log(err);
+            return({err:'משהו השתבש בהעלאת המודעה'})
+
         });
 };
 

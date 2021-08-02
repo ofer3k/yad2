@@ -39,6 +39,7 @@ const Shop = (state) => {
     const [filteredResults, setFilteredResults] = useState([]);
     const [originalFullList, setOriginalFullList] = useState([]);
     const [filtersAfterSearch, setFiltersAfterSearch] = useState([]);
+    const [fullLength, setFullLength] = useState(3);
     const [numOfScrolling, setNumOfScrolling] = useState(4);
     
 
@@ -73,16 +74,19 @@ const [isModalVisible, setIsModalVisible] = useState(false);
             }
         });
     };
-//      window.onscroll = function() {
-//          if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
-//             setTimeout(
-//                 () => {
-//                     submitSearchControlScroll(numOfScrolling,history,filtersAfterSearch,sortMethod)
-//                 },
-//                 4 * 1000
-//               );
-//           }
-// };
+     window.onscroll = function() {
+         if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight&& filteredResults.length<fullLength) {
+{   
+    console.log(filteredResults.length,'filteredResults.length')         
+    console.log(fullLength,'fullLength')         
+    setTimeout(
+                () => {
+                    submitSearchControlScroll(numOfScrolling,history,filtersAfterSearch,sortMethod)
+                },
+                 1000
+              );}
+          }
+};
 
 
     const loadFilteredResults = newFilters => {
@@ -102,9 +106,11 @@ const [isModalVisible, setIsModalVisible] = useState(false);
         }
         else{
             console.log(state.location.state.body.data)
+            console.log(state.location.state.body.fullLength,'state.location.state.body.fullLength')
             console.log(state.location.state.body.FiltersAfterSearch,'state.location.state.body.FiltersAfterSearch')
             console.log(state.location.state.body.num||0,'state.location.state.body.num')
             console.log(state.location.state.body.sortMethod,'state.location.state.body.sortMethod')
+            setFullLength(state.location.state.body.fullLength||4)
             setSortMethod(state.location.state.body.sortMethod)
             setFilteredResults(state.location.state.body.data)
             setFiltersAfterSearch(state.location.state.body.FiltersAfterSearch)
@@ -293,8 +299,9 @@ const [isModalVisible, setIsModalVisible] = useState(false);
                                 <CardYad2Acordion product={product} />
                             </div>
                         )) }
-                        <h1 onClick={()=>submitSearchControlScroll(numOfScrolling,history,filtersAfterSearch,sortMethod)} style={{textAlign:'center'}}>load more</h1>
+                        {/* <h1 onClick={()=>submitSearchControlScroll(numOfScrolling,history,filtersAfterSearch,sortMethod)} style={{textAlign:'center'}}>load more</h1> */}
                     </div>
+                    {filteredResults.length<fullLength&&<p className={'extra_products'}>יש מודעות נוספות</p>}
                     <hr />
                     {loadMoreButton()}
                 </div>
