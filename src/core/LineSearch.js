@@ -363,7 +363,7 @@ document.getElementById('dropDown_arrow').innerHTML=('&#709;')
 <div className={'parent_lineSearch_upper'} style={{width:'90vw',margin:'70px auto 0',textAlign:'right'}}>
   <p>{searchParameters.max_rooms}</p>
 <div class="parent_lineSearch">
-<div class="div1_lineSearch"><input placeholder={'לדוגמה:תל אביב יפו'} className={'adress_input_search_bar'} /></div>
+<div class="div1_lineSearch"><input id={"search_input"} name={'property_address_city'} onChange={inputChangeHandler} placeholder={'לדוגמה:תל אביב יפו'} className={'adress_input_search_bar'} /></div>
 <div class="div2_lineSearch">
   <p onClick={openDropDown} style={{fontSize:'.875rem',color:'#ccc'}} id={'dropDown_father'} className={'adress_input_search_bar'}><span id={'dropDown_arrow'} className={'down_arrow'} style={{float:'left'}} >&#709;</span> בחרו סוגי נכסים</p>
   {dropDown&&

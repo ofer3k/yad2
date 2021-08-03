@@ -40,6 +40,8 @@ const Shop = (state) => {
     const [originalFullList, setOriginalFullList] = useState([]);
     const [filtersAfterSearch, setFiltersAfterSearch] = useState([]);
     const [fullLength, setFullLength] = useState(3);
+    const [isMorePosts, setIsMorePosts] = useState(true);
+    
     const [numOfScrolling, setNumOfScrolling] = useState(4);
     
 
@@ -75,7 +77,7 @@ const [isModalVisible, setIsModalVisible] = useState(false);
         });
     };
      window.onscroll = function() {
-         if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight&& filteredResults.length<fullLength) {
+         if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight&& filteredResults.length<fullLength&&window.location.pathname==='/shop') {
 {   
     console.log(filteredResults.length,'filteredResults.length')         
     console.log(fullLength,'fullLength')         
@@ -96,7 +98,7 @@ const [isModalVisible, setIsModalVisible] = useState(false);
                 if (data.error) {
                     setError(data.error);
                 } else {
-                    setFilteredResults(data.data);
+                    setFilteredResults(data.data||[]);
                     setOriginalFullList(data.data)
                     console.log(data.data,'data.data')
                     setSize(data.size);
@@ -111,8 +113,10 @@ const [isModalVisible, setIsModalVisible] = useState(false);
             console.log(state.location.state.body.num||0,'state.location.state.body.num')
             console.log(state.location.state.body.sortMethod,'state.location.state.body.sortMethod')
             setFullLength(state.location.state.body.fullLength||4)
+            if(!state.location.state.body.fullLength)
+            setIsMorePosts(false)
             setSortMethod(state.location.state.body.sortMethod)
-            setFilteredResults(state.location.state.body.data)
+            setFilteredResults(state.location.state.body.data||[])
             setFiltersAfterSearch(state.location.state.body.FiltersAfterSearch)
             setNumOfScrolling(state.location.state.body.num||0)
             setOriginalFullList(state.location.state.body.data)
@@ -301,7 +305,7 @@ const [isModalVisible, setIsModalVisible] = useState(false);
                         )) }
                         {/* <h1 onClick={()=>submitSearchControlScroll(numOfScrolling,history,filtersAfterSearch,sortMethod)} style={{textAlign:'center'}}>load more</h1> */}
                     </div>
-                    {filteredResults.length<fullLength&&<p className={'extra_products'}>יש מודעות נוספות</p>}
+                    {filteredResults.length<fullLength&&filteredResults.length>0&&isMorePosts&&<p className={'extra_products'}>יש מודעות נוספות</p>}
                     <hr />
                     {loadMoreButton()}
                 </div>

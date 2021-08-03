@@ -51,6 +51,11 @@ const [previewPic4,setPreviewPic4]=useState('')
 const [imagesUrlList,setImagesUrlList]=useState([])
 const [isAddContact,setIsAddContact]=useState(false)
 const [isAgreeTerms,setIsAgreeTerms]=useState(false)
+const [secondeCircleClass,setSecondeCirclrClass]=useState('circle_before_select')
+const [thirdCircleClass,setthirdCirclrClass]=useState('circle_before_select')
+const [forthCircleClass,setForthCirclrClass]=useState('circle_before_select')
+const [fifthCircleClass,setFifthCirclrClass]=useState('circle_before_select')
+const [sixthCirclrClass,setSixthCirclrClass]=useState('circle_before_select')
 
 
 
@@ -600,6 +605,7 @@ setValues({ ...values, error: "משהו בהעלאת המודעה השתבש", l
     const [iscCicked_next,setIsCicked_next]=useState(false)
     const [iscCicked2_next,setIsCicked2_next]=useState(false)
     const [iscCicked3_next,setIsCicked3_next]=useState(false)
+    const [iscCicked4_next,setIsCicked4_next]=useState(false)
     const [iscCicked5_next,setIsCicked5_next]=useState(false)
 
     const [firstFields,setFirstFields]=useState({
@@ -709,7 +715,7 @@ setValues({ ...values, error: "משהו בהעלאת המודעה השתבש", l
         }); 
       }
       //total_floor 
-      if(document.getElementById('house_total_floors').value==''||document.getElementById('house_total_floors').value<0||document.getElementById('house_total_floors').value>70)
+      if(document.getElementById('house_total_floors').value==''||document.getElementById('house_total_floors').value<0||document.getElementById('house_total_floors').value>70||valuesContext.property_total_floors<valuesContext.property_floor)
       {
         // document.getElementById('house_total_floors').style.borderColor='#c00'
         setFirstFields(firstFields => {
@@ -739,6 +745,59 @@ const moveNextSection=(num)=>{
   {
     handleSubmitFile()
   }
+  switch (num) {
+    case 2:
+      setSecondeCirclrClass('circle_selected')
+      break;
+      case 3:
+        setSecondeCirclrClass('circle_after_check')
+        setthirdCirclrClass('circle_selected')
+      break;
+      case 4:
+        setthirdCirclrClass('circle_after_check')
+        setForthCirclrClass('circle_selected')
+      break;
+      case 4:
+        setForthCirclrClass('circle_after_check')
+        setFifthCirclrClass('circle_selected')
+      break;
+      case 5:
+        setFifthCirclrClass('circle_after_check')
+        setSixthCirclrClass('circle_selected')
+      break;
+    default:
+      break;
+  }
+  
+}
+
+const moveLastSection=(num)=>{
+  setIselected(num)
+  switch (num) {
+    case 2:
+      setSecondeCirclrClass('circle_selected')
+      setthirdCirclrClass('circle_after_check')
+      break;
+      case 3:
+        setForthCirclrClass('circle_after_check')
+        setthirdCirclrClass('circle_selected')
+      break;
+      case 4:
+        setFifthCirclrClass('circle_after_check')
+        setForthCirclrClass('circle_selected')
+      break;
+      case 5:
+        setSixthCirclrClass('circle_after_check')
+        setFifthCirclrClass('circle_selected')
+      break;
+      case 4:
+        setFifthCirclrClass('circle_after_check')
+        setSixthCirclrClass('circle_selected')
+      break;
+    default:
+      break;
+  }
+  
 }
 
 // 
@@ -785,15 +844,15 @@ const moveNextSection=(num)=>{
       }
 }
 const thirdNext=()=>{     
-  setIsCicked3_next(true)
-  if(values.build_mr>2000000||values.build_mr<10)
+  setIsCicked4_next(true)
+  if(values.build_mr>200000||values.build_mr<10)
   {
     values.build_mr=null
     // document.getElementById('build_mr').style.borderColor='#c00'  
      }else{
     // document.getElementById('build_mr').style.borderColor='#ccc'
   }
-  if(values.build_mr_total<values.build_mr||values.build_mr_total<10)
+  if(values.build_mr_total<values.build_mr)
   {
     values.build_mr_total=null
     // document.getElementById('build_mr_total').style.borderColor='#c00'  
@@ -938,9 +997,16 @@ const fifthNext=()=>{
   }  
 </div>
 
-<div style={{direction:'rtl'}}  className={isSelected=='2'?"field_style div2_add_product_acordion":"field_style_not_selected div2_add_product_acordion"}>
+<div style={{direction:'rtl'}} className={isSelected=='2'?"field_style div2_add_product_acordion":"field_style_not_selected div2_add_product_acordion"}>
 <div  >
-<span onClick={handleFieldSelection} name={'details_field'} className={isSelected=='2'?"circle_selected":'circle_before_select'}>2</span>
+  { !(secondeCircleClass=='circle_after_check')&&
+  <span onClick={handleFieldSelection} name={'details_field'} className={secondeCircleClass}>
+    2
+    </span>}
+    { (secondeCircleClass==='circle_after_check')&& 
+  <span onClick={handleFieldSelection} name={'details_field'} className={secondeCircleClass}>
+    &#10003;
+    </span>}
   <span className={isSelected=='2'?"text_select":'text_not_select'} >על הנכס</span>
   {isSelected=='2'&&
   <div style={{paddingRight:'5.5%',marginTop:'10px'}}>
@@ -1144,7 +1210,14 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 
 <div  className={isSelected=='3'?"field_style div3_add_product_acordion":"field_style_not_selected div3_add_product_acordion"}>
 <div  style={{direction:'rtl'}}>
-<span onClick={handleFieldSelection} name={'payments_field'} className={isSelected=='3'?"circle_selected":'circle_before_select'}>3</span>
+{ !(thirdCircleClass=='circle_after_check')&&
+  <span onClick={handleFieldSelection} name={'payments_field'} className={thirdCircleClass}>
+    3
+    </span>}
+    { (thirdCircleClass==='circle_after_check')&& 
+  <span onClick={handleFieldSelection} name={'payments_field'} className={thirdCircleClass}>
+    &#10003;
+    </span>}
   <span className={isSelected=='3'?"text_select":'text_not_select'} >תשלומים, תאריכים ועוד</span>
   {isSelected=='3'&&
   <div style={{paddingRight:'5.5%',marginTop:'10px'}}>
@@ -1152,7 +1225,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
     <div class="parent_section2">
 <div class="div1_section2"><span className={'field_info_title'}>מר בנוי*</span></div>
 <div class="div2_section2">
-    <input style={{marginRight:'-15px'}} type="number" className={iscCicked3_next&&!values.build_mr?'field_select error':'field_select'} onChange={handleChange("build_mr")}  id={"build_mr"} placeholder={`כמה מ"ר יש בנכס`} />
+    <input style={{marginRight:'-15px'}} type="number" className={iscCicked4_next&&(values.build_mr==null)?'field_select error':'field_select'} onChange={handleChange("build_mr")}  id={"build_mr"} placeholder={`כמה מ"ר יש בנכס`} />
 {/* {values.build_mr!==null&&<p className={'invalid_field_note'}>שדה חובה סוג הנכס</p>} */}
 </div>
 {/* parking */}
@@ -1160,17 +1233,17 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 <span className={'field_info_title'} >גודל במ"ר סך הכל*</span>
   </div>
 <div class="div4_section2">
-    <input type="number" style={{marginRight:'-15px'}} className={iscCicked3_next&&!values.build_mr_total?'field_select error':'field_select'} onChange={handleChange("build_mr_total")}  id={"build_mr_total"} placeholder={``} />
+    <input type="number" style={{marginRight:'-15px'}} className={iscCicked4_next&&values.build_mr_total?'field_select error':'field_select'} onChange={handleChange("build_mr_total")}  id={"build_mr_total"} placeholder={``} />
 </div>
 <div class="div5_section2">
 <span className={'field_info_title'} >מחיר*</span>
 </div>
 <div class="div6_section2">
-    <input type="number" style={{marginRight:'-15px'}} onChange={handleChange("price")} className={iscCicked3_next&&!values.price?'field_select error':'field_select'} id={"price"} placeholder={`סכום מינימלי 100,000`} />
+    <input type="number" style={{marginRight:'-15px'}} onChange={handleChange("price")} className={iscCicked4_next&&!values.price?'field_select error':'field_select'} id={"price"} placeholder={`סכום מינימלי 100,000`} />
 </div>
 <p className={"field_info_title"} >תאריך כניסה*</p>
 <div dir='rtl' >
-    <input style={{marginRight:'-15px',maxWidth:'45%'}} className={iscCicked3_next&&!values.entry_date?'field_select error':'field_select'} type="date" onChange={handleChange("entry_date")}  id={'entry_date'} />
+    <input style={{marginRight:'-15px',maxWidth:'45%'}} className={iscCicked4_next&&!values.entry_date?'field_select error':'field_select'} type="date" onChange={handleChange("entry_date")}  id={'entry_date'} />
     <input onChange={date()} className={'inline_box'} type='checkbox'/>
 <span className={'inline_box'}>מיידי</span>
 </div>
@@ -1190,7 +1263,14 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 
 <div  className={isSelected=='4'?"field_style div4_add_product_acordion":"field_style_not_selected div4_add_product_acordion"}>
 <div  style={{direction:'rtl'}}>
-<span onClick={handleFieldSelection} name={'media_field'} className={isSelected=='4'?"circle_selected":'circle_before_select'}>4</span>
+{ !(forthCircleClass=='circle_after_check')&&
+  <span onClick={handleFieldSelection} name={'media_field'} className={forthCircleClass}>
+    4
+    </span>}
+    { (forthCircleClass==='circle_after_check')&& 
+  <span onClick={handleFieldSelection} name={'media_field'} className={forthCircleClass}>
+    &#10003;
+    </span>}
   <span className={isSelected=='4'?"text_select":'text_not_select'} >תמונות וסרטונים</span>
   {isSelected=='4'&&
   <div style={{paddingRight:'5.5%',marginTop:'10px'}}>
@@ -1378,7 +1458,14 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 
 <div  className={isSelected=='5'?"field_style div5_add_product_acordion":"field_style_not_selected div5_add_product_acordion"}>
 <div  style={{direction:'rtl'}}>
-<span onClick={handleFieldSelection} name={'contact_field'} className={isSelected=='5'?"circle_selected":'circle_before_select'}>5</span>
+{ !(fifthCircleClass=='circle_after_check')&&
+  <span onClick={handleFieldSelection} name={'contact_field'} className={fifthCircleClass}>
+    5
+    </span>}
+    { (fifthCircleClass==='circle_after_check')&& 
+  <span onClick={handleFieldSelection} name={'contact_field'} className={fifthCircleClass}>
+    &#10003;
+    </span>}
   <span className={isSelected=='5'?"text_select":'text_not_select'} >פרטים ליצירת קשר</span>
   {isSelected=='5'&&
   <div style={{paddingRight:'5.5%',marginTop:'10px'}}>
@@ -1484,7 +1571,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 
 <div  className={isSelected=='6'?"field_style div6_add_product_acordion":"field_style_not_selected div6_add_product_acordion"}>
 <div  style={{direction:'rtl'}}>
-<span onClick={handleFieldSelection} name={'publish_field'} className={isSelected=='6'?"circle_selected":'circle_before_select'}>6</span>
+<span onClick={handleFieldSelection} name={'publish_field'} className={sixthCirclrClass}>6</span>
   <span className={isSelected=='6'?"text_select":'text_not_select'} >סיום פרסום</span>
   {isSelected=='6'&&!(mq.matches)&&
   <div style={{paddingRight:'5.5%',marginTop:'10px'}}>
