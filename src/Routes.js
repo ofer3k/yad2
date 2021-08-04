@@ -17,17 +17,27 @@ import ProductPopup from "./core/ProductPopUp";
 import AppState from "./context/AppState";
 import SearchState from "./context/SearchState";
 import ProductState from "./context/ProductState";
+import ProductUpdateState from "./context/ProductUpdateState";
+import PicsCarousel from "./core/small-components/PicsCarousel";
+import UpdateProduct from "./admin/UpdateProduct";
 const Routes = () => {
     return (
         <BrowserRouter>
-            
             <Switch>
-
+            <ProductUpdateState>
+                  <AdminRoute
+                    path="/update/product/:id"
+                    exact
+                    component={UpdateProduct}
+                />
+                  </ProductUpdateState>
+            </Switch>
+            <Switch>
                 <SearchState>
                 <Route path={["/", "/shop"]} exact component={Shop} />
                 <Route path="/SearchForm" exact component={SearchForm} />
                 </SearchState>
-                </Switch>
+            </Switch>
  
                 <Switch>    
                 <Route path="/signin" exact component={Signin} />
@@ -43,6 +53,7 @@ const Routes = () => {
                     exact
                     component={PrivateArea}
                 />
+                
                 <AdminRoute
                     path="/create/category"
                     exact
@@ -57,9 +68,10 @@ const Routes = () => {
                 />
                 <Route path="/product/:productId" exact component={Product} />
                 <Route path="/product/popup/:productId" exact component={ProductPopup} />
-
+                <Route path="/carousel/:productId" exact component={PicsCarousel} />
                   </ProductState>
-                
+
+                  
                 <Route path="/cart" exact component={Cart} />
             </Switch>
         </BrowserRouter>

@@ -243,7 +243,7 @@ text-align: right;
   }
   .fixed_searchBar{
       width: 100vw;
-      position: fixed;
+      position: absolute;
       top: 8%;
       left: 0;
     align-items: center;
@@ -252,7 +252,9 @@ text-align: right;
     background-color: #fff;
     height: 50px;
     z-index: 10 !important;
+    
   }
+  
   .fixed_searchBar_text{
     /* width: calc(100% - 87px); */
     font-family: Rubik,sans-serif;
@@ -266,7 +268,7 @@ text-align: right;
   }
   .lineSearch_container{
       width: 95vw;
-      /* margin: 0 auto; */
+      
       margin-left: -15px;
       /* border: 2px solid blue; */
   }

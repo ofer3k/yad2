@@ -48,7 +48,8 @@
 .my_posts_container{
 background-color: rgb(238,238,243);
 width: 90vw;
-height: 60vh;
+height: fit-content;
+padding-bottom: 40px;
 margin: 0 auto;
 }
 .my_posts_container__header{

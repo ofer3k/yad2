@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+
 import ShowImage from "./ShowImage";
 import './../cardYad2Acordion.css'
 import { FaRegSnowflake,FaWheelchair } from 'react-icons/fa';
@@ -15,7 +17,12 @@ import Popup_IconTitle from "./small-components/Popup_IconTitle";
 
 import { addItem, updateItem, removeItem } from "./cartHelpers";
 import { Accordion,Card,Button,Form,ButtonGroup ,ToggleButton,Pagination } from 'react-bootstrap';
+import PicsCarousel from "./small-components/PicsCarousel";
+// state: {
+//     fromNotifications: true,
+//   }
 const correctNameProperty=(name)=>{
+    
     switch (name) {
         case 'Apartment':
             return('דירה')
@@ -63,6 +70,8 @@ const CardYad2Acordion = ({
 }) => {
     const [showInfo,setShowInfo]= useState(false);
     const [redirect, setRedirect] = useState(false);
+    const [showPics, setShowPics] = useState(false);
+  let history = useHistory();
     
     return (
 <div style={{color:'black'}}  >
@@ -80,15 +89,32 @@ const CardYad2Acordion = ({
 <div class="div10_card data_title_style"> קומה </div>
 <div class="div11_card data_title_style"> מ"ר </div>
 </div> */}
+<div  id={'card_acordion'} className="parent_acordion" style={product.Route==='vip'?{backgroundColor:'#fdf9c5'}:{backgroundColor:'white'}}>
+<div 
+// onClick={()=>{
+//   setShowPics(true)
+// }}
+ class="div1_acordion">
+         <Link  to={`/carousel/${product._id}`} >
+         <img className={'img1'} style={{maxWidth:'110px'}} src={product.pic1}></img>
+</Link>
+
+</div>
 <div onClick={()=>{
     setShowInfo(!showInfo)
-}} id={'card_acordion'} className="parent_acordion" style={product.Route==='vip'?{backgroundColor:'#fdf9c5'}:{backgroundColor:'white'}}>
-<div class="div1_acordion"><img className={'img1'} style={{maxWidth:'110px'}} src={product.pic1}></img> </div>
-<div class="div2_acordion border_left" style={{textAlign:'right'}}>{product.property_address_street} {product.property_address_num} </div>
-<div class="div3_acordion border_left" style={{textAlign:'right'}}>{correctNameProperty(product.property_type)} {product.property_address_city}</div>
-<div class="div4_acordion border_left data_acordion ">{product.num_of_rooms}  </div>
-<div class="div5_acordion border_left data_acordion">{product.property_floor}</div>
-<div class="div6_acordion border_left data_acordion ">{product.build_mr_total}</div>
+}} class="div2_acordion border_left" style={{textAlign:'right'}}>{product.property_address_street} {product.property_address_num} </div>
+<div onClick={()=>{
+    setShowInfo(!showInfo)
+}} class="div3_acordion border_left" style={{textAlign:'right'}}>{correctNameProperty(product.property_type)} {product.property_address_city}</div>
+<div onClick={()=>{
+    setShowInfo(!showInfo)
+}} class="div4_acordion border_left data_acordion ">{product.num_of_rooms}  </div>
+<div onClick={()=>{
+    setShowInfo(!showInfo)
+}} class="div5_acordion border_left data_acordion">{product.property_floor}</div>
+<div onClick={()=>{
+    setShowInfo(!showInfo)
+}} class="div6_acordion border_left data_acordion ">{product.build_mr_total}</div>
 <div class="div7_acordion border_left data_acordion_title">חדרים</div>
 <div class="div8_acordion border_left data_acordion_title">קומה</div>
 <div class="div9_acordion border_left data_acordion_title">מ"ר</div>
@@ -139,8 +165,15 @@ const CardYad2Acordion = ({
 
     
     </div>}
+ 
         </div>
-        
+        {/* <span style={{position:'absolute'}} onClick={()=>{setShowPics(false)}}>asd</span>
+        {showPics&&
+<div className={'carousel_back'}  >
+
+<PicsCarousel animation="cubeAnimation" product={product} />
+</div>
+}   */}
         </div>
        
     );

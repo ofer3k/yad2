@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect,useContext, useReducer } from "react";
 import { useHistory } from "react-router-dom";
 import { API } from "../config";
 import SearchContext from "../context/search-context";
@@ -8,9 +8,44 @@ import './../LineSearch.css'
 import { BsSearch,BsXCircle,BsQuestionCircle,BsPlusCircle } from 'react-icons/bs';
 import {submitSearchControl} from './../controller/searchControl';
 
+function reducerForValues2(valuesToReducer,action){
+  switch (action.type) {
+      case 'add-value':
+        if(valuesToReducer.searchParameters[action.filedName]!==true&&valuesToReducer.searchParameters[action.filedName]!==false)
+        valuesToReducer.searchParameters[action.filedName]=true
+        else
+        valuesToReducer.searchParameters[action.filedName]=!valuesToReducer.searchParameters[action.filedName]
+          console.log(valuesToReducer.searchParameters,'valuesToReducer')
+          return({...valuesToReducer})
+          break;
+          
+          case 'remove-value':
+          console.log(valuesToReducer.searchParameters,'valuesToReducer')
+          valuesToReducer.searchParameters[action.filedName]=null
+          return({...valuesToReducer})
+          break;
+      
+          default:
+          break;
+  }
+} 
 
 const LineSearch = () => {
   const { searchParameters,setSearchParameters } = useContext(SearchContext);
+
+  function addValue(e){
+    e.preventDefault()
+    dispatch({type:'add-value',filedName:e.target.name,filedValue:e.target.value})
+  }
+
+function removeValue(e){
+    e.preventDefault()
+    dispatch({type:'remove-value',filedName:e.target.name,filedValue:e.target.value})
+}
+
+const [valuesToReducer,dispatch]=useReducer(reducerForValues2,{searchParameters})
+// setSearchParameters({...valuesToReducer.searchParameters})
+
   let history = useHistory();
   const [dropDown,setDropDown]=useState(false)
   const [dropDownRooms,setdropDownRooms]=useState(false)
@@ -361,11 +396,18 @@ document.getElementById('dropDown_arrow').innerHTML=('&#709;')
 //-----------------------------------------------return---------------------------------------------------
     return (
 <div className={'parent_lineSearch_upper'} style={{width:'90vw',margin:'70px auto 0',textAlign:'right'}}>
-  <p>{searchParameters.max_rooms}</p>
+{/* <form>
+                <input type='text'  ></input>
+                <button name={'property_address_street'} onClick={addValue}>submit</button>
+                <button name={'property_address_street'} onClick={removeValue}>submit2</button>
+            </form> */}
+  
+  {/* <p>{searchParameters.max_rooms}</p> */}
+  
 <div class="parent_lineSearch">
 <div class="div1_lineSearch"><input id={"search_input"} name={'property_address_city'} onChange={inputChangeHandler} placeholder={'לדוגמה:תל אביב יפו'} className={'adress_input_search_bar'} /></div>
 <div class="div2_lineSearch">
-  <p onClick={openDropDown} style={{fontSize:'.875rem',color:'#ccc'}} id={'dropDown_father'} className={'adress_input_search_bar'}><span id={'dropDown_arrow'} className={'down_arrow'} style={{float:'left'}} >&#709;</span> בחרו סוגי נכסים</p>
+  <p onClick={openDropDown} style={{fontSize:'.875rem',color:'#ccc',cursor:'pointer'}} id={'dropDown_father'} className={'adress_input_search_bar'}><span id={'dropDown_arrow'} className={'down_arrow'} style={{float:'left'}} >&#709;</span> בחרו סוגי נכסים</p>
   {dropDown&&
   <div id={'new_dropDown'} dir='rtl' className={'new_dropDown'}>
     <div className={'dropDown_field'}>
@@ -382,7 +424,7 @@ document.getElementById('dropDown_arrow').innerHTML=('&#709;')
 
     <div className={'dropDown_field'}>
     <input type='checkbox' />
-    <span className={'dropDown_checkbox_title'}>בתים</span>  
+    <span  className={'dropDown_checkbox_title'}>בתים</span>  
     <br/>
     <span className={'down_arrow'} style={{fontSize:'larger'}} >&#709;</span></div>
 
@@ -398,11 +440,11 @@ document.getElementById('dropDown_arrow').innerHTML=('&#709;')
     }
     
   </div>
-  <div class="div3_lineSearch">  <p onClick={openDropDownRooms} style={{fontSize:'.875rem',color:'#ccc'}} id={'dropDown_father'} className={'adress_input_search_bar'}><span id={'dropDown_arrow_rooms'} className={'down_arrow'} style={{float:'left'}} >&#709;</span>חדרים</p>
+  <div class="div3_lineSearch">  <p onClick={openDropDownRooms} style={{fontSize:'.875rem',color:'#ccc',cursor:'pointer'}} id={'dropDown_father'} className={'adress_input_search_bar'}><span id={'dropDown_arrow_rooms'} className={'down_arrow'} style={{float:'left'}} >&#709;</span>חדרים</p>
   {dropDownRooms&&
   <div  dir='rtl' className={'new_dropDownRooms'}>
     <span >
-    <select id={'selectRooms'} onChange={changeRoomSelection} className={'new_dropDownRooms_select'}>
+    <select id={'selectRooms'} style={{cursor:'pointer'}} onChange={changeRoomSelection} className={'new_dropDownRooms_select'}>
       <option hidden>מ -  </option>
       <option value='1' >1</option>
       <option value='1.5'>1.5</option>
@@ -422,7 +464,7 @@ document.getElementById('dropDown_arrow').innerHTML=('&#709;')
     </span>
     
     <span >
-    <select onChange={changeMaxRooms} className={'new_dropDownRooms_select'}>
+    <select onChange={changeMaxRooms} style={{cursor:'pointer'}} className={'new_dropDownRooms_select'}>
       <option hidden>עד - </option>
       {numOfRooms.map(a=><option>{a}</option>)}
     </select>
@@ -435,11 +477,11 @@ document.getElementById('dropDown_arrow').innerHTML=('&#709;')
   </div>
 </div>
 <div class="div5_lineSearch">
-  <div onClick={openAdvancedSearch} className={'adress_input_search_bar advence_search'}><span><span>חיפוש מתקדם</span> <span id={'circle_icon'} style={{fontSize:'.8rem'}}><BsPlusCircle/>
+  <div onClick={openAdvancedSearch} style={{cursor:'pointer'}} className={'adress_input_search_bar advence_search'}><span><span>חיפוש מתקדם</span> <span id={'circle_icon'} style={{fontSize:'.8rem'}}><BsPlusCircle/>
  </span> <span className={'display_none'} id={'circle_icon_x'} style={{fontSize:'.8rem'}} ><BsXCircle /> </span> </span></div>
    </div>
 <div class="div6_lineSearch">
-<div className={'adress_input_search_bar advence_search_submit'}><span ><span onClick={()=>{submitSearchControl(searchParameters,history)}}>חיפוש</span> <span style={{fontSize:'.8rem'}} ><BsSearch /> </span></span></div>
+<div onClick={()=>{submitSearchControl(searchParameters,history)}} style={{cursor:'pointer'}}  className={'adress_input_search_bar advence_search_submit'}><span ><span >חיפוש</span> <span style={{fontSize:'.8rem'}} ><BsSearch /> </span></span></div>
    </div>
 <div class="div7_lineSearch"><p className={'searchBar_input_title'}>חפשו אזור, עיר, שכונה או רחוב</p></div>
 <div class="div8_lineSearch"><p className={'searchBar_input_title'}>סוג נכס</p></div>
@@ -522,8 +564,8 @@ document.getElementById('dropDown_arrow').innerHTML=('&#709;')
     </select>
     </span>
 </div>
-<div class="div6_advanced_level2 advanced_level2_input"><input name={'min_mr'} onChange={inputChangeHandler} placeholder={'מ - '} className={'changeFloorSelection1'} style={{textAlign:'right'}}/> </div>
-<div class="div7_advanced_level2 advanced_level2_input"><input name={'max_mr'} onChange={inputChangeHandler} placeholder={'עד - '} className={'changeFloorSelection1'} style={{textAlign:'right'}}/></div>
+<div  class="div6_advanced_level2 advanced_level2_input"><input name={'min_mr'} onChange={inputChangeHandler} placeholder={'מ - '} className={'changeFloorSelection1'} style={{textAlign:'right',cursor:'text'}} /> </div>
+<div class="div7_advanced_level2 advanced_level2_input"><input name={'max_mr'} onChange={inputChangeHandler} placeholder={'עד - '} className={'changeFloorSelection1'} style={{textAlign:'right',cursor:'text'}}/></div>
 <div class="div8_advanced_level2 advanced_level2_input"><input type={'date'} name={'entry_date'} id={'entery_date'} onChange={inputChangeHandler} className={'changeFloorSelection1'} style={{textAlign:'right'}}/></div>
 <div class="div9_advanced_level2 advanced_level2_input" ></div>
 <div class="div10_advanced_level2 advanced_level2_input" style={{width:'200%'}}><span className={'title_enter_now'}>כניסה מיידית</span><input onClick={date} className={'checkbox_enter_now'} type={'checkbox'} /></div>

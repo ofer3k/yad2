@@ -733,7 +733,8 @@ setValues({ ...values, error: "משהו בהעלאת המודעה השתבש", l
           };
         }); 
       }
-      console.log(firstFields)
+        console.log('valuesContext.property_total_floors',valuesContext.property_total_floors)
+        console.log(firstFields)
       if(Object.keys(firstFields).every((k) => firstFields[k]))
       moveNextSection(2)
       }
@@ -757,11 +758,11 @@ const moveNextSection=(num)=>{
         setthirdCirclrClass('circle_after_check')
         setForthCirclrClass('circle_selected')
       break;
-      case 4:
+      case 5:
         setForthCirclrClass('circle_after_check')
         setFifthCirclrClass('circle_selected')
       break;
-      case 5:
+      case 6:
         setFifthCirclrClass('circle_after_check')
         setSixthCirclrClass('circle_selected')
       break;
@@ -774,6 +775,9 @@ const moveNextSection=(num)=>{
 const moveLastSection=(num)=>{
   setIselected(num)
   switch (num) {
+    case 1:
+      setSecondeCirclrClass('circle_after_check')
+      break;
     case 2:
       setSecondeCirclrClass('circle_selected')
       setthirdCirclrClass('circle_after_check')
@@ -1198,7 +1202,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 {/*  */}
 <div style={{direction:'ltr'}} class="parent_buttons">
 <div class="div1_buttons">
-<button className={'back_button_ok'}>חזרה</button>
+<button onClick={()=>moveLastSection(1)} className={'back_button_ok'}>חזרה</button>
 </div>
 <div class="div2_buttons">
   <button onClick={secondeNext} className={'continue_button_ok'}></button>
@@ -1250,7 +1254,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 {/* buttons */}
 <div style={{direction:'ltr'}}  class="parent_buttons">
 <div class="div1_buttons">
-<button className={'back_button_ok'}>חזרה</button>
+<button onClick={()=>moveLastSection(2)} className={'back_button_ok'}>חזרה</button>
 </div>
 <div class="div2_buttons">
   <button onClick={thirdNext} className={'continue_button_ok'}></button>
@@ -1445,7 +1449,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 {/* buttons */}
 <div style={{direction:'ltr'}}  class="parent_buttons">
 <div class="div1_buttons">
-<button className={'back_button_ok'}>חזרה</button>
+<button onClick={()=>moveLastSection(3)} className={'back_button_ok'}>חזרה</button>
 </div>
 <div class="div2_buttons">
   <button onClick={()=>{moveNextSection(5)}} className={'continue_button_ok'}></button>
@@ -1749,10 +1753,11 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
         >
             <div style={{backgroundColor:'rgb(245,245,245)'}} className="row">
                 <div className="col-md-8 offset-md-2">
-                    {showLoading()}
                     {showSuccess()}
-                    {showError()}
                     {newPostForm()}
+                    {showLoading()}
+                    {showError()}
+
                 </div>
             </div>
         </Layout>

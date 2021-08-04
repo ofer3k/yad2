@@ -1,6 +1,8 @@
 import React from 'react'
 import './../core/small-components/small_css/personalArea.css'
 import { FaPencilAlt} from 'react-icons/fa';
+import { Link } from "react-router-dom";
+
 
 
 export default function PersonalAreaProduct(props) {
@@ -15,9 +17,11 @@ export default function PersonalAreaProduct(props) {
     <img className={'personalArea__img'} src={props.product.pic2} ></img>
 </div>
 <div class="div2_personalArea">
+      <Link  to={`/update/product/${props.product._id}`}>
   <span className={'edit_pencil'}>
-  <FaPencilAlt/>
+      <FaPencilAlt/>
       </span>  
+      </Link>
 </div>
 <div class="div3_personalArea">
     <span className={'personalArea_field_title'}>

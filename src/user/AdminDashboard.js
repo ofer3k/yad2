@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect,useContext, useReducer } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated, signout } from "../auth";
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import PersonalAreaProduct from "../core/PersonalAreaProduct";
 
 const AdminDashboard = () => {
   let history = useHistory();
+  
   const [products,setProducts]=useState([])
     const {
         user: { _id, name, email, role }
@@ -72,9 +73,8 @@ const AdminDashboard = () => {
         </p>
         <div className={'my_posts_container'} >
         <p  className={'my_posts_container__header'}>כל המודעות</p>
-        {products.map((a)=><PersonalAreaProduct product={a} />)}
-        
-
+        {products.map((a)=>
+        <PersonalAreaProduct product={a} />)}
         </div>
         </>
     );

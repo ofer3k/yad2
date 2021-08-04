@@ -1,4 +1,4 @@
-import { API } from "../config";
+  import { API } from "../config";
 
   function submitSearchControl(searchParameters,history){
     fetch(`${API}/products/by/Filter`,
@@ -10,7 +10,7 @@ import { API } from "../config";
     method: "POST",
     body: JSON.stringify({...searchParameters})
 })
-.then(function(res){ res.json().then(body =>  {
+.then(function(res){ res.json().then(body =>  { 
   history.push("/shop", { body});
   window.location.reload(false);
    }); })

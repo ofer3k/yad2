@@ -1,6 +1,6 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect,useContext,useReducer } from "react";
 import { Modal, Button } from 'antd';
-import {submitSearchControl, submitSearchControlScroll} from './../controller/searchControl';
+import {submitSearchControl} from './../controller/searchControl';
 import Layout from "./Layout";
 import SearchContext from "../context/search-context";
 import CardYad2 from "./CardYad2";
@@ -14,8 +14,24 @@ import LineSearch from './LineSearch'
 import { BsImage,BsSearch } from 'react-icons/bs';
 
 import './../cardYad2.css'
- 
+import { API } from "../config";
+
+function newTodo(name) {
+    return{
+        id:Date.now(),
+        name,
+        complete:false
+    }
+}
+
+
+
+
 const Shop = (state) => {
+
+    console.log(state,'state')
+    
+    const [nameRed,setNameRed]=useState('')
     const { searchParameters,setSearchParameters } = useContext(SearchContext);
     const [sortMethod,setSortMethod]=useState('')
 
@@ -81,14 +97,43 @@ const [isModalVisible, setIsModalVisible] = useState(false);
 {   
     console.log(filteredResults.length,'filteredResults.length')         
     console.log(fullLength,'fullLength')         
-    setTimeout(
-                () => {
-                    submitSearchControlScroll(numOfScrolling,history,filtersAfterSearch,sortMethod)
-                },
-                 1000
-              );}
+    submitSearchControlScroll(numOfScrolling,history,filtersAfterSearch,sortMethod)
+}
           }
 };
+// 
+
+function submitSearchControlScroll(num,history,filters,sortMethod){
+    fetch(`${API}/products/by/Filter/noSort`,
+  {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: "POST",
+    body: JSON.stringify({num,filters,sortMethod})
+  })
+  .then(function(res){ res.json().then(body =>  {
+      console.log(body,'bodybodybody')
+    console.log(state.location.state.body.data)
+    console.log(state.location.state.body.fullLength,'state.location.state.body.fullLength')
+    console.log(state.location.state.body.FiltersAfterSearch,'state.location.state.body.FiltersAfterSearch')
+    console.log(state.location.state.body.num||0,'state.location.state.body.num')
+    console.log(state.location.state.body.sortMethod,'state.location.state.body.sortMethod')
+    setFullLength(body.fullLength||4)
+    if(!state.location.state.body.fullLength)
+    setIsMorePosts(false)
+    setSortMethod(body.sortMethod)
+    setFilteredResults(body.data||[])
+    setFiltersAfterSearch(body.FiltersAfterSearch)
+    setNumOfScrolling(body.num||0)
+    setOriginalFullList(body.data)
+            setSize(body.size);
+            setSkip(0);
+ }); })
+  .catch(function(res){ console.log(res) })
+  }
+// 
 
 
     const loadFilteredResults = newFilters => {
@@ -125,6 +170,45 @@ const [isModalVisible, setIsModalVisible] = useState(false);
         }
        
     };
+
+
+
+     const loadFilteredResultsWithOutReFresh = newFilters => {
+        console.log(state.location.state,'state.location.state')
+        if(state.location.state== undefined){
+            getFilteredProducts(skip, limit, newFilters).then(data => {
+                if (data.error) {
+                    setError(data.error);
+                } else {
+                    setFilteredResults(data.data||[]);
+                    setOriginalFullList(data.data)
+                    console.log(data.data,'data.data')
+                    setSize(data.size);
+                    setSkip(0);
+                }
+            })
+        }
+        else{
+            console.log(state.location.state.body.data)
+            console.log(state.location.state.body.fullLength,'state.location.state.body.fullLength')
+            console.log(state.location.state.body.FiltersAfterSearch,'state.location.state.body.FiltersAfterSearch')
+            console.log(state.location.state.body.num||0,'state.location.state.body.num')
+            console.log(state.location.state.body.sortMethod,'state.location.state.body.sortMethod')
+            setFullLength(state.location.state.body.fullLength||4)
+            if(!state.location.state.body.fullLength)
+            setIsMorePosts(false)
+            setSortMethod(state.location.state.body.sortMethod)
+            setFilteredResults(state.location.state.body.data||[])
+            setFiltersAfterSearch(state.location.state.body.FiltersAfterSearch)
+            setNumOfScrolling(state.location.state.body.num||0)
+            setOriginalFullList(state.location.state.body.data)
+                    setSize(state.location.state.body.size);
+                    setSkip(0);
+        }
+       
+    };
+
+
 
     const loadMore = () => {
         let toSkip = skip + limit;
@@ -241,6 +325,7 @@ const [isModalVisible, setIsModalVisible] = useState(false);
             </div>
             </>
             }
+
             {!(mq.matches)&&
             <div>
                 <div class="parent_line_sort">
@@ -324,13 +409,13 @@ const [isModalVisible, setIsModalVisible] = useState(false);
         <Modal footer={false} bodyStyle={{backgroundColor:'white',position:'fixed',bottom:'0',width:'100vw'}} style={{position:'fixed',bottom:'0',margintop:'100vh'}} visible={isModalVisible}  onOk={handleOk} onCancel={handleCancel}>
         <span className={'radios_list'}>
         <label class="container"> <span className={'radio_title'}>לפי תאריך</span>
-  <input onClick={dateSort} type="radio"  name="radio"/>
+  <input  onClick={dateSort} type="radio"  name="radio"/>
   <span class="checkmark"></span>
 </label>
 
 <label class="container">
 <span className={'radio_title'}>מחיר - מהזול ליקר</span>
-  <input onClick={()=>{priceSort('lowToHigh')}} type="radio" name="radio"/>
+  <input  onClick={()=>{priceSort('lowToHigh')}} type="radio" name="radio"/>
   <span class="checkmark"></span>
 </label>
 <label class="container">
