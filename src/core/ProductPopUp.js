@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import { read, listRelated } from "./apiCore";
 import Popup_IconTitle from "./small-components/Popup_IconTitle";
-// react icon
 import { GoLocation } from 'react-icons/go';
 import { TiLocationArrowOutline } from 'react-icons/ti';
 import { SocialIcon } from 'react-social-icons';
 import { Modal, Button } from 'antd';
-// css
 import './../productPopup.css'
 import {correctNamePropertyCondition,correctDate,correctNameProperty} from './../controller/popupController'
 
@@ -33,7 +31,6 @@ const handleCancel = () => {
                 setError(data.error);
             } else {
                 setProduct(data);
-                // fetch related products
                 listRelated(data._id).then(data => {
                     if (data.error) {
                         setError(data.error);
@@ -121,7 +118,6 @@ const handleCancel = () => {
 
 <div class="parent_radios_section">
 <div style={{marginBottom:'10px'}} class="div1_radios_section popUp_description_title">?מה יש בנכס</div>
-{/* air_condition */}
 <div class="div2_radios_section">{product.air_condition===true?
 <Popup_IconTitle class1='checkYes_title' isTrue='true' title1='מיזוג' />
 : 
@@ -129,7 +125,6 @@ const handleCancel = () => {
 } 
 </div>
 <div class="div3_radios_section">
-{/* bars */}
 {product.bars===true?
 <Popup_IconTitle class1='checkYes_title' isTrue='true' title1='סורגים' />
 :
@@ -137,7 +132,6 @@ const handleCancel = () => {
 } 
 </div>
 <div class="div4_radios_section">
-     {/* elevator */}
 {product.elevator===true?
 <Popup_IconTitle class1='checkYes_title' isTrue='true' title1='מעלית' />
 :
@@ -214,8 +208,6 @@ const handleCancel = () => {
 
     </Modal>
 </div>
-
-{/*  */}
                     </Layout>
     );
 };

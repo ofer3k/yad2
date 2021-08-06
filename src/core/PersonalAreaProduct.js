@@ -14,7 +14,7 @@ export default function PersonalAreaProduct(props) {
             {/* {props.product.Route} */}
             <div class="parent_personalArea">
 <div class="div1_personalArea">
-    <img className={'personalArea__img'} src={props.product.pic2} ></img>
+    <img className={'personalArea__img'} src={props.product.pic1} ></img>
 </div>
 <div class="div2_personalArea">
       <Link  to={`/update/product/${props.product._id}`}>

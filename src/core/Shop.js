@@ -1,53 +1,26 @@
 import React, { useState, useEffect,useContext,useReducer } from "react";
 import { Modal, Button } from 'antd';
-import {submitSearchControl} from './../controller/searchControl';
 import Layout from "./Layout";
-import SearchContext from "../context/search-context";
 import CardYad2 from "./CardYad2";
 import CardYad2Acordion  from "./CardYad2Acordion";
 import { getCategories, getFilteredProducts } from "./apiCore";
-import { prices } from "./fixedPrices";
 import { BiFilterAlt } from 'react-icons/bi';
 import { RiMapPinLine } from 'react-icons/ri';
 import { useHistory } from "react-router-dom";
 import LineSearch from './LineSearch'
 import { BsImage,BsSearch } from 'react-icons/bs';
-
 import './../cardYad2.css'
 import { API } from "../config";
 
-function newTodo(name) {
-    return{
-        id:Date.now(),
-        name,
-        complete:false
-    }
-}
-
-
-
-
 const Shop = (state) => {
-
     console.log(state,'state')
-    
-    const [nameRed,setNameRed]=useState('')
-    const { searchParameters,setSearchParameters } = useContext(SearchContext);
     const [sortMethod,setSortMethod]=useState('')
-
     let history = useHistory();
     const mq = window.matchMedia( "(max-width: 690px)" );
-
-    function sortCCC() {
-        
-        setSortMethod(document.getElementById('sort_drop_down_id').value)
-        submitSearchControlScroll(numOfScrolling,history,filtersAfterSearch,document.getElementById('sort_drop_down_id').value)
-    }
-
+    
     const [myFilters, setMyFilters] = useState({
         filters: { category: [], price: [] }
     });
-    const [categories, setCategories] = useState([]);
     const [error, setError] = useState(false);
     const [limit, setLimit] = useState(6);
     const [skip, setSkip] = useState(0);
@@ -56,8 +29,7 @@ const Shop = (state) => {
     const [originalFullList, setOriginalFullList] = useState([]);
     const [filtersAfterSearch, setFiltersAfterSearch] = useState([]);
     const [fullLength, setFullLength] = useState(3);
-    const [isMorePosts, setIsMorePosts] = useState(true);
-    
+    const [isMorePosts, setIsMorePosts] = useState(true); 
     const [numOfScrolling, setNumOfScrolling] = useState(4);
     
 
@@ -83,15 +55,11 @@ const [isModalVisible, setIsModalVisible] = useState(false);
         setIsModalVisible2(false);
     };
 // 
-    const init = () => {
-        getCategories().then(data => {
-            if (data.error) {
-                setError(data.error);
-            } else {
-                setCategories(data);
-            }
-        });
-    };
+function sortCCC() {
+    setSortMethod(document.getElementById('sort_drop_down_id').value)
+    submitSearchControlScroll(numOfScrolling,history,filtersAfterSearch,document.getElementById('sort_drop_down_id').value)
+}
+    
      window.onscroll = function() {
          if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight&& filteredResults.length<fullLength&&window.location.pathname==='/shop') {
 {   
@@ -114,12 +82,6 @@ function submitSearchControlScroll(num,history,filters,sortMethod){
     body: JSON.stringify({num,filters,sortMethod})
   })
   .then(function(res){ res.json().then(body =>  {
-      console.log(body,'bodybodybody')
-    console.log(state.location.state.body.data)
-    console.log(state.location.state.body.fullLength,'state.location.state.body.fullLength')
-    console.log(state.location.state.body.FiltersAfterSearch,'state.location.state.body.FiltersAfterSearch')
-    console.log(state.location.state.body.num||0,'state.location.state.body.num')
-    console.log(state.location.state.body.sortMethod,'state.location.state.body.sortMethod')
     setFullLength(body.fullLength||4)
     if(!state.location.state.body.fullLength)
     setIsMorePosts(false)
@@ -133,11 +95,7 @@ function submitSearchControlScroll(num,history,filters,sortMethod){
  }); })
   .catch(function(res){ console.log(res) })
   }
-// 
-
-
     const loadFilteredResults = newFilters => {
-        console.log(state.location.state,'state.location.state')
         if(state.location.state== undefined){
             getFilteredProducts(skip, limit, newFilters).then(data => {
                 if (data.error) {
@@ -168,47 +126,7 @@ function submitSearchControlScroll(num,history,filters,sortMethod){
                     setSize(state.location.state.body.size);
                     setSkip(0);
         }
-       
     };
-
-
-
-     const loadFilteredResultsWithOutReFresh = newFilters => {
-        console.log(state.location.state,'state.location.state')
-        if(state.location.state== undefined){
-            getFilteredProducts(skip, limit, newFilters).then(data => {
-                if (data.error) {
-                    setError(data.error);
-                } else {
-                    setFilteredResults(data.data||[]);
-                    setOriginalFullList(data.data)
-                    console.log(data.data,'data.data')
-                    setSize(data.size);
-                    setSkip(0);
-                }
-            })
-        }
-        else{
-            console.log(state.location.state.body.data)
-            console.log(state.location.state.body.fullLength,'state.location.state.body.fullLength')
-            console.log(state.location.state.body.FiltersAfterSearch,'state.location.state.body.FiltersAfterSearch')
-            console.log(state.location.state.body.num||0,'state.location.state.body.num')
-            console.log(state.location.state.body.sortMethod,'state.location.state.body.sortMethod')
-            setFullLength(state.location.state.body.fullLength||4)
-            if(!state.location.state.body.fullLength)
-            setIsMorePosts(false)
-            setSortMethod(state.location.state.body.sortMethod)
-            setFilteredResults(state.location.state.body.data||[])
-            setFiltersAfterSearch(state.location.state.body.FiltersAfterSearch)
-            setNumOfScrolling(state.location.state.body.num||0)
-            setOriginalFullList(state.location.state.body.data)
-                    setSize(state.location.state.body.size);
-                    setSkip(0);
-        }
-       
-    };
-
-
 
     const loadMore = () => {
         let toSkip = skip + limit;
@@ -239,18 +157,6 @@ function submitSearchControlScroll(num,history,filters,sortMethod){
     }, []);
 
 
-
-    const handlePrice = value => {
-        const data = prices;
-        let array = [];
-
-        for (let key in data) {
-            if (data[key]._id === parseInt(value)) {
-                array = data[key].array;
-            }
-        }
-        return array;
-    };
     const priceSort = (condition) => {
         let saver=filteredResults
         let ordered;
@@ -263,26 +169,6 @@ function submitSearchControlScroll(num,history,filters,sortMethod){
         }
         setFilteredResults([...ordered])
         console.log(filteredResults)
-      }
-      const sortPicker=(e)=>{
-        console.log(e.target.value)
-        
-        switch (e.target.value) {
-            case 'byDate':
-                dateSort()
-                break;
-            case 'byPriceLow':
-                setSortMethod('priceLowToHigh')
-                priceSort('lowToHigh')
-                break;
-            case 'byPriceHigh':
-                setSortMethod('priceHighToHigh')
-                    priceSort('highToLow')
-                    break;
-        
-            default:
-                break;
-        }
       }
       const dateSort = () => {
         let ordered=filteredResults
@@ -362,18 +248,12 @@ function submitSearchControlScroll(num,history,filters,sortMethod){
                    </div>
                    <div class="div3_shop_filters"> </div>
                    <div class="div4_shop_filters"> <span className={'map_button_main'}><span style={{fontSize:'.875rem',color:'#363636'}}>מפה</span>  <RiMapPinLine color={'#0fca80'} /></span></div>
-                   {/* <div class="div5_shop_filters"> <span className={'note_for_user'}> </span> </div> */}
-                   {/* <div class="div6_shop_filters"> מציג</div>
-<div class="div7_shop_filters"> {filteredResults.length}</div> */}
+
 
 </div>
 }
 <p className={'amount_of_products'} > מציג {filteredResults.length} מודעות</p>
-     
-
-
-            <div style={{float:'right',textAlign:'right'}} dir={'rtl'} className="row">
-             
+            <div style={{float:'right',textAlign:'right'}} dir={'rtl'} className="row">        
                 <div className="">  
                     <div className="">
                         {(mq.matches)&& filteredResults.map((product, i) => (
@@ -381,31 +261,24 @@ function submitSearchControlScroll(num,history,filters,sortMethod){
                                 <CardYad2 product={product} />
                             </div>
                         )) }
-                            
+                    
                         {/*  */}
                         {!(mq.matches)&& filteredResults.map((product, i) => (
                             <div key={i} className="col-12 mb-1">
                                 <CardYad2Acordion product={product} />
                             </div>
                         )) }
-                        {/* <h1 onClick={()=>submitSearchControlScroll(numOfScrolling,history,filtersAfterSearch,sortMethod)} style={{textAlign:'center'}}>load more</h1> */}
                     </div>
                     {filteredResults.length<fullLength&&filteredResults.length>0&&isMorePosts&&<p className={'extra_products'}>יש מודעות נוספות</p>}
                     <hr />
                     {loadMoreButton()}
                 </div>
             </div>
-            
-            {/*   return (React.createElement(React.Fragment, null,
-        React.createElement(Button, { type: "primary", onClick: showModal }, "Open Modal"),
-        React.createElement(Modal, { title: "Basic Modal", visible: isModalVisible, onOk: handleOk, onCancel: handleCancel },
-            React.createElement("p", null, "Some contents..."),
-            React.createElement("p", null, "Some contents..."),
-            React.createElement("p", null, "Some contents...")))); */}
             <div width={'100vw'} style={{position:'fixed',bottom:'0',left:'0',}} >
            
             </div>
         </Layout>
+
         <Modal footer={false} bodyStyle={{backgroundColor:'white',position:'fixed',bottom:'0',width:'100vw'}} style={{position:'fixed',bottom:'0',margintop:'100vh'}} visible={isModalVisible}  onOk={handleOk} onCancel={handleCancel}>
         <span className={'radios_list'}>
         <label class="container"> <span className={'radio_title'}>לפי תאריך</span>
@@ -439,7 +312,6 @@ function submitSearchControlScroll(num,history,filters,sortMethod){
 </label>
     </span>
         </Modal>
-                 {/*  */}
         </div>
         
     );

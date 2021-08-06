@@ -396,13 +396,7 @@ document.getElementById('dropDown_arrow').innerHTML=('&#709;')
 //-----------------------------------------------return---------------------------------------------------
     return (
 <div className={'parent_lineSearch_upper'} style={{width:'90vw',margin:'70px auto 0',textAlign:'right'}}>
-{/* <form>
-                <input type='text'  ></input>
-                <button name={'property_address_street'} onClick={addValue}>submit</button>
-                <button name={'property_address_street'} onClick={removeValue}>submit2</button>
-            </form> */}
-  
-  {/* <p>{searchParameters.max_rooms}</p> */}
+
   
 <div class="parent_lineSearch">
 <div class="div1_lineSearch"><input id={"search_input"} name={'property_address_city'} onChange={inputChangeHandler} placeholder={'לדוגמה:תל אביב יפו'} className={'adress_input_search_bar'} /></div>

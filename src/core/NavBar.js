@@ -42,7 +42,8 @@ const NavBar = ({history}) => {
   const [isMail1Valid, setIsMail1Valid] = useState(true);
   const [isPassword1Valid, setIsPassword1Valid] = useState(true);
   const [isPassword2Valid, setIsPassword2Valid] = useState(true);
-  
+  const [isError,setIsError]=useState(false)
+  const [isSignUpError,setIsSignUpError]=useState(false)
 
   
   const [show, setShow] = useState(false );
@@ -173,6 +174,7 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
         signin({ email, password }).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error, loading: false });
+                setIsError(true)
             } else {
                 authenticate(data, () => {
                     setValues({
@@ -191,6 +193,7 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
         signup({name:email1.substr(0,4),  email:email1,password:password1 }).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error, success: false });
+                setIsSignUpError(true)
             } else {
                 setValues({
                     ...values,
@@ -213,9 +216,7 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
 
         </Link>
     <FontAwesomeIcon className={'burgerMenu'} icon={faBars} onClick={showDrawer}  />
-    {/* <FontAwesomeIcon className={'burgerMenu'} icon={faBars}  onClick={showDrawer} /> */}
-    
-      {/* </Button> */}
+
     </div>
       
       <Drawer
@@ -263,9 +264,6 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
             )}
                
       <Modal size={'lg'}  centered={true} show={show} onHide={handleClose}>
-        {/* <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header> */}
         <Modal.Body  className={'signIn_modal_container'}>
         <div class="parent_signIn_modal">
 <div  class="div1_signIn_modal">
@@ -281,7 +279,9 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
                     type="password"
                     placeholder={'הקלד סיסמה'}
                     className={ isPasswordValid?'modal_input':'modal_input_error'}/>
-    </span></div>
+    </span>
+    {isError&&
+<div className={'error_msg_submit'} >אחד הפרטים שהוזן שגוי</div>}</div>
 <div class="div6_signIn_modal"><span className={'modal_input_title'}>סיסמה</span></div>
 <div class="div7_signIn_modal">
     <input onChange={handleChange("email")}
@@ -349,7 +349,9 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
 <div class="div5_signUp_modal"><input name={'password1'} onChange={handleChange1("password1")}
                     type="password"
                   
-                     className={ isPassword1Valid?'modal_input':'modal_input_error'}/></div>
+                     className={ isPassword1Valid?'modal_input':'modal_input_error'}/>
+              
+                     </div>
 <div class="div7_signUp_modal"><input onChange={handleChange1("email1")}
                     type="email"
                      
@@ -363,7 +365,10 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
 <div class="div12_signUp_modal" style={{marginTop:'10px'}}><input onChange={handleChange1("password2")}
                     type="password"
                   
-                    className={ isPassword2Valid?'modal_input':'modal_input_error'}/></div>
+                    className={ isPassword2Valid?'modal_input':'modal_input_error'}/>
+                    {isSignUpError&&<div style={{textAlign:'center'}} className={'error_msg_submit'}>תקלה בהרשמה</div>}
+                    
+                    </div>
 </div>
         </Modal.Body>
         
@@ -408,6 +413,7 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
 <div class="div16_navBar_quick_search"><FontAwesomeIcon icon={faGraduationCap} /></div>
 <div class="div17_navBar_quick_search navBar_quick_search_title_secondary">לימודים</div>
 </div>
+{/* 
             <li className="nav-item">
                 <Link
                     className="nav-link"
@@ -425,8 +431,8 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
                 >
                     searchForm
                 </Link>
-            </li>
-
+            </li> */}
+{/* 
             <li className="li_style_right">
                 <Link
                     className=""
@@ -436,21 +442,21 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
                     חנות
                 </Link>
             </li>
-
-            <li className="nav-item">
-                <Link
-                    className="nav-link"
-                    // style={isActive(history, "/cart")}
-                    to="/cart"
-                >
-                    סל קניות{" "}
-                    <sup>
+ */}
+            {/* <li className="nav-item"> */}
+                {/* <Link */}
+                    {/* // className="nav-link" */}
+                    {/* // style={isActive(history, "/cart")} */}
+                    {/* // to="/cart" */}
+                {/* > */}
+                    {/* סל קניות{" "} */}
+                    {/* <sup> */}
                         {/* <small className="cart-badge">{itemTotal()}</small> */}
-                    </sup>
+                    {/* </sup>
                 </Link>
-            </li>
+            </li> */}
 
-            {isAuthenticated() && isAuthenticated().user.role === 0 && (
+            {/* {isAuthenticated() && isAuthenticated().user.role === 0 && (
                 <li className="nav-item">
                     <Link
                         className="nav-link"
@@ -460,8 +466,8 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
                         Dashboard
                     </Link>
                 </li>
-            )}
-
+            )} */}
+{/* 
             {isAuthenticated() && isAuthenticated().user.role === 1 && (
                 <li className="li_style_right">
                     <Link
@@ -472,8 +478,8 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
                         האזור האישי
                     </Link>
                 </li>
-            )}
-
+            )} */}
+{/* 
             {!isAuthenticated() && (
                 <Fragment>
                     <li className="nav-item">
@@ -497,7 +503,7 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
                     </li>
                 </Fragment>
             )}
-
+ */}
 
         </ul>
 

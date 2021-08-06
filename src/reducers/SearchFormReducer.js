@@ -1,4 +1,4 @@
-export const productReducer=(product,action)=>{
+export const searchReducer=(product,action)=>{
     switch (action.type) {
     
         case 'init_product':
@@ -12,6 +12,7 @@ export const productReducer=(product,action)=>{
         return{...product}
 
         default:
+            return {...product}
             break;
     }
 

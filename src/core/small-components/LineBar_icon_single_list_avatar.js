@@ -40,6 +40,8 @@ const [isMailValid, setIsMailValid] = useState(true);
   const [isMail1Valid, setIsMail1Valid] = useState(true);
   const [isPassword1Valid, setIsPassword1Valid] = useState(true);
   const [isPassword2Valid, setIsPassword2Valid] = useState(true);
+  const [isError,setIsError]=useState(false)
+  const [isSignUpError,setIsSignUpError]=useState(false)
   
   const [show, setShow] = useState(false );
   const [show1, setShow1] = useState(false );
@@ -147,6 +149,7 @@ const [isMailValid, setIsMailValid] = useState(true);
         signin({ email, password }).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error, loading: false });
+                setIsError(true)
             } else {
                 authenticate(data, () => {
                     setValues({
@@ -165,6 +168,8 @@ const [isMailValid, setIsMailValid] = useState(true);
         signup({name:email1.substr(0,4),  email:email1,password:password1 }).then(data => {
             if (data.error) {
                 setValues({ ...values, error: data.error, success: false });
+                setIsSignUpError(true)
+                
             } else {
                 setValues({
                     ...values,
@@ -202,7 +207,10 @@ const [isMailValid, setIsMailValid] = useState(true);
                     type="password"
                     placeholder={'הקלד סיסמה'}
                     className={ isPasswordValid?'modal_input':'modal_input_error'}/>
-    </span></div>
+    </span>
+    {isError&&
+<div className={'error_msg_submit'} >אחד הפרטים שהוזן שגוי</div>}
+</div>
 <div class="div6_signIn_modal"><span className={'modal_input_title'}>סיסמה</span></div>
 <div class="div7_signIn_modal">
     <input onChange={handleChange("email")}
@@ -266,7 +274,7 @@ const [isMailValid, setIsMailValid] = useState(true);
 </div>
 <div class="div2_signUp_modal" onClick={handleClose1} style={{textAlign:'left'}}><GrClose/></div>
 <div class="div3_signUp_modal" style={{textAlign:'center'}}><span>כבר רשום?</span><span onClick={handleShow} className={'toSignup'}>  להתחברות</span> </div>
-<div class="div4_signUp_modal" style={{textAlign:'center'}}><span id={'submit_signIn_button1'} onClick={clickSubmit1} className={isPassword1Valid&&isPassword2Valid&&isMail1Valid&&valuesSignUp.email1.length>6&&valuesSignUp.password1.length>4&&valuesSignUp.password2.length>4?'submit_signIn_button_ok':'submit_signIn_button'}>המשך</span></div>
+<div class="div4_signUp_modal" style={{textAlign:'center',marginTop:'10px'}}><span id={'submit_signIn_button1'} onClick={clickSubmit1} className={isPassword1Valid&&isPassword2Valid&&isMail1Valid&&valuesSignUp.email1.length>6&&valuesSignUp.password1.length>4&&valuesSignUp.password2.length>4?'submit_signIn_button_ok':'submit_signIn_button'}>המשך</span></div>
 <div class="div5_signUp_modal"><input name={'password1'} onChange={handleChange1("password1")}
                     type="password"
                   
@@ -284,7 +292,10 @@ const [isMailValid, setIsMailValid] = useState(true);
 <div class="div12_signUp_modal" style={{marginTop:'10px'}}><input onChange={handleChange1("password2")}
                     type="password"
                   
-                    className={ isPassword2Valid?'modal_input':'modal_input_error'}/></div>
+                    className={ isPassword2Valid?'modal_input':'modal_input_error'}/>
+                    {isSignUpError&&<div style={{textAlign:'center'}} className={'error_msg_submit'}>תקלה בהרשמה</div>}
+                    </div>
+                    
 </div>
         </Modal.Body>
         

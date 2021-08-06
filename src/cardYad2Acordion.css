@@ -435,6 +435,10 @@ background-color: rgb(253,249,197);
             align-items: center;
             background-color: rgb(55,55,55);
         }
+        .slider_and_button{
+            padding: 20px;
+            border:  1px solid blue;
+        }
         .carousel_back{
             z-index: 1000;
             /* position: absolute;

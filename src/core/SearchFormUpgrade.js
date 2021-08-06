@@ -1,7 +1,7 @@
 import React, { useState, useEffect,useContext } from "react";
 import { useHistory } from "react-router-dom";
 import Layout from "./Layout";
-import SearchContext from "../context/search-context";
+import SearchContext2 from "../context/search-context2";
 import {submitSearchControl, submitSearchControlScroll} from './../controller/searchControl';
 import { Container, Row, Col } from 'reactstrap';
 import { getFilteredProducts } from "./apiCore";
@@ -15,8 +15,9 @@ import orangeExtra from '../imgs/orangeExtra.png';
 import orangeApartments from '../imgs/orangeApartments.png';
 import orangeHouses from '../imgs/orangeHouses.png'; 
 
-const Shop = () => {
-  const {searchParameters,setSearchParameters} = useContext(SearchContext);
+const ShopUpgrade = () => {
+  const {searchParameters,setSearchParameters,search,dispatch} = useContext(SearchContext2);
+  console.log(search,'search')
   let history = useHistory();
     const [myFilters, setMyFilters] = useState({
         filters: { category: [], price: [] }
@@ -47,9 +48,7 @@ const date = () => event => {
       var today = now.getFullYear() + '-' + month + '-' + day;
       
       document.getElementById('entery_date').value=today 
-      // setValues({ ...values, entery_date: today }); 
       setSearchParameters({ ...searchParameters, entery_date: today }); 
-      // console.log(values)
       document.getElementById('entery_date').disabled = true;
     }
     else{
@@ -70,6 +69,8 @@ const radiosChange=(e)=>{
         radio.value='v'
        countRadiosCheck++ 
     }
+
+    dispatch({type:'change_field',name:e.target.name,value:!answer})    
     setSearchParameters({...searchParameters, [e.target.name]: !answer})
     setNumberOfRadioSelected(countRadiosCheck)    
 }
@@ -169,25 +170,29 @@ switch (e.target.value) {
         {
 
             document.getElementById('extraImg').classList.contains('image_style_orange')?
-            setSearchParameters({...searchParameters, [event.target.name]: event.target.value }):
-            setSearchParameters({...searchParameters, [event.target.name]: '' });
+            // setSearchParameters({...searchParameters, [event.target.name]: event.target.value })
+        dispatch({type:'change_field',name:event.target.name,value:event.target.value})    
+            :
+        dispatch({type:'change_field',name:event.target.name,value:''})    
+            // setSearchParameters({...searchParameters, [event.target.name]: '' });
             return 
         }
+        dispatch({type:'change_field',name:event.target.name,value:event.target.value})
         setSearchParameters({...searchParameters, [event.target.name]: event.target.value }); 
         console.log(searchParameters,' searchParameters searchParameters') 
     } 
 
-    const loadFilteredResults = newFilters => {
-        getFilteredProducts(skip, limit, newFilters).then(data => {
-            if (data.error) {
-                setError(data.error);
-            } else {
-                setFilteredResults(data.data);
-                setSize(data.size);
-                setSkip(0);
-            }
-        });
-    };
+    // const loadFilteredResults = newFilters => {
+    //     getFilteredProducts(skip, limit, newFilters).then(data => {
+    //         if (data.error) {
+    //             setError(data.error);
+    //         } else {
+    //             setFilteredResults(data.data);
+    //             setSize(data.size);
+    //             setSkip(0);
+    //         }
+    //     });
+    // };
     const changeRoomSelection=(e)=>{
             let num=document.getElementById('selectRooms').value
                console.log(numOfRooms)
@@ -397,8 +402,7 @@ switch (e.target.value) {
     };
 
     useEffect(() => {
-        // init();
-        loadFilteredResults(skip, limit, myFilters.filters);
+        // loadFilteredResults(skip, limit, myFilters.filters);
     }, []);
 
     const handleFilters = (filters, filterBy) => {
@@ -755,8 +759,8 @@ switch (e.target.value) {
 <hr/>
 <div className={'property_type'}>
 <h4 className={'entey_date_title__fullForm'} >תאריך כניסה</h4>
-<div dir='rtl' className={'inline_box1'}>
-    <input placeholder="2013-01-25"  type="date" onChange={inputChangeHandler} name={'entery_date' } style={{marginTop:'30px'}}className={"date"} id={'entery_date'} />
+<div  dir='rtl' className={'inline_box1'}>
+    <input placeholder="2013-01-25"  type="date" onChange={inputChangeHandler} name={'entery_date'} className={"date"} style={{marginTop:'20px'}} id={'entery_date'} />
 <br/>
 <input style={{width:'15px',height:'15px',opacity:'100',marginBottom:'-15px'}} onChange={date()} className={'inline_box'} type='checkbox'/>
 <p className={'inline_box'}>כניסה מיידית</p>
@@ -805,4 +809,4 @@ switch (e.target.value) {
     );
 };
 
-export default Shop;
+export default ShopUpgrade;

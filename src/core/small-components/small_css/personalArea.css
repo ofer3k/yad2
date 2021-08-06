@@ -10,7 +10,7 @@
     border-bottom:0.5px solid gray;
     }
     
-    .div1_personalArea {  width: 100%;height: 100%; grid-area: 2 / 10 / 12 / 12; }
+    .div1_personalArea {  width: auto;height: 200px; grid-area: 2 / 10 / 12 / 12; }
     .div2_personalArea {display: flex;
         align-items: center;
         justify-content: left;
