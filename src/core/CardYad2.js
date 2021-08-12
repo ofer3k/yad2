@@ -1,22 +1,6 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import ShowImage from "./ShowImage";
-import moment from "moment";
-import { addItem, updateItem, removeItem } from "./cartHelpers";
-import { Accordion,Card,Button,Form,ButtonGroup ,ToggleButton,Pagination } from 'react-bootstrap';
-const correctName=(name)=>{
-    switch (name) {
-        case 'Apartment':
-            return('דירה')
-            break;
-        case 'Garden Apartment':
-            return('דירת גן')
-            break;
-    
-        default:
-            break;
-    }
-}
+import { correctName } from "../controller/transform_data_to_display";
 
 const CardYad2 = ({
     product,

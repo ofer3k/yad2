@@ -1,34 +1,22 @@
-import React, { useState,Fragment } from 'react';
-import { Link, withRouter } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars,faArrowLeft,faAngleLeft,faHome,faCar, faCouch, faSuitcase, faSearch, faPaw, faGraduationCap } from '@fortawesome/free-solid-svg-icons'
+import { faBars,faAngleLeft,faHome,faCar, faCouch, faSuitcase, faSearch, faPaw, faGraduationCap } from '@fortawesome/free-solid-svg-icons'
 import Avatar from '@material-ui/core/Avatar';
 import { Redirect } from "react-router-dom";
 import { Modal } from 'react-bootstrap';
 import signInPic from './../imgs/signInPic.png'
 import signUpPic from './../imgs/signUpPic.png'
-import { BsBell,BsHeart,BsSearch,BsHouseDoor} from 'react-icons/bs';
+import { BsBell,BsHeart,BsSearch} from 'react-icons/bs';
 import { GrClose} from 'react-icons/gr';
-import { FaCarSide} from 'react-icons/fa';
 import { RiArrowLeftRightFill} from 'react-icons/ri';
-import { GiSofa} from 'react-icons/gi';
 import { signin, authenticate, isAuthenticated,signout, signup } from "../auth";
 import { useHistory } from "react-router-dom";
 import tree from './../imgs/palm_tree.png'
 
-
-// import logo from '../../public/icons'
 import 'antd/dist/antd.css';
-import { Drawer, Button } from 'antd';
-import '../navbar.css'
-
-// const isActive = (history, path) => {
-//     if (history.location.pathname === path) {
-//         return { color: "#ff9900" };
-//     } else {
-//         return { color: "#ffffff" };
-//     }
-// };
+import { Drawer} from 'antd';
+import './../css/navbar.css'
 
 
 const NavBar = ({history}) => {
@@ -155,19 +143,6 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
         console.log({...valuesSignUp})
     };
  
-    const redirectUser = () => {
-        if (redirectToReferrer) {
-            if (user && user.role === 1) {
-                return <Redirect to="/admin/dashboard" />;
-            } else {
-                return <Redirect to="/user/dashboard" />;
-            }
-        }
-        if (isAuthenticated()) {
-            return <Redirect to="/" />;
-        }
-    };
-
     const clickSubmit = event => {
         event.preventDefault();
         setValues({ ...values, error: false, loading: true });
@@ -297,48 +272,11 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
 </div>
         </Modal.Body>
         
-        
-        {/* <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer> */}
       </Modal>
 {/*  */}
 <Modal size={'lg'}  centered={true} show={show1} onHide={handleClose1}>
-        {/* <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header> */}
         <Modal.Body  className={'signIn_modal_container'}>
-        {/* <div class="parent_signIn_modal">
-<div  class="div1_signIn_modal">
-    <img className={'image_fit'} src={signUpPic} />
-</div>
-<div class="div2_signIn_modal" onClick={handleClose1} style={{textAlign:'left'}}><GrClose/></div>
-<div class="div3_signIn_modal"><span>כבר רשום?</span><span onClick={handleShow} className={'toSignup'}>  להתחברות</span> </div>
-<div class="div4_signIn_modal signIn_submit">
-    <span onClick={clickSubmit1} className={'submit_signIn_button'}>התחבר</span>
-</div>
-<div class="div5_signIn_modal"><input onChange={handleChange1("password")}
-                    type="password"
-                  
-                    value={password} className={'modal_input'}/></div>
-<div class="div6_signIn_modal"><span className={'modal_input_title'}>סיסמה</span></div>
-<div class="div7_signIn_modal">
-    <input onChange={handleChange1("email")}
-                    type="email"
-                    value={email} 
-                    className={'modal_input'} />
-    </div>
-<div class="div8_signIn_modal"><span className={'modal_input_title'}>כתובת מייל</span></div>
-<div class="div9_signIn_modal "><span className={'modal_title__seconde'}>הזן את הפרטים כדי להתחבר</span></div>
-<div class="div10_signIn_modal"><span  className={'modal_title'}>התחברות</span></div>
-</div> */}
 
-{/*  */}
 <div class="parent_signUp_modal">
 <div class="div1_signUp_modal"> 
 <img className={'image_fit'} src={signUpPic} />
@@ -372,17 +310,7 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
 </div>
         </Modal.Body>
         
-        
-        {/* <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer> */}
-      </Modal>
-{/*  */}
+              </Modal>
 <div class="parent_navBar_icon">
 <div class="div1_navBar_icon navBar_icon"><BsBell/></div>
 <div class="div2_navBar_icon navBar_icon"><BsHeart/></div>
@@ -413,97 +341,6 @@ const { email1, password1,password2, loading1, error1, redirectToReferrer1 } = v
 <div class="div16_navBar_quick_search"><FontAwesomeIcon icon={faGraduationCap} /></div>
 <div class="div17_navBar_quick_search navBar_quick_search_title_secondary">לימודים</div>
 </div>
-{/* 
-            <li className="nav-item">
-                <Link
-                    className="nav-link"
-                    // style={isActive(history, "/")}
-                    to="/"
-                >
-                    Home
-                </Link>
-            </li>
-            <li className="nav-item">
-                <Link
-                    className="nav-link"
-                    // style={isActive(history, "/")}
-                    to="/searchForm"
-                >
-                    searchForm
-                </Link>
-            </li> */}
-{/* 
-            <li className="li_style_right">
-                <Link
-                    className=""
-                    // style={isActive(history, "/shop")}
-                    to="/shop"
-                >
-                    חנות
-                </Link>
-            </li>
- */}
-            {/* <li className="nav-item"> */}
-                {/* <Link */}
-                    {/* // className="nav-link" */}
-                    {/* // style={isActive(history, "/cart")} */}
-                    {/* // to="/cart" */}
-                {/* > */}
-                    {/* סל קניות{" "} */}
-                    {/* <sup> */}
-                        {/* <small className="cart-badge">{itemTotal()}</small> */}
-                    {/* </sup>
-                </Link>
-            </li> */}
-
-            {/* {isAuthenticated() && isAuthenticated().user.role === 0 && (
-                <li className="nav-item">
-                    <Link
-                        className="nav-link"
-                        // style={isActive(history, "/user/dashboard")}
-                        to="/user/dashboard"
-                    >
-                        Dashboard
-                    </Link>
-                </li>
-            )} */}
-{/* 
-            {isAuthenticated() && isAuthenticated().user.role === 1 && (
-                <li className="li_style_right">
-                    <Link
-                        className=""
-                        // style={isActive(history, "/admin/dashboard")}
-                        to="/admin/dashboard"
-                    >
-                        האזור האישי
-                    </Link>
-                </li>
-            )} */}
-{/* 
-            {!isAuthenticated() && (
-                <Fragment>
-                    <li className="nav-item">
-                        <Link
-                            className="nav-link"
-                            // style={isActive(history, "/signin")}
-                            to="/signin"
-                        >
-                            Signin
-                        </Link>
-                    </li>
-
-                    <li className="nav-item">
-                        <Link
-                            className="nav-link"
-                            // style={isActive(history, "/signup")}
-                            to="/signup"
-                        >
-                            Signup
-                        </Link>
-                    </li>
-                </Fragment>
-            )}
- */}
 
         </ul>
 

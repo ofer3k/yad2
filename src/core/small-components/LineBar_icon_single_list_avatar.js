@@ -23,7 +23,7 @@ import tree from './../../imgs/palm_tree.png'
 // import logo from '../../public/icons'
 import 'antd/dist/antd.css';
 import { Drawer, Button } from 'antd';
-import '../../navbar.css'
+import './../../css/navbar.css'
 // 
 export default function LineBar_icon_single_list_avatar(props) {
    let {name,note,head}=props

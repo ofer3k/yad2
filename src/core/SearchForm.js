@@ -6,7 +6,7 @@ import {submitSearchControl, submitSearchControlScroll} from './../controller/se
 import { Container, Row, Col } from 'reactstrap';
 import { getFilteredProducts } from "./apiCore";
 import { prices } from "./fixedPrices";
-import '../searchForm.css'
+import '../css/searchForm.css'
 // photos
 import extra from '../imgs/extra.png';
 import apartments from '../imgs/apartments.png';
@@ -14,6 +14,7 @@ import houses from '../imgs/houses.png';
 import orangeExtra from '../imgs/orangeExtra.png';
 import orangeApartments from '../imgs/orangeApartments.png';
 import orangeHouses from '../imgs/orangeHouses.png'; 
+import { dateHelper,roomsQuickButtonFuncHelper,priceQuickButtonFuncHelper,inputChangeHandlerHelper,changeRoomSelectionHelper,changeFloorSelectionHelper } from "../controller/searchFormHelper";
 
 const Shop = () => {
   const {searchParameters,setSearchParameters} = useContext(SearchContext);
@@ -23,7 +24,6 @@ const Shop = () => {
     });
     const [numOfRooms,setNumOfRooms]= useState([1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
     const [numOfFloors,setNumOfFloors]= useState(['פרטר/מרתף',1,2,3,4,5,6,7,8,9,10,11,12,13,14])
-    // const [categories, setCategories] = useState([]);
     const [error, setError] = useState(false);
     const [limit, setLimit] = useState(6);
     const [skip, setSkip] = useState(0);
@@ -35,27 +35,9 @@ const Shop = () => {
 
 
 const date = () => event => {
-    if(event.target.checked===true)
-    {
-      var now = new Date();
-      var month = (now.getMonth() + 1);               
-      var day = now.getDate();
-      if (month < 10) 
-          month = "0" + month;
-      if (day < 10) 
-          day = "0" + day;
-      var today = now.getFullYear() + '-' + month + '-' + day;
-      
-      document.getElementById('entery_date').value=today 
-      // setValues({ ...values, entery_date: today }); 
-      setSearchParameters({ ...searchParameters, entery_date: today }); 
-      // console.log(values)
-      document.getElementById('entery_date').disabled = true;
-    }
-    else{
-      document.getElementById('entery_date').disabled = false;
-
-    }
+let newField=dateHelper(searchParameters,event)
+if(!newField===null)
+setSearchParameters({...searchParameters,entery_date:newField})
 };
 
 const radiosChange=(e)=>{
@@ -86,94 +68,20 @@ const advancedSearchFunc=(e)=>{
 }
 
 const roomsQuickButtonFunc=(e)=>{
-    const minRooms=document.getElementById("selectRooms")
-    const maxRooms=document.getElementById("selectRooms2")
-switch (e.target.value) {
-    case '1':
-        setNumOfRooms([2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-        minRooms.selectedIndex  = 3;
-        maxRooms.selectedIndex  = 3;
-        setSearchParameters({...searchParameters, min_num_of_rooms: '2',max_num_of_rooms: '3' })
-        
-        break;
-        case '2':
-        setNumOfRooms([3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-        minRooms.selectedIndex  = 5;
-        maxRooms.selectedIndex  = 3;
-        setSearchParameters({...searchParameters, min_num_of_rooms: '3',max_num_of_rooms: '4' })
-        
-        break;
-        case '3':
-            setNumOfRooms([4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-            minRooms.selectedIndex  = 7;
-        maxRooms.selectedIndex  = 3;
-        setSearchParameters({...searchParameters, min_num_of_rooms: '4',max_num_of_rooms: '5' })
+ let res= roomsQuickButtonFuncHelper(e)  
+  setNumOfRooms(res.numOfRooms)
+  setSearchParameters({...searchParameters, min_num_of_rooms: res.min_num_of_rooms ,max_num_of_rooms: res.max_num_of_rooms })
+}
 
-        break;
-        case '4':
-            setNumOfRooms([5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-            minRooms.selectedIndex  = 9;
-        maxRooms.selectedIndex  = 3;
-        setSearchParameters({...searchParameters, min_num_of_rooms: '5',max_num_of_rooms: '6' })
-        break;
-    default:
-        break;
-}
-}
 const priceQuickButtonFunc=(e)=>{
-    const minPrice=document.getElementById("min_price")
-    const maxPrice=document.getElementById("max_price")
-switch (e.target.value) {
-    case '1':
-      setSearchParameters({...searchParameters, min_price: '0',max_price: '1500000' })
-        minPrice.value = "0";
-        maxPrice.value = "1,500,000";
-        break;
-        case '2':
-          setSearchParameters({...searchParameters, min_price: '1500000',max_price: '2000000' })
-            minPrice.value = "1,500,000";
-            maxPrice.value = "2,000,000";
-            break;
-        case '3':
-          setSearchParameters({...searchParameters, min_price: '2000000',max_price: '3500000' })
-            minPrice.value = "2,000,000";
-            maxPrice.value = "3,500,000";
-            break;
-        case '4':
-            setSearchParameters({...searchParameters, min_price: '3500000',max_price: '5000000' })
-            minPrice.value = "3,500,000";
-            maxPrice.value = "5,000,000";
-            break;
-    default:
-        break;
+  let res= priceQuickButtonFuncHelper(e)
+  setSearchParameters({...searchParameters, min_price: res.min_price,max_price: res.max_price })
+console.log(res,'res');
 }
-}
-    
+
     function inputChangeHandler(event) {
-        if(event.target.name==='property_type1')
-        {
-            document.getElementById('apartmentsImg').classList.contains('image_style_orange')?
-            setSearchParameters({...searchParameters, [event.target.name]: event.target.value }):
-            setSearchParameters({...searchParameters, [event.target.name]: '' });
-            return 
-        }
-
-        if(event.target.name==='property_type2')
-        {
-            document.getElementById('housesImg').classList.contains('image_style_orange')?
-            setSearchParameters({...searchParameters, [event.target.name]: event.target.value }):
-            setSearchParameters({...searchParameters, [event.target.name]: '' });
-            return 
-        }
-        if(event.target.name==='property_type3')
-        {
-
-            document.getElementById('extraImg').classList.contains('image_style_orange')?
-            setSearchParameters({...searchParameters, [event.target.name]: event.target.value }):
-            setSearchParameters({...searchParameters, [event.target.name]: '' });
-            return 
-        }
-        setSearchParameters({...searchParameters, [event.target.name]: event.target.value }); 
+     let res=inputChangeHandlerHelper(event)
+      setSearchParameters({...searchParameters, ...res })
         console.log(searchParameters,' searchParameters searchParameters') 
     } 
 
@@ -188,243 +96,26 @@ switch (e.target.value) {
             }
         });
     };
+    
     const changeRoomSelection=(e)=>{
+    let res=changeRoomSelectionHelper(e)
+    console.log(res);
+    setNumOfRooms(res.NumOfRooms)
+    setSearchParameters({...searchParameters, min_num_of_rooms: res.min_num_of_rooms})
             let num=document.getElementById('selectRooms').value
-               console.log(numOfRooms)
-               console.log(num)
-               switch(num) {
-                case '1':
-                    setNumOfRooms([1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '1'})
-                  break;
-                  case 'הכל':
-                    setNumOfRooms([1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '1'})
-                    break;
-                case '1.5':
-                    setNumOfRooms([1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '1.5'})
-                    break;
-                  case '2':
-                    setNumOfRooms([2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '2'})
-                    break;
-                  case '2.5':
-                    setNumOfRooms([2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '2.5'})
-                  break;
-                  case '3':
-                    setNumOfRooms([3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '3'})
-                  break;
-                  case '3.5':
-                    setNumOfRooms([3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '3.5'})
-                  break;
-                  case '4':
-                    setNumOfRooms([4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '4'})
-                  break;
-                  case '4.5':
-                    setNumOfRooms([4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '4.5'})
-                  break;
-                  case '5':
-                    setNumOfRooms([5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '5'})
-                  break;
-                  case '5.5':
-                    setNumOfRooms([5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '5.5'})
-                  break;
-                  case '6':
-                    setNumOfRooms([6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '6'})
-                  break;
-                  case '6.5':
-                    setNumOfRooms([6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '6.5'})
-                  break;
-                  case '7':
-                    setNumOfRooms([7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '7'})
-                  break;
-                  case '7.5':
-                    setNumOfRooms([7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '7.5'})
-                  break;
-                  case '8':
-                    setNumOfRooms([8,8.5,9,9.5,10,10.5,11,11.5,12])
-                    // setValues({...values, min_num_of_rooms: '8'})
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '8'})
-                  break;
-                  case '8.5':
-                    setNumOfRooms([8.5,9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '8.5'})
-                  break;
-                  case '9':
-                    setNumOfRooms([9,9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '9'})
-                  break;
-                  case '9.5':
-                    setNumOfRooms([9.5,10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '9.5'})
-                  break;
-                  case '10':
-                    setNumOfRooms([10,10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '10'})
-                  break;
-                  case '10.5':
-                    setNumOfRooms([10.5,11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '10.5'})
-                  break;
-                  case '11':
-                    setNumOfRooms([11,11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '11'})
-                  break;
-                  case '11.5':
-                    setNumOfRooms([11.5,12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '11.5'})
-                  break;
-                  case '12':
-                    setNumOfRooms([12])
-                    setSearchParameters({...searchParameters, min_num_of_rooms: '12'})
-                  break;
-                default:
-              }
            }
+
            const changeFloorSelection=(e)=>{
-            let num=document.getElementById('selectFloors').value
-               console.log(num)
-               switch(num) {
-                case '1':
-                    setNumOfFloors(['פרטר/מרתף',1,2,3,4,5,6,7,8,9,10,11,12,13,14])
-                    setSearchParameters({...searchParameters, min_num_of_floors: '1'})
-                  break;
-                  case 'הכל':
-                    setNumOfFloors([1,2,3,4,5,6,7,8,9,10,11,12,13,14])
-                    setSearchParameters({...searchParameters, min_num_of_floors: '1'})
-                    break;
-                  case '2':
-                    setNumOfFloors([2,3,4,5,6,7,8,9,10,11,12,13,14])
-                    setSearchParameters({...searchParameters, min_num_of_floors: '2'})
-                    break;
-                  case '3':
-                    setNumOfFloors([3,4,5,6,7,8,9,10,11,12,13,14])
-                    setSearchParameters({...searchParameters, min_num_of_floors: '3'})
-                  break;
-                
-                  case '4':
-                    setNumOfFloors([4,5,6,7,8,9,10,11,12,13,14])
-                    setSearchParameters({...searchParameters, min_num_of_floors: '4'})
-                  break;
-                  case '5':
-                    setNumOfFloors([5,6,7,8,9,10,11,12,13,14])
-                    setSearchParameters({...searchParameters, min_num_of_floors: '5'})
-                  break;
-                  case '6':
-                    setNumOfFloors([6,7,8,9,10,11,12,13,14])
-                    setSearchParameters({...searchParameters, min_num_of_floors: '6'})
-                  break;
-                  
-                  case '7':
-                    setNumOfFloors([7,8,9,10,11,12,13,14])
-                    setSearchParameters({...searchParameters, min_num_of_floors: '7'})
-                  break;
-                  
-                  case '8':
-                    setNumOfFloors([8,9,10,11,12,13,14])
-                    setSearchParameters({...searchParameters, min_num_of_floors: '8'})
-                  break;
-                  
-                  case '9':
-                    setNumOfFloors([9,10,11,12,13,14])
-                    setSearchParameters({...searchParameters, min_num_of_floors: '9'})
-                  break;
-                  
-                  case '10':
-                    setNumOfFloors([10,11,12,13,14])
-                    setSearchParameters({...searchParameters, min_num_of_floors: '10'})
-                  break;
-                  case '11':
-                    setNumOfFloors([11,12,13,14])
-                    setSearchParameters({...searchParameters, min_num_of_floors: '11'})
-                  break;
-                  
-                  case '12':
-                    setNumOfFloors([12,13,14])
-                    // setValues({...values, min_num_of_floors: '12'})
-                    setSearchParameters({...searchParameters, min_num_of_floors: '12'})
-                  break;
-                  case '13':
-                    setNumOfFloors([13,14])
-                    // setValues({...values, min_num_of_floors: '13'})
-                    setSearchParameters({...searchParameters, min_num_of_floors: '13'})
-                  break;
-                  case '14':
-                    setNumOfFloors([14])
-                    // setValues({...values, min_num_of_floors: '14'})
-                    setSearchParameters({...searchParameters, min_num_of_floors: '14'})
-                  break;
-                default:
-                    // setNumOfRooms([1,1.5,2,2.5,3,3.5,4,4.5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12])
-              }
+             let res=changeFloorSelectionHelper(e)
+             setNumOfFloors(res.NumOfFloors)
+             setSearchParameters({...searchParameters, min_num_of_floors: res.min_num_of_floors})
            }
-
-    const loadMore = () => {
-        let toSkip = skip + limit;
-        // console.log(newFilters);
-        getFilteredProducts(toSkip, limit, myFilters.filters).then(data => {
-            if (data.error) {
-                setError(data.error);
-            } else {
-                setFilteredResults([...filteredResults, ...data.data]);
-                setSize(data.size);
-                setSkip(toSkip);
-            }
-        });
-    };
-
-    const loadMoreButton = () => {
-        return (
-            size > 0 &&
-            size >= limit && (
-                <button onClick={loadMore} className="btn btn-warning mb-5">
-                    Load more
-                </button>
-            )
-        );
-    };
+   
 
     useEffect(() => {
         // init();
         loadFilteredResults(skip, limit, myFilters.filters);
     }, []);
-
-    const handleFilters = (filters, filterBy) => {
-        // console.log("SHOP", filters, filterBy);
-        const newFilters = { ...myFilters };
-        newFilters.filters[filterBy] = filters;
-
-        if (filterBy === "price") {
-            let priceValues = handlePrice(filters);
-            newFilters.filters[filterBy] = priceValues;
-        }
-        // loadFilteredResults(myFilters.filters);
-        setMyFilters(newFilters);
-    };
-
-    const handlePrice = value => {
-        const data = prices;
-        let array = [];
-
-        for (let key in data) {
-            if (data[key]._id === parseInt(value)) {
-                array = data[key].array;
-            }
-        }
-        return array;
-    };
 
 
     return (
@@ -562,7 +253,6 @@ switch (e.target.value) {
         <button value={4} onClick={roomsQuickButtonFunc} className={'roomsQuickButton'}>5 - 6 חדרים</button>
         </Col>
       </Row>
-
     </Container>
 </div>
       
@@ -787,19 +477,8 @@ switch (e.target.value) {
 חיפוש
                 </div>
                 
-                {/* <input name={'price'} onChange={inputChangeHandler} /> */}
-                {/* <div className="">
-                    <h2 className="mb-4">Products</h2>
-                    {/* <div className="row">
-                        {filteredResults.map((product, i) => (
-                            <div key={i} className="col-4 mb-3">
-                                <Card product={product} />
-                            </div>
-                        ))}
-                    </div> */}
                     <hr />
-                    {/* {loadMoreButton()} */}
-                {/* </div> */} 
+
             </div>
         </Layout>
     );

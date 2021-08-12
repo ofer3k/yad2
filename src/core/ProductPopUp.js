@@ -5,8 +5,8 @@ import Popup_IconTitle from "./small-components/Popup_IconTitle";
 import { GoLocation } from 'react-icons/go';
 import { TiLocationArrowOutline } from 'react-icons/ti';
 import { SocialIcon } from 'react-social-icons';
-import { Modal, Button } from 'antd';
-import './../productPopup.css'
+import { Modal } from 'antd';
+import './../css/productPopup.css'
 import {correctNamePropertyCondition,correctDate,correctNameProperty} from './../controller/popupController'
 
 const ProductPopup = props => {
@@ -43,8 +43,7 @@ const handleCancel = () => {
     };
 
     useEffect(() => {
-        const productId = props.match.params.productId;
-        loadSingleProduct(productId);
+        loadSingleProduct(props.match.params.productId);
     }, [props]);
 
     return (
@@ -56,7 +55,6 @@ const handleCancel = () => {
                 product.description.substring(0, 100)
             }
         >
-           
 <div className={'popup_container'}>
        <div class="flex-container_popUp">
    <div class="flex-items_popUp">עודכן היום</div>

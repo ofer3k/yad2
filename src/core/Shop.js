@@ -9,15 +9,18 @@ import { RiMapPinLine } from 'react-icons/ri';
 import { useHistory } from "react-router-dom";
 import LineSearch from './LineSearch'
 import { BsImage,BsSearch } from 'react-icons/bs';
-import './../cardYad2.css'
+import './../css/cardYad2.css'
 import { API } from "../config";
+import { shallowPriceSort } from "../controller/shallow_sorting"; 
+
+
 
 const Shop = (state) => {
     console.log(state,'state')
     const [sortMethod,setSortMethod]=useState('')
     let history = useHistory();
     const mq = window.matchMedia( "(max-width: 690px)" );
-    
+
     const [myFilters, setMyFilters] = useState({
         filters: { category: [], price: [] }
     });
@@ -32,7 +35,9 @@ const Shop = (state) => {
     const [isMorePosts, setIsMorePosts] = useState(true); 
     const [numOfScrolling, setNumOfScrolling] = useState(4);
     
-
+    const sorting=(dir,filteredResults)=>{
+        setFilteredResults(shallowPriceSort(dir,filteredResults)) 
+     }
 const [isModalVisible, setIsModalVisible] = useState(false);
     const showModal = () => {
         setIsModalVisible(true);
@@ -43,7 +48,7 @@ const [isModalVisible, setIsModalVisible] = useState(false);
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-    // 
+ 
     const [isModalVisible2, setIsModalVisible2] = useState(false);
     const showModal2 = () => {
         setIsModalVisible2(true);
@@ -54,7 +59,7 @@ const [isModalVisible, setIsModalVisible] = useState(false);
     const handleCancel2 = () => {
         setIsModalVisible2(false);
     };
-// 
+ 
 function sortCCC() {
     setSortMethod(document.getElementById('sort_drop_down_id').value)
     submitSearchControlScroll(numOfScrolling,history,filtersAfterSearch,document.getElementById('sort_drop_down_id').value)
@@ -69,7 +74,6 @@ function sortCCC() {
 }
           }
 };
-// 
 
 function submitSearchControlScroll(num,history,filters,sortMethod){
     fetch(`${API}/products/by/Filter/noSort`,
@@ -110,11 +114,11 @@ function submitSearchControlScroll(num,history,filters,sortMethod){
             })
         }
         else{
-            console.log(state.location.state.body.data)
-            console.log(state.location.state.body.fullLength,'state.location.state.body.fullLength')
-            console.log(state.location.state.body.FiltersAfterSearch,'state.location.state.body.FiltersAfterSearch')
-            console.log(state.location.state.body.num||0,'state.location.state.body.num')
-            console.log(state.location.state.body.sortMethod,'state.location.state.body.sortMethod')
+            // console.log(state.location.state.body.data)
+            // console.log(state.location.state.body.fullLength,'state.location.state.body.fullLength')
+            // console.log(state.location.state.body.FiltersAfterSearch,'state.location.state.body.FiltersAfterSearch')
+            // console.log(state.location.state.body.num||0,'state.location.state.body.num')
+            // console.log(state.location.state.body.sortMethod,'state.location.state.body.sortMethod')
             setFullLength(state.location.state.body.fullLength||4)
             if(!state.location.state.body.fullLength)
             setIsMorePosts(false)
@@ -128,36 +132,12 @@ function submitSearchControlScroll(num,history,filters,sortMethod){
         }
     };
 
-    const loadMore = () => {
-        let toSkip = skip + limit;
-        getFilteredProducts(toSkip, limit, myFilters.filters).then(data => {
-            if (data.error) {
-                setError(data.error);
-            } else {
-                setFilteredResults([...filteredResults, ...data.data]);
-                setSize(data.size);
-                setSkip(toSkip);
-            }
-        });
-    };
-
-    const loadMoreButton = () => {
-        return (
-            size > 0 &&
-            size >= limit && (
-                <button onClick={loadMore} className="btn btn-warning mb-5">
-                    Load more
-                </button>
-            )
-        );
-    };
-
     useEffect(() => {
         loadFilteredResults(skip, limit, myFilters.filters);
     }, []);
 
 
-    const priceSort = (condition) => {
+    const priceSort = (condition,filteredResults) => {
         let saver=filteredResults
         let ordered;
         if(condition=='lowToHigh')
@@ -271,7 +251,7 @@ function submitSearchControlScroll(num,history,filters,sortMethod){
                     </div>
                     {filteredResults.length<fullLength&&filteredResults.length>0&&isMorePosts&&<p className={'extra_products'}>יש מודעות נוספות</p>}
                     <hr />
-                    {loadMoreButton()}
+                    {/* {loadMoreButton()} */}
                 </div>
             </div>
             <div width={'100vw'} style={{position:'fixed',bottom:'0',left:'0',}} >
@@ -288,12 +268,12 @@ function submitSearchControlScroll(num,history,filters,sortMethod){
 
 <label class="container">
 <span className={'radio_title'}>מחיר - מהזול ליקר</span>
-  <input  onClick={()=>{priceSort('lowToHigh')}} type="radio" name="radio"/>
+  <input  onClick={()=>{sorting('lowToHigh',filteredResults)}} type="radio" name="radio"/>
   <span class="checkmark"></span>
 </label>
 <label class="container">
 <span className={'radio_title'}>מחיר - מהיקר לזול</span>
-  <input onClick={()=>{priceSort('highToLow')}} type="radio" name="radio"/>
+  <input onClick={()=>{sorting('highToLow',filteredResults)}} type="radio" name="radio"/>
   <span class="checkmark"></span>
 </label>
         </span>

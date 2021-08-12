@@ -3,7 +3,7 @@ import { API } from "./../config";
 import NavBarPersonal from './../core/small-components/PrivateArea'
 import productUpdateContext from "./../context/product-update-context";
 import {changePropertyTypeName,changePropertyConditionName} from './../controller/updateProduct'
-import './../updateProduct.css'
+import './../css/updateProduct.css'
 import { RiDeleteBin6Line} from 'react-icons/ri';
 
 // import {initProductForUpdate} from './../controller/updateProduct'

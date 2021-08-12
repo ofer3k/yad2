@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import './../cardYad2Acordion.css'
+import './../css/cardYad2Acordion.css'
 import { FaRegSnowflake,FaWheelchair } from 'react-icons/fa';
 import { FiBox } from 'react-icons/fi';
 import { BiBox,BiCabinet } from 'react-icons/bi';
@@ -11,48 +10,11 @@ import { GiElevator,GiTap,GiSolarPower } from 'react-icons/gi';
 import { RiPaintBrushLine } from 'react-icons/ri';
 import { AiOutlineTable } from 'react-icons/ai';
 import airconditioner from './../imgs/air-conditioner.ico'
+import { correctName,correctNamePropertyCondition,correctDate } from "../controller/transform_data_to_display";
 
-const correctNameProperty=(name)=>{
-    
-    switch (name) {
-        case 'Apartment':
-            return('דירה')
-            break;
-        case 'Garden Apartment':
-            return('דירת גן')
-            break;
-    
-        default:
-            break;
-    }
-}
 
-const correctNamePropertyCondition=(name)=>{
-    switch (name) {
-        case "In saved mode":
-            return('במצב שמור, (במצב טוב, לא שופץ)')
-            break;
-    
-        default:
-            break;
-    }
-}
 
-const correctDate=(date)=>{
-    let today = new Date().toLocaleDateString()
-let entryDate =new Date(date).toLocaleDateString()
 
-// console.log(typeof date,'date')
-switch (entryDate) {
-    case today:
-        return('כניסה מיידית')
-        break;
-
-    default:
-        return(entryDate)
-        break;
-}
-}
 const CardYad2Acordion = ({
     product,
     showViewProductButton = true,
@@ -61,9 +23,8 @@ const CardYad2Acordion = ({
     showRemoveProductButton = false
 }) => {
     const [showInfo,setShowInfo]= useState(false);
-  let history = useHistory();
-    console.log(product)
-    return (
+
+return (
 <div style={{color:'black'}}  >
         <div  dir='ltr' style={{border:'none'}} className="card">
 <div  id={'card_acordion'} className="parent_acordion" style={product.Route==='vip'?({backgroundColor:'#fdf9c5'}):({backgroundColor:'white'})}>
@@ -80,7 +41,7 @@ const CardYad2Acordion = ({
 }} class="div2_acordion border_left" style={{textAlign:'right'}}>{product.property_address_street} {product.property_address_num} </div>
 <div onClick={()=>{
     setShowInfo(!showInfo)
-}} class="div3_acordion border_left" style={{textAlign:'right'}}>{correctNameProperty(product.property_type)} {product.property_address_city}</div>
+}} class="div3_acordion border_left" style={{textAlign:'right'}}>{correctName(product.property_type)} {product.property_address_city}</div>
 <div onClick={()=>{
     setShowInfo(!showInfo)
 }} class="div4_acordion border_left data_acordion ">{product.num_of_rooms}  </div>
@@ -137,8 +98,6 @@ const CardYad2Acordion = ({
 <div class="div23_show_info_radio"> </div>
 <div class="div24_show_info_radio"> </div>
 </div>
-
-    
     </div>}
  
         </div>

@@ -12,8 +12,8 @@ import { GiElevator,GiTap,GiSolarPower } from 'react-icons/gi';
 import { BsPlusCircle,BsFillTrashFill } from 'react-icons/bs';
 import { AiOutlineTable,AiOutlinePlus,AiOutlineCrown } from 'react-icons/ai';
 import { API } from "../config";
-import '../addProduct.css'
-import '../addProductResponsiv.css'
+import './../css/addProduct.css'
+import '../css/addProductResponsiv.css'
 
 
 let picsList={
@@ -672,7 +672,6 @@ setValues({ ...values, error: "משהו בהעלאת המודעה השתבש", l
       //number 
       if(document.getElementById('house_num').value==''||document.getElementById('house_num').value<=0||document.getElementById('house_num').value>999)
       {
-        // document.getElementById('house_num').style.borderColor='#c00'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -680,7 +679,6 @@ setValues({ ...values, error: "משהו בהעלאת המודעה השתבש", l
           };
         });
       }else{
-        // document.getElementById('house_num').style.borderColor='#ccc'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -691,7 +689,6 @@ setValues({ ...values, error: "משהו בהעלאת המודעה השתבש", l
       //floor 
       if(document.getElementById('house_floor').value==''||document.getElementById('house_floor').value<0||document.getElementById('house_floor').value>70)
       {
-        // document.getElementById('house_floor').style.borderColor='#c00'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -699,7 +696,6 @@ setValues({ ...values, error: "משהו בהעלאת המודעה השתבש", l
           };
         });
       }else{
-        // document.getElementById('house_floor').style.borderColor='#ccc'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -707,10 +703,8 @@ setValues({ ...values, error: "משהו בהעלאת המודעה השתבש", l
           };
         }); 
       }
-      //total_floor 
       if(document.getElementById('house_total_floors').value==''||document.getElementById('house_total_floors').value<0||document.getElementById('house_total_floors').value>70||parseInt(valuesContext.property_total_floors)<parseInt(valuesContext.property_floor))
       {
-        // document.getElementById('house_total_floors').style.borderColor='#c00'
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -718,8 +712,7 @@ setValues({ ...values, error: "משהו בהעלאת המודעה השתבש", l
           };
         });
       }else{
-        // document.getElementById('house_total_floors').style.borderColor='#ccc'
-        alert('true')
+
         setFirstFields(firstFields => {
           return {
             ...firstFields,
@@ -847,15 +840,9 @@ const thirdNext=()=>{
   if(values.build_mr>200000||values.build_mr<10)
   {
     values.build_mr=null
-    // document.getElementById('build_mr').style.borderColor='#c00'  
-     }else{
-    // values.build_mr=null
-
-    // document.getElementById('build_mr').style.borderColor='#ccc'
   }
   if(values.build_mr_total<values.build_mr)
   {
-    // values.build_mr_total=null
     document.getElementById('build_mr_total').style.borderColor='#c00'  
      }else{
     document.getElementById('build_mr_total').style.borderColor='#ccc'
@@ -880,7 +867,6 @@ moveNextSection(4)
 
 }
 const fifthNext=()=>{     
-  
   isAgreeTerms===false?setIsCicked5_next(true):moveNextSection(6)
   
 }
@@ -1667,7 +1653,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
   <p><span className={'route_include_s_sc'} >&#10003; הקפצה אוטומטית לחסון בזמן  </span></p>
   <p><span className={'route_include_s_sc'} >&#10003; הופעה לפני מודעות רגילות וורודות  </span></p>
   
-  <p className={'vip_button_s_sc'}>
+  <p onClick={()=>{finishUpload('vip') }} className={'vip_button_s_sc'}>
     <span >
   <span>199 <FaShekelSign/>  </span>
   <span className={'vip_button__days'}> / 28 ימים</span>
@@ -1681,7 +1667,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
   <p style={{marginTop:'10px'}}><span className={'route_include_s_sc'} >&#10003; מודעה מודגשת בצבע ורוד  </span></p>
   <p><span className={'route_include_s_sc'} >&#10003; הקפצה אוטומטית לחסון בזמן  </span></p>
   
-  <p className={'marked_button_s_sc'}>
+  <p onClick={()=>{finishUpload('marked') }} className={'marked_button_s_sc'}>
   <span >
   <span  >99 <FaShekelSign/>  </span>
   <span className={'vip_button__days'}> / 28 ימים</span>
@@ -1696,7 +1682,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
   <p style={{marginTop:'10px'}}><span className={'route_include_s_sc'} >&#10003; מודעה רגילה  </span></p>
   <p><span style={{opacity:'0.5'}} className={'route_include_s_sc'} >&#10005; הקפצה אוטומטית לחסון בזמן  </span></p>
   
-  <p className={'marked_button_s_sc'}>
+  <p onClick={()=>{finishUpload('basic') }} className={'marked_button_s_sc'}>
   <span >
   <span  >חינם </span>
   <span className={'vip_button__days'}> / 120 ימים</span>
@@ -1739,7 +1725,7 @@ placeholder={`זה המקום לתאר את הפרטים הבולטים, למש�
 
     const showLoading = () =>
         loading && (
-            <div className="alert alert-success">
+            <div style={{textAlign:'center'}} className="alert alert-success">
                 <h2>המודעה פורסמה בהצלחה</h2>
             </div>
         );

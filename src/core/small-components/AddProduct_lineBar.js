@@ -1,29 +1,15 @@
 import React,{useState} from 'react'
-import { Link,withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { signin, authenticate, isAuthenticated,signout, signup } from "../../auth";
-import {BsPerson} from 'react-icons/bs'
-import {MdCompareArrows} from 'react-icons/md'
-import {VscHistory} from 'react-icons/vsc'
-import {RiDoorLine} from 'react-icons/ri'
 // 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars,faArrowLeft,faAngleLeft,faHome,faCar, faCouch, faSuitcase, faSearch, faPaw, faGraduationCap } from '@fortawesome/free-solid-svg-icons'
-import Avatar from '@material-ui/core/Avatar';
-import { Redirect } from "react-router-dom";
 import { Modal } from 'react-bootstrap';
 import signInPic from './../../imgs/signInPic.png'
 import signUpPic from './../../imgs/signUpPic.png'
-import { BsBell,BsHeart,BsSearch,BsHouseDoor} from 'react-icons/bs';
 import { GrClose} from 'react-icons/gr';
-import { FaCarSide} from 'react-icons/fa';
-import { RiArrowLeftRightFill} from 'react-icons/ri';
-import { GiSofa} from 'react-icons/gi';
 import { useHistory } from "react-router-dom";
-import tree from './../../imgs/palm_tree.png'
 // import logo from '../../public/icons'
 import 'antd/dist/antd.css';
-import { Drawer, Button } from 'antd';
-import '../../navbar.css'
+import '../../css/navbar.css'
 // 
 export default function AddProduct_lineBar() {
     const [isMailValid, setIsMailValid] = useState(true);

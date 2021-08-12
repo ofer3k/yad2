@@ -1,21 +1,8 @@
 import React ,{ useState,Fragment } from 'react'
 import { Link, withRouter } from "react-router-dom";
-import { faBars,faArrowLeft,faAngleLeft,faHome,faCar, faCouch, faSuitcase, faSearch, faPaw, faGraduationCap } from '@fortawesome/free-solid-svg-icons'
-import Avatar from '@material-ui/core/Avatar';
-import { Redirect } from "react-router-dom";
-import { Modal } from 'react-bootstrap';
-import signInPic from './../imgs/signInPic.png'
-import signUpPic from './../imgs/signUpPic.png'
-import { BsBell,BsHeart,BsSearch,BsHouseDoor, BsPerson} from 'react-icons/bs';
-import { GrClose} from 'react-icons/gr';
-import { FaCarSide} from 'react-icons/fa';
-import { RiArrowLeftRightFill} from 'react-icons/ri';
-import { GiSofa} from 'react-icons/gi';
-import { signin, authenticate, isAuthenticated,signout, signup } from "../auth";
-import { useHistory } from "react-router-dom";
-import tree from './../imgs/palm_tree.png';
-import { Drawer, Button } from 'antd';
-import '../lineNavBar.css' ;
+import { BsPerson} from 'react-icons/bs';
+import {  isAuthenticated } from "../auth";
+import '../css/lineNavBar.css' ;
 import LineBar_icon from './small-components/LineBar_icon'
 import LineBar_icon_single_list from './small-components/LineBar_icon_single_list'
 import LineBar_icon_single_list_note from './small-components/LineBar_icon_single_list_note'

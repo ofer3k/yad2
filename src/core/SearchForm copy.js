@@ -7,7 +7,7 @@ import { getCategories, getFilteredProducts } from "./apiCore";
 import Checkbox from "./Checkbox";
 import RadioBox from "./RadioBox";
 import { prices } from "./fixedPrices";
-import '../searchForm.css'
+import '../css/searchForm.css'
 import extra from '../imgs/extra.png';
 import apartments from '../imgs/apartments.png';
 import houses from '../imgs/houses.png';
